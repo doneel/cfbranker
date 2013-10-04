@@ -1,0 +1,37 @@
+<% if flash[:notice] %>
+	<div class="notice"><%= flash[:notice] %></div>
+<% end %>
+
+Teams
+<%= form_tag  controls_uploadteams_path, multipart: true do %>
+	<%= file_field_tag	:file %>
+		Year:
+	<%= text_field_tag	:year %>
+	<%= submit_tag :update %>
+<% end %>
+
+</br>
+Games
+<%= form_tag  controls_uploadgames_path, multipart: true do %>
+	<%= file_field_tag	:file %>
+	Year:
+	<%= text_field_tag	:year %>
+	<%= submit_tag :update %>
+<% end %>
+
+</br>
+Performances
+<%= form_tag  controls_uploadperformances_path, multipart: true do %>
+	<%= file_field_tag	:file %>
+	Year:
+	<%= text_field_tag	:year %>
+	<%= submit_tag :update %>
+<% end %>
+</br>
+Conferences
+<%= form_tag  controls_uploadconferences_path, multipart: true do %>
+	<%= file_field_tag	:file %>
+	Year:
+	<%= text_field_tag	:year %>
+	<%= submit_tag :update %>
+<% end %>
