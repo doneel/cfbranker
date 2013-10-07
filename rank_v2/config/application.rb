@@ -6,7 +6,7 @@ require 'rails/all'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env)
-config.cache_store = :memory_store
+#RbConfig.cache_store = :memory_store
 module RankV2
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

@@ -8,7 +8,7 @@ window.onload = function(){
     var loadWheelDiv = document.getElementById("loadWheelDiv");//$("#loadWheelDiv");
 
     pendingDataRequest = pendingSaveRequest = null;
-    console.log(loadWheelDiv);
+//    console.log(loadWheelDiv);
     getData(loadWheelDiv);
     $("select").change(function(){
         getData(loadWheelDiv);
@@ -16,7 +16,7 @@ window.onload = function(){
 
     var spaceNeeded = $('.mainContentWrapper').offset().top + $('.mainContentWrapper').height();
     $(window).resize(function(){
-        console.log("resisizing" + $(window).height()/3);
+//        console.log("resisizing" + $(window).height()/3);
 //        $('#interfacePane').css('height', $(window).height() - $('#interfacePane').offset().top);
         $('#codeEditor').css('height', $(window).height() - spaceNeeded);
 //        document.getElementById('codeEditor').height = $(window).height()/20;
@@ -41,6 +41,8 @@ window.onload = function(){
         .submit(function(){
             document.getElementById('save_form_code').value = editor.getValue();
         });
+
+    //buildIFrame();
 };
 
 function getSave(id, requestDiv){
@@ -197,17 +199,17 @@ var makeSpinner = function(){
 };
 
 var getData = function(loadWheelDiv){
-    console.log(loadWheelDiv);
+ //   console.log(loadWheelDiv);
     var spinner2 = makeSpinner().spin(loadWheelDiv);
-    console.log(spinner2.el);
+//    console.log(spinner2.el);
     loadWheelDiv.appendChild(spinner2.el);
-
     if (pendingDataRequest){
         pendingDataRequest.abort();
     }
     var request = $.get("/req_data?year=" + $("#season").val() + "&week=" + $("#week").val() , function(data, status){
-        currentData = data;
-        runUserAlgorithm(currentData);
+        rawTeamsData = data;
+        runUserAlgorithm(rawTeamsData);
+        teams = remap($.extend(true, [], rawTeamsData)); //deep copy of data to be accessible from the console
         spinner2.stop();
     })
     .fail(function(){
@@ -220,13 +222,129 @@ var getData = function(loadWheelDiv){
 
 
 
+function remap(jsonData){
+    var namesMap = {};
+    for(var i = 0; i < jsonData.length; i++){
+        namesMap[jsonData[i].name] = jsonData[i];
+    }
+
+    var gameMap = {};
+    for(var i = 0; i < jsonData.length; i++){
+        var team = jsonData[i];
+        for(var j = 0; j < jsonData[i].schedule.length; j++){
+            var game = team.schedule[j];
+            game.opp = namesMap[game.opp];
+            game.team = jsonData[i];
+            var mirror = gameMap[game.game_code];
+            if(!mirror){
+                gameMap[game.game_code] = game;
+            }
+            else{
+                game.opp_game = mirror;
+                mirror.opp_game = game;
+            }
+        }
+    }
+    return jsonData;
+}
+
+function buildIFrame(){
+
+    funcArr = [];
+    function messageListener(event){
+        console.log("MESASGE RECEIVED");
+        console.log(event.origin);
+        console.log(event.data);
+    }
+    funcArr.push(messageListener);
+
+    function runFunction(urlheader){
+        window.onload = function(){
+            if(window.addEventListener){
+                addEventListener("message", messageListener, false);
+            } else{
+                attachEvent("onmessage", listener);
+            }
+            //console.log(rankArray);
+            /*
+            var rankArray = remap(rankArray);
+            try{
+                var toDisplay = main(rankArray);
+                displayResults(toDisplay, urlheader);
+            }
+            catch(err){
+                document.getElementById("resultsPane").parentNode.style.background = "#AA0000";
+                document.getElementById("resultsPane").innerHTML = "<p>" +  err.toString() + "</br>" + "Check the JS console!</p>";
+            }
+            */
+        };
+    }
+
+    function displayResults(toDisplay, urlheader){
+        for(var i = 0; i < 25; i++){ //toDisplay.length; i++){
+            var teamCont = document.createElement('div');
+            var logo = document.createElement('img');
+            logo.src =  urlheader + '/assets/team_logos/' + toDisplay[i].team_code + '.png';
+            logo.width='40';
+            teamCont.appendChild(logo);
+            teamCont.innerHTML += "<p>" + (i+1) + ': ' + toDisplay[i].name + '</p>' + '</br>' ;//+ '<img alt="maybe" src="http://do-book.stanford.edu:3000/assets/team_logos/' + toDisplay[i].team_code + '.png">';
+            document.getElementById("resultsPane").appendChild(teamCont);
+        }
+    }
+    funcArr.push(displayResults);
+    funcArr.push(runFunction);
+    funcArr.push(editor.getValue());
+    funcArr.push(remap);
+
+    var scripts = '';
+    for(var i = 0; i < funcArr.length; i++){
+        scripts += "\n\t\t<script type='text/javascript'>\n\t\t\t"  + funcArr[i].toString() + '\n\t\t</script>';
+    }
+    console.log(scripts);
+
+    var docTop = '<!DOCTYPE html>\n<html lang="en-US">\n\t<head>';
+    var body = "" +
+            "\n\t</head>" +
+            "\n\t<body>" +
+                "\n\t\t<div id='resultsPane'>" +
+                "\n\t\t</div>" +
+            "\n\t</body>";
+    var close = "\n</html>";
+    content = docTop + scripts + body + close;
+    console.log(content);
+    iframeContainer = document.getElementById('rankPane');
+    iframe = document.createElement('iframe');
+    iframe.id = "resultsPane";
+    iframe.src = "data:text/html;charset=utf-8," + escape(content);// 'javascript:window["contents"]';
+    iframeContainer.innerHTML = "";
+    iframeContainer.appendChild(iframe);
+}
+
 
 function runUserAlgorithm(data){
-    //console.log(data);
-    data = JSON.stringify(data);
+    var iframeWin = document.getElementById('resultsPane').contentWindow;
+//    console.log(iframeWin);//.contentWindow;
+    iframeWin.postMessage({userAlgorithm: editor.getValue(), rawData: data}, window.location.protocol + "//" + window.location.host);
+    return;
+    alert("DIDNT' RETURN");
+    var allDataBuckets = [];
+    var numBuckets = 5;
+    for (var k = 0; k < numBuckets; k++) {
+        allDataBuckets[k] = [];
+    }
+    for(var i = 0; i < data.length; i++){
+        allDataBuckets[Math.floor(numBuckets*(i/data.length))] = allDataBuckets[Math.floor(numBuckets*(i/data.length))].concat(data[i]);
+    }
+    for(var j = 0; j < numBuckets; j++){
+        allDataBuckets[j] = JSON.stringify(allDataBuckets[j]);
+    }
+    console.log(allDataBuckets);
+//    data = JSON.stringify(data);
+//    console.log(data);
     var docTop = '<!DOCTYPE html>\n<html lang="en-US">\n\t<head>';
-    var dataVar = "\n\t\t<script type='text/javascript'>\n\t\t\t" + "var data = " + data + ";\n\t\t</script>";
-    var userFunc = "\n\t\t<script type='text/javascript'>\n\t\t\t" + editor.getValue() + "\n\t\t</script>";
+    var dataVar = "\n\t\t<script type='text/javascript'>\n\t\t\t" + "allDataBuckets= " + allDataBuckets + "; console.log(allDataBuckets);\n\t\t\t\t</script>";
+    var userFunc = "\n\t\t<script type='text/javascript'>\n\t\t\t" + editor.getValue() + "\n\t\t\n\t\t</script>";
+    console.log("GONG");
     function displayResults(toDisplay, urlheader){
         for(var i = 0; i < 25; i++){ //toDisplay.length; i++){
             var teamCont = document.createElement('div');
@@ -241,7 +359,13 @@ function runUserAlgorithm(data){
 
     function runFunction(urlheader){
         window.onload = function(){
-            var rankArray = remap(data);
+            rankArray = [];
+            for(var i = 0; i < allDataBuckets.length; i++){
+                console.log(allDataBuckets[i]);
+                rankArray = rankArray.concat(allDataBuckets[i]);
+            }
+            //console.log(rankArray);
+            var rankArray = remap(rankArray);
             try{
                 var toDisplay = main(rankArray);
                 displayResults(toDisplay, urlheader);
@@ -252,23 +376,9 @@ function runUserAlgorithm(data){
             }
         };
     }
-    var remap = function(jsonData){
-        var namesMap = {};
-        for(var i = 0; i < jsonData.length; i++){
-            namesMap[jsonData[i].name] = jsonData[i];
-        }
-
-        for(var i = 0; i < jsonData.length; i++){
-            for(var j = 0; j < jsonData[i].schedule.length; j++){
-                jsonData[i].schedule[j].opp = namesMap[jsonData[i].schedule[j].opp];
-                jsonData[i].schedule[j].team = jsonData[i];
-            }
-        }
-        return jsonData;
-    };
-
     var onloadFunc = "" +
         "\n\t\t<script type='text/javascript'>" +
+        "console.log('GOINGALSDFJSD!');" +
         "\n\t\t\t var remap = " + remap.toString() +
         "\n\t\t\t var displayResults = " + displayResults.toString() +
         "\n\t\t\t" + runFunction.toString() +
@@ -294,6 +404,7 @@ function runUserAlgorithm(data){
 }
 
 
+
 /* todo
     X Logos for teams
     * Header logo for site
@@ -305,3 +416,5 @@ function runUserAlgorithm(data){
     X basic caching
     * auto .csv parsing
 */
+
+

@@ -15,7 +15,7 @@
 
 
 			<div class="saveButtons">
-				<button onclick="runUserAlgorithm(currentData)">Run</button>
+				<button onclick="runUserAlgorithm(rawTeamsData)">Run</button>
 				<% if @signed_in %>
 					<div class="saveButtonContainer">
 						<%= form_for @algorithm, html: {id: 'saveForm', class: 'hidden'}, remote: true, url: algorithm_save_path do |f| %>
@@ -63,7 +63,7 @@
 				</div>
 			</div>
 			<div id="rankPane">
-				<iframe id="resultsPane">
+				<iframe src="/ranks/codeFrame" id="resultsPane">
 				</iframe>
 			</div>
 		</div>
@@ -71,8 +71,6 @@
 </div>
 <%= @test %>
 <script type="application/javascript">
-	var arr = [];//<%=raw @teamJSON%>;
-	jsonData = arr;//remap(arr);
 	var savesArr = <%= if @saveArray then @saveArray.html_safe else [] end %>;
 	for(var i = 0; i < savesArr.length; i++){
 		appendSaveOpt(savesArr[i]);

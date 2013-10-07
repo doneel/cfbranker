@@ -7,11 +7,24 @@ class Team < ActiveRecord::Base
 	@@FBS_CONFS = [821, 25354, 823, 827, 24312, 99001, 875, 5486, 905, 911, 818, 923];
 	@@AQ_CONFS = [821,25354,823,827,24312,905,911];
 
+
+	def self.cleanRow(hash)
+		replacementHash = Hash.new
+		hash.each do |key, value|
+			key2 = key.downcase
+			key2 = key2.gsub(' ', '_')
+			key2 = key2.gsub('\\', '_')
+			replacementHash[key2] = value
+		end
+		return replacementHash
+	end
+
+
 	def self.import(file, year)
-		self.where(:year => year).destory_all
+		self.destroy_all(:year => year)
 		numRows = 0
 		CSV.foreach(file.path, headers: true) do |row|
-			t1 = Team.create!(row.to_hash)
+			t1 = Team.create!(self.cleanRow(row.to_hash))
 			t1.year = year
 			t1.save
 			numRows += 1
@@ -20,9 +33,12 @@ class Team < ActiveRecord::Base
 	end
 
 	def self.getData(year, week)
+		puts "RUNNING"
 		allTeams = Array.new
 		puts year
+		puts Team.where(:year => year)[0]
 		Team.where(:year => year).each do |team|
+			puts "ok.."
 			allTeams.push team.package(year, week.to_i)
 		end
 		return allTeams

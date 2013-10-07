@@ -11,11 +11,24 @@ class Performance < ActiveRecord::Base
 		return str
 	end
 
+	def self.cleanRow(hash)
+		replacementHash = Hash.new
+		hash.each do |key, value|
+			key2 = key.downcase
+			key2 = key2.gsub(' ', '_')
+			key2 = key2.gsub('/', '_')
+			key2 = key2.gsub('1st', 'first')
+			key2 = key2.gsub('-', '_')
+			replacementHash[key2] = value
+		end
+		return replacementHash
+	end
+
 	def self.import(file, year)
-		self.where(:year => year).destory_all
+		self.destroy_all(:year => year)
 		numRows = 0
 		CSV.foreach(file.path, headers: true) do |row|
-			p = Performance.create(row.to_hash)
+			p = Performance.create(self.cleanRow(row.to_hash)	)
 			p.year = year
 			p.save
 			numRows += 1

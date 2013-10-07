@@ -12,6 +12,7 @@ RankV2::Application.routes.draw do
 
   get '/create', to: 'ranks#write'
   get '/req_data', to: 'ranks#getData'
+  get '/ranks/codeFrame', to: 'ranks#ranksFrame'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

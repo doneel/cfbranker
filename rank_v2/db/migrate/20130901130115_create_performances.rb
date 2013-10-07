@@ -51,7 +51,7 @@ class CreatePerformances < ActiveRecord::Migration
 		t.integer   		"tackle_solo"
 		t.integer   		"tackle_assist"
 		t.integer   		"tackle_for_loss"
-		t.integer   		"tackle_for_lossr_loss_yard"
+		t.integer   		"tackle_for_loss_yard"
 		t.integer   		"sack"
 		t.integer   		"sack_yard"
 		t.integer   		"qb_hurry"
