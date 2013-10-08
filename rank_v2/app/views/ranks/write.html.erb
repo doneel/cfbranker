@@ -10,12 +10,12 @@
 	<div class="mainContentWrapper">
 		<div id="workPane" class="mainContentContainer">
 			<div id="codeEditor">
-			</div>
+			</div>
 			<!-- ace and helper in here !-->
 
 
 			<div class="saveButtons">
-				<button onclick="runUserAlgorithm(rawTeamsData)">Run</button>
+				<button onclick="runUserAlgorithm(null, rawTeamsData)">Run</button>
 				<% if @signed_in %>
 					<div class="saveButtonContainer">
 						<%= form_for @algorithm, html: {id: 'saveForm', class: 'hidden'}, remote: true, url: algorithm_save_path do |f| %>
@@ -77,6 +77,9 @@
 	}
 	checkForSaves(false);
 	$(window).load(function(){
+		console.log(<%= @maxWeeks.to_json.html_safe %>);
+		return;
+		loadPage();
 		loadSave(<%= if @curAlg then @curAlg.html_safe else 'null' end %>);
 	});
 

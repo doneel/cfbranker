@@ -3,10 +3,10 @@
 	<head>
 		<script>
 			function messageListener(event){
-		        console.log("MESASGE RECEIVED");
-		        console.log(event.origin);
-		        console.log(event.data);
+		        //console.log("MESASGE RECEIVED");
+		        //console.log(event.origin);
 		        try{
+			    	document.getElementById("ifResultsPane").parentNode.style.background = "";
 			        eval(event.data.userAlgorithm);
 			        displayResults(main(remap(event.data.rawData)), window.location.protocol + "//" + window.location.host);
 			    }catch(err){
@@ -18,7 +18,7 @@
 
 
 			function displayResults(toDisplay, urlheader){
-				console.log("Runnnig");
+				//console.log("Runnnig");
 				document.getElementById("ifResultsPane").innerHTML = "";
 		        for(var i = 0; i < 25; i++){ //toDisplay.length; i++){
 		            var teamCont = document.createElement('div');

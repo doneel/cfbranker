@@ -1,4 +1,4 @@
-window.onload = function(){
+function loadPage(){
     editor = ace.edit("codeEditor");
     ace.config.set("workerPath", "javascript/ace-builds/src-noconflict");
 	editor.getSession().setUseWorker(false);
@@ -8,8 +8,8 @@ window.onload = function(){
     var loadWheelDiv = document.getElementById("loadWheelDiv");//$("#loadWheelDiv");
 
     pendingDataRequest = pendingSaveRequest = null;
+    dataCache = {};
 //    console.log(loadWheelDiv);
-    getData(loadWheelDiv);
     $("select").change(function(){
         getData(loadWheelDiv);
     });
@@ -43,13 +43,13 @@ window.onload = function(){
         });
 
     //buildIFrame();
-};
+}
 
 function getSave(id, requestDiv){
 
     var spinner2 = makeSpinner().spin(requestDiv);
     requestDiv.appendChild(spinner2.el);
-    console.log(requestDiv);
+    //console.log(requestDiv);
     if (pendingSaveRequest){
         pendingSaveRequest.abort();
     }
@@ -66,6 +66,8 @@ function getSave(id, requestDiv){
 function loadSave(save){
     if(save === null){
         editor.setValue("function main(teams){\r\n    for(var i = 0; i < teams.length; i++){\r\n        opp_wins = 0;\r\n        opp_games = 0;\r\n        //console.log(teams[i]);\r\n        for(var j = 0; j < teams[i].schedule.length; j++){\r\n           // console.log(teams[i].schedule[j].opp);\r\n            //console.log(teams[i].schedule[j].opp.wins);\r\n            opp_wins += teams[i].schedule[j].opp.wins;\r\n            opp_games += teams[i].schedule[j].opp.games;\r\n        }\r\n        teams[i].opp_win_pct = opp_wins/opp_games;\r\n        teams[i].points = teams[i].schedule.length*teams[i].wins*teams[i].win_pct *\r\n            .5*opp_wins*teams[i].opp_win_pct - (teams[i].games - teams[i].wins);\r\n    }\r\n\r\n    teams.sort(function(a,b){\r\n        return b.points - a.points;\r\n    });\r\n\r\n    return teams;\r\n}");
+        editor.setValue(unescape("function%20main%28teams%29%7B%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20opp_wins%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20opp_games%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20for%28var%20j%20%3D%200%3B%20j%20%3C%20teams%5Bi%5D.schedule.length%3B%20j++%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20opp_wins%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.wins%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20opp_games%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.games%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.opp_wins%20%3D%20opp_wins%3B%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.opp_games%20%3D%20opp_games%3B%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20d2_wins%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20d2_games%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20for%28var%20j%20%3D%200%3B%20j%20%3C%20teams%5Bi%5D.schedule.length%3B%20j++%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20d2_wins%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.opp_wins%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20d2_games%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.opp_games%3B%0D%0A%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.d2_wins%20%3D%20d2_wins%3B%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.d2_games%20%3D%20d2_games%3B%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20%3D%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%201*teams%5Bi%5D.win_pct%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20+%201*teams%5Bi%5D.opp_wins/teams%5Bi%5D.opp_games%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20+%201*teams%5Bi%5D.d2_wins/teams%5Bi%5D.d2_games%3B%0D%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.fbs%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20*%3D%201.1%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.aq%20%7C%7C%20teams%5Bi%5D.name%20%3D%3D%20%22Notre%20Dame%22%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20*%3D%201.1%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20%0D%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.win_pct%20%3D%3D%201%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20console.log%28teams%5Bi%5D%29%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20for%28var%20g%20%3D%200%3B%20g%20%3C%20teams%5Bi%5D.schedule.length%3B%20g++%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20if%28%21teams%5Bi%5D.schedule%5Bg%5D.win%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20-%3D%20%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.05%20*%201/teams%5Bi%5D.schedule%5Bg%5D.opp.rankPoints%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%7D%0D%0A%0D%0A%20%20%20%20teams.sort%28function%28a%2Cb%29%7B%0D%0A%20%20%20%20%20%20%20%20return%20b.rankPoints%20-%20a.rankPoints%3B%0D%0A%20%20%20%20%7D%29%3B%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%2025%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20console.log%28teams%5Bi%5D.name%20+%20%27%3A%27%20+%20teams%5Bi%5D.rankPoints%29%3B%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20return%20teams%3B%0D%0A%7D"));
+        getData(loadWheelDiv);
         return;
     }
     $("#saveForm").css('display', 'block');
@@ -76,6 +78,7 @@ function loadSave(save){
     }
     document.getElementById("save_form_id").value = save.id;
     document.getElementById('saveOption-' + save.id).style.background = "#AAA";
+    getData(loadWheelDiv);
 }
 
 
@@ -84,8 +87,8 @@ function loadSave(save){
  */
 function checkForSaves(adding){
 
-    console.log('checking...');
-    console.log(document.getElementById('prevSavesPane').childNodes.length);
+    //console.log('checking...');
+    //console.log(document.getElementById('prevSavesPane').childNodes.length);
     if(typeof(noSavesDisplay) === 'undefined'){
         noSavesDisplay = false;
     }
@@ -107,7 +110,7 @@ function deleteSave(id){
     })
     .fail(function(){
     });
-    console.log(request);
+    //console.log(request);
 }
 
 function appendSaveOpt(save){
@@ -200,32 +203,54 @@ var makeSpinner = function(){
 
 var getData = function(loadWheelDiv){
  //   console.log(loadWheelDiv);
+    var userAlgorithm = editor.getValue();
+
+    var season = $("#season").val();
+    var week = $("#week").val();
+    var rawTeamsData = null;
+    if(dataCache[season] && dataCache[season][week]){
+        rawTeamsData = dataCache[season][week];
+        runUserAlgorithm(userAlgorithm, rawTeamsData);
+    }else{
+        if(!dataCache[season]){
+            dataCache[season] = [];
+        }
+        makeDataRequest(season, week, loadWheelDiv, userAlgorithm);
+    }
+};
+
+function makeDataRequest(season, week, loadWheelDiv, userAlgorithm){
     var spinner2 = makeSpinner().spin(loadWheelDiv);
-//    console.log(spinner2.el);
     loadWheelDiv.appendChild(spinner2.el);
+
     if (pendingDataRequest){
         pendingDataRequest.abort();
     }
-    var request = $.get("/req_data?year=" + $("#season").val() + "&week=" + $("#week").val() , function(data, status){
+    var rawTeamsData = null;
+    var request = $.get("/req_data?year=" + season + "&week=" + week , function(data, status){
+        console.log(data);
         rawTeamsData = data;
-        runUserAlgorithm(rawTeamsData);
-        teams = remap($.extend(true, [], rawTeamsData)); //deep copy of data to be accessible from the console
         spinner2.stop();
+        dataCache[season][week] = rawTeamsData;
+        runUserAlgorithm(userAlgorithm, rawTeamsData);
     })
     .fail(function(){
         spinner2.stop();
         //getting data failed!
     });
+
     pendingDataRequest = request;
-};
+
+    return rawTeamsData;
+}
 
 
 
 
 function remap(jsonData){
     var namesMap = {};
-    for(var i = 0; i < jsonData.length; i++){
-        namesMap[jsonData[i].name] = jsonData[i];
+    for(var k = 0; k < jsonData.length; k++){
+        namesMap[jsonData[k].name] = jsonData[k];
     }
 
     var gameMap = {};
@@ -248,173 +273,28 @@ function remap(jsonData){
     return jsonData;
 }
 
-function buildIFrame(){
 
-    funcArr = [];
-    function messageListener(event){
-        console.log("MESASGE RECEIVED");
-        console.log(event.origin);
-        console.log(event.data);
+function runUserAlgorithm(userAlgorithm, data){
+    teams = remap($.extend(true, [], data)); //deep copy of data to be accessible from the console
+    if(userAlgorithm === null){
+        userAlgorithm = editor.getValue();
     }
-    funcArr.push(messageListener);
-
-    function runFunction(urlheader){
-        window.onload = function(){
-            if(window.addEventListener){
-                addEventListener("message", messageListener, false);
-            } else{
-                attachEvent("onmessage", listener);
-            }
-            //console.log(rankArray);
-            /*
-            var rankArray = remap(rankArray);
-            try{
-                var toDisplay = main(rankArray);
-                displayResults(toDisplay, urlheader);
-            }
-            catch(err){
-                document.getElementById("resultsPane").parentNode.style.background = "#AA0000";
-                document.getElementById("resultsPane").innerHTML = "<p>" +  err.toString() + "</br>" + "Check the JS console!</p>";
-            }
-            */
-        };
-    }
-
-    function displayResults(toDisplay, urlheader){
-        for(var i = 0; i < 25; i++){ //toDisplay.length; i++){
-            var teamCont = document.createElement('div');
-            var logo = document.createElement('img');
-            logo.src =  urlheader + '/assets/team_logos/' + toDisplay[i].team_code + '.png';
-            logo.width='40';
-            teamCont.appendChild(logo);
-            teamCont.innerHTML += "<p>" + (i+1) + ': ' + toDisplay[i].name + '</p>' + '</br>' ;//+ '<img alt="maybe" src="http://do-book.stanford.edu:3000/assets/team_logos/' + toDisplay[i].team_code + '.png">';
-            document.getElementById("resultsPane").appendChild(teamCont);
-        }
-    }
-    funcArr.push(displayResults);
-    funcArr.push(runFunction);
-    funcArr.push(editor.getValue());
-    funcArr.push(remap);
-
-    var scripts = '';
-    for(var i = 0; i < funcArr.length; i++){
-        scripts += "\n\t\t<script type='text/javascript'>\n\t\t\t"  + funcArr[i].toString() + '\n\t\t</script>';
-    }
-    console.log(scripts);
-
-    var docTop = '<!DOCTYPE html>\n<html lang="en-US">\n\t<head>';
-    var body = "" +
-            "\n\t</head>" +
-            "\n\t<body>" +
-                "\n\t\t<div id='resultsPane'>" +
-                "\n\t\t</div>" +
-            "\n\t</body>";
-    var close = "\n</html>";
-    content = docTop + scripts + body + close;
-    console.log(content);
-    iframeContainer = document.getElementById('rankPane');
-    iframe = document.createElement('iframe');
-    iframe.id = "resultsPane";
-    iframe.src = "data:text/html;charset=utf-8," + escape(content);// 'javascript:window["contents"]';
-    iframeContainer.innerHTML = "";
-    iframeContainer.appendChild(iframe);
-}
-
-
-function runUserAlgorithm(data){
     var iframeWin = document.getElementById('resultsPane').contentWindow;
 //    console.log(iframeWin);//.contentWindow;
-    iframeWin.postMessage({userAlgorithm: editor.getValue(), rawData: data}, window.location.protocol + "//" + window.location.host);
+    iframeWin.postMessage({userAlgorithm: userAlgorithm, rawData: data}, window.location.protocol + "//" + window.location.host);
     return;
-    alert("DIDNT' RETURN");
-    var allDataBuckets = [];
-    var numBuckets = 5;
-    for (var k = 0; k < numBuckets; k++) {
-        allDataBuckets[k] = [];
-    }
-    for(var i = 0; i < data.length; i++){
-        allDataBuckets[Math.floor(numBuckets*(i/data.length))] = allDataBuckets[Math.floor(numBuckets*(i/data.length))].concat(data[i]);
-    }
-    for(var j = 0; j < numBuckets; j++){
-        allDataBuckets[j] = JSON.stringify(allDataBuckets[j]);
-    }
-    console.log(allDataBuckets);
-//    data = JSON.stringify(data);
-//    console.log(data);
-    var docTop = '<!DOCTYPE html>\n<html lang="en-US">\n\t<head>';
-    var dataVar = "\n\t\t<script type='text/javascript'>\n\t\t\t" + "allDataBuckets= " + allDataBuckets + "; console.log(allDataBuckets);\n\t\t\t\t</script>";
-    var userFunc = "\n\t\t<script type='text/javascript'>\n\t\t\t" + editor.getValue() + "\n\t\t\n\t\t</script>";
-    console.log("GONG");
-    function displayResults(toDisplay, urlheader){
-        for(var i = 0; i < 25; i++){ //toDisplay.length; i++){
-            var teamCont = document.createElement('div');
-            var logo = document.createElement('img');
-            logo.src =  urlheader + '/assets/team_logos/' + toDisplay[i].team_code + '.png';
-            logo.width='40';
-            teamCont.appendChild(logo);
-            teamCont.innerHTML += "<p>" + (i+1) + ': ' + toDisplay[i].name + '</p>' + '</br>' ;//+ '<img alt="maybe" src="http://do-book.stanford.edu:3000/assets/team_logos/' + toDisplay[i].team_code + '.png">';
-            document.getElementById("resultsPane").appendChild(teamCont);
-        }
-    }
-
-    function runFunction(urlheader){
-        window.onload = function(){
-            rankArray = [];
-            for(var i = 0; i < allDataBuckets.length; i++){
-                console.log(allDataBuckets[i]);
-                rankArray = rankArray.concat(allDataBuckets[i]);
-            }
-            //console.log(rankArray);
-            var rankArray = remap(rankArray);
-            try{
-                var toDisplay = main(rankArray);
-                displayResults(toDisplay, urlheader);
-            }
-            catch(err){
-                document.getElementById("resultsPane").parentNode.style.background = "#AA0000";
-                document.getElementById("resultsPane").innerHTML = "<p>" +  err.toString() + "</br>" + "Check the JS console!</p>";
-            }
-        };
-    }
-    var onloadFunc = "" +
-        "\n\t\t<script type='text/javascript'>" +
-        "console.log('GOINGALSDFJSD!');" +
-        "\n\t\t\t var remap = " + remap.toString() +
-        "\n\t\t\t var displayResults = " + displayResults.toString() +
-        "\n\t\t\t" + runFunction.toString() +
-        "\n\t\t\t\t runFunction('" + window.location.protocol + '//' + window.location.host+ "')" +
-        "\n\t\t</script>";
-
-
-    var body = "" +
-            "\n\t</head>" +
-            "\n\t<body>" +
-                "\n\t\t<div id='resultsPane'>" +
-                "\n\t\t</div>" +
-            "\n\t</body>";
-    var close = "\n</html>";
-
-    content = docTop + dataVar + userFunc + onloadFunc + body + close;
-    iframeContainer = document.getElementById('rankPane');
-    iframe = document.createElement('iframe');
-    iframe.id = "resultsPane";
-    iframe.src = "data:text/html;charset=utf-8," + escape(content);// 'javascript:window["contents"]';
-    iframeContainer.innerHTML = "";
-    iframeContainer.appendChild(iframe);
 }
-
-
 
 /* todo
     X Logos for teams
     * Header logo for site
-    * error handling for their bad code
+    X error handling for their bad code
     * about/login/intro links at top of page
     * auto saving? status on saving
 
     Server:
     X basic caching
-    * auto .csv parsing
+    X auto .csv parsing
 */
 
 

@@ -8,4 +8,6 @@ class Season < ActiveRecord::Base
 	def getAllTeams
 		return teams
 	end
+
+	attr_accessor :numWeeks
 end

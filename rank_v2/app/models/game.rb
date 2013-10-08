@@ -23,7 +23,7 @@ class Game < ActiveRecord::Base
 		self.destroy_all(:year => year)
 		numRows = 0
 		first = nil
-		weeks = Array.new
+		maxWeek = 0
 		CSV.foreach(file.path, headers: true) do |row|
 			puts self.cleanRow(row.to_hash)
 			g = Game.create!(self.cleanRow(row.to_hash))
@@ -37,11 +37,13 @@ class Game < ActiveRecord::Base
 				puts first.date
 				g.week = ((g.date - first.date)/7).to_i + 1
 			end
-			weeks << g.week
+			if g.week > maxWeek
+				maxWeek = g.week
+			end
 			g.save
 			numRows += 1
 		end
-		puts weeks
+		Season.find(year).numWeeks = maxWeek
 		return numRows
 	end
 

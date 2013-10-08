@@ -81,12 +81,12 @@ class Team < ActiveRecord::Base
 		tp.wins = wins
 
 		#Conference stuff
-		aq, fbs = false;
+		tp.aq, tp.fbs = false;
 		if @@AQ_CONFS.include? conference_code
-			aq = true
+			tp.aq = true
 		end
 		if @@FBS_CONFS.include? conference_code
-			fbs = true
+			tp.fbs = true
 		end
 		tp.conference = conference_code
 		return tp

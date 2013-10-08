@@ -1,4 +1,4 @@
-	class RanksController < ApplicationController
+class RanksController < ApplicationController
 
 	respond_to	:html, :json
 
@@ -6,7 +6,7 @@
 		@signed_in = false
 		@saveArray = nil
 		@curAlg = nil
-			if user_signed_in?
+		if user_signed_in?
 			@signed_in = true
 			saves = current_user.algorithms
 			if current_user.current_alg_id
@@ -37,6 +37,12 @@
 		@availableYears = Season.all.inject(Array.new) do |sel, season|
 			sel << [season.year, season.year]
 		end
+		@maxWeeks = Hash.new
+		Season.all.each do |season|
+			@maxWeeks[season.year] = season.numWeeks
+		end
+		puts "MAx weeks"
+		puts @maxWeeks
 		@availableWeeks = Array.new
 		for i in 1..15
 			@availableWeeks << [i, i]
@@ -48,9 +54,9 @@
 
 	def getData
 #		@teamJSON = Season.find(year => params[:year]).teams.to_json
-		@teamJSON = Team.getData(params[:year], params[:week])
-		render	:json => @teamJSON
-		return
+#		@teamJSON = Team.getData(params[:year], params[:week])
+#		render	:json => @teamJSON
+#		return
 		if Rails.cache.exist?(params[:year])
 			weekData = Rails.cache.read(params[:year])[params[:week].to_i]
 			if weekData != nil
@@ -67,8 +73,6 @@
 			year[params[:week].to_i] = @teamJSON
 			Rails.cache.write(params[:year], year)
 		end
-		puts :json => @teamJSON
-		puts @teamJSON.length
 		render	:json => @teamJSON
 	end
 

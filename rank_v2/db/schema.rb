@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 20130916202541) do
     t.integer  "kickoff"
     t.integer  "kickoff_yard"
     t.integer  "kickoff_touchback"
-    t.integer  "kickoff_out-of-bounds"
+    t.integer  "kickoff_out_of_bounds"
     t.integer  "kickoff_onside"
     t.integer  "fumble"
     t.integer  "fumble_lost"
@@ -98,9 +98,9 @@ ActiveRecord::Schema.define(version: 20130916202541) do
     t.integer  "fumble_forced"
     t.integer  "pass_broken_up"
     t.integer  "kick_punt_blocked"
-    t.integer  "1st_down_rush"
-    t.integer  "1st_down_pass"
-    t.integer  "1st_down_penalty"
+    t.integer  "first_down_rush"
+    t.integer  "first_down_pass"
+    t.integer  "first_down_penalty"
     t.integer  "time_of_possession"
     t.integer  "penalty"
     t.integer  "penalty_yard"
@@ -117,6 +117,7 @@ ActiveRecord::Schema.define(version: 20130916202541) do
 
   create_table "seasons", force: true do |t|
     t.integer "year"
+    t.integer "num_weeks"
   end
 
   create_table "teams", force: true do |t|
