@@ -2,69 +2,71 @@
 </div>
 
 <div id="interfacePane" class="threeColArea">
-	<div class="sideContentWrapper">
+	<div class="sideContentWrapper" id="savesPaneContainer">
 		<div id="prevSavesPane" class="sideContentContainer">
 		</div>
 	</div>
 
-	<div class="mainContentWrapper">
-		<div id="workPane" class="mainContentContainer">
-			<div id="codeEditor">
-			</div>
-			<!-- ace and helper in here !-->
+	<div class="nonExpanding">
+		<div class="mainContentWrapper">
+			<div id="workPane" class="mainContentContainer">
+				<div id="codeEditor">
+				</div>
+				<!-- ace and helper in here !-->
 
 
-			<div class="saveButtons">
-				<button onclick="runUserAlgorithm(null, rawTeamsData)">Run</button>
-				<% if @signed_in %>
-					<div class="saveButtonContainer">
-						<%= form_for @algorithm, html: {id: 'saveForm', class: 'hidden'}, remote: true, url: algorithm_save_path do |f| %>
-							<%= f.text_area :code, :class => 'hidden', :id => 'save_form_code' %>
-							<%= f.hidden_field :id, :id => 'save_form_id' %>
+				<div class="saveButtons">
+					<button onclick="runUserAlgorithm(null, rawTeamsData)">Run</button>
+					<% if @signed_in %>
+						<div class="saveButtonContainer">
+							<%= form_for @algorithm, html: {id: 'saveForm', class: 'hidden'}, remote: true, url: algorithm_save_path do |f| %>
+								<%= f.text_area :code, :class => 'hidden', :id => 'save_form_code' %>
+								<%= f.hidden_field :id, :id => 'save_form_id' %>
+								<%= f.submit :Save %>
+							<% end %>
+						</div>
+					<% end %>
+
+					<button onclick="<%= if @signed_in then 'saveAsDialog()' else 'notLoggedInDialog()' end %>">Save As</button>
+
+					<div id="saveAsDialog" class="popupDialog" style="display: none">
+						<%= form_for @new_algorithm, html: {id: 'saveAsForm'}, remote: true, url: algorithm_saveas_path do |f| %>
+							<%= f.text_area :code, :class => 'hidden', :id => 'saveas_form_code' %>
+							<%= f.label 'Name:' %>
+							<%= f.text_field :save_name, :id => 'saveas_form_name' %>
 							<%= f.submit :Save %>
 						<% end %>
 					</div>
-				<% end %>
 
-				<button onclick="<%= if @signed_in then 'saveAsDialog()' else 'notLoggedInDialog()' end %>">Save As</button>
-
-				<div id="saveAsDialog" class="popupDialog" style="display: none">
-					<%= form_for @new_algorithm, html: {id: 'saveAsForm'}, remote: true, url: algorithm_saveas_path do |f| %>
-						<%= f.text_area :code, :class => 'hidden', :id => 'saveas_form_code' %>
-						<%= f.label 'Name:' %>
-						<%= f.text_field :save_name, :id => 'saveas_form_name' %>
-						<%= f.submit :Save %>
-					<% end %>
-				</div>
-
-				<div id="notLoggedInDialog" style="display: none">
-					<p>You need to <a href="/login">login</a> to be able to save!</p>
+					<div id="notLoggedInDialog" style="display: none">
+						<p>You need to <a href="/login">login</a> to be able to save!</p>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<div class="sideContentWrapper">
-		<div id="outputPane" class="sideContentContainer">
-			<div class="controlsBox">
-				<div class="dataSelectorsForm">
-					<%= form_tag req_data_path, method: 'get', remote: true do %>
-						<%= label_tag(:q, "Season:") %>
-						<%= select_tag(:season, options_for_select(@availableYears)) %>
-						<%= label_tag(:q, "Week:") %>
-						<%= select_tag(:week, options_for_select(@availableWeeks)) %>
-						<% #submit_tag :Go %>
-					<% end %>
-				</div>
-				<div id="loadWheelDiv" class="loadWheelDiv">
-				</div>
+		<div class="sideContentWrapper" id="rankPaneContainer">
+			<div id="outputPane" class="sideContentContainer">
+				<div class="controlsBox">
+					<div class="dataSelectorsForm">
+						<%= form_tag req_data_path, method: 'get', remote: true do %>
+							<%= label_tag(:q, "Season:") %>
+							<%= select_tag(:season, options_for_select(@availableYears)) %>
+							<%= label_tag(:q, "Week:") %>
+							<%= select_tag(:week, options_for_select(@availableWeeks)) %>
+							<% #submit_tag :Go %>
+						<% end %>
+					</div>
+					<div id="loadWheelDiv" class="loadWheelDiv">
+					</div>
 
-				<div class="clearingDiv">
+					<div class="clearingDiv">
+					</div>
 				</div>
-			</div>
-			<div id="rankPane">
-				<iframe src="/ranks/codeFrame" id="resultsPane">
-				</iframe>
+				<div id="rankPane">
+					<iframe src="/ranks/codeFrame" id="resultsPane">
+					</iframe>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -77,8 +79,7 @@
 	}
 	checkForSaves(false);
 	$(window).load(function(){
-		console.log(<%= @maxWeeks.to_json.html_safe %>);
-		return;
+		numWeeksMap = <%= @maxWeeks.to_json.html_safe %>;
 		loadPage();
 		loadSave(<%= if @curAlg then @curAlg.html_safe else 'null' end %>);
 	});

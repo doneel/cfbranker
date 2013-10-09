@@ -27,12 +27,29 @@ class Performance < ActiveRecord::Base
 	def self.import(file, year)
 		self.destroy_all(:year => year)
 		numRows = 0
+		first = nil #date, not object
+		maxWeek = 0
 		CSV.foreach(file.path, headers: true) do |row|
 			p = Performance.create(self.cleanRow(row.to_hash)	)
 			p.year = year
+			puts Game.where(:game_code => p.game_code).take.game_code
+			date = Game.where(:game_code => p.game_code).take.date
+			if first === nil
+				first = date
+				week = 1
+			else
+				week = ((date - first)/7).to_i + 1
+			end
+			if week > maxWeek
+				maxWeek = week
+			end
+
 			p.save
 			numRows += 1
 		end
+		s = Season.find(year)
+		s.num_weeks = maxWeek
+		s.save
 		return numRows
 	end
 end

@@ -39,7 +39,7 @@ class RanksController < ApplicationController
 		end
 		@maxWeeks = Hash.new
 		Season.all.each do |season|
-			@maxWeeks[season.year] = season.numWeeks
+			@maxWeeks[season.year] = season.num_weeks
 		end
 		puts "MAx weeks"
 		puts @maxWeeks

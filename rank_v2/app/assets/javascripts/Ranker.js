@@ -10,19 +10,29 @@ function loadPage(){
     pendingDataRequest = pendingSaveRequest = null;
     dataCache = {};
 //    console.log(loadWheelDiv);
-    $("select").change(function(){
+    $("#week").change(function(){
         getData(loadWheelDiv);
     });
 
-    var spaceNeeded = $('.mainContentWrapper').offset().top + $('.mainContentWrapper').height();
+    weekSelectOptions = getSelectBoxValues(document.getElementById('week'));
+    $("#season").change(function(){
+        adjustWeekValue();
+        getData(loadWheelDiv);
+    });
+    adjustWeekValue();
+
+
+    var vertSpaceNeeded = $('.mainContentWrapper').offset().top + $('.mainContentWrapper').height();
+    var horizSpaceNeeded = $('.mainContentWrapper')[0].getBoundingClientRect().right - $('#codeEditor')[0].getBoundingClientRect().right + 20;
     $(window).resize(function(){
 //        console.log("resisizing" + $(window).height()/3);
 //        $('#interfacePane').css('height', $(window).height() - $('#interfacePane').offset().top);
-        $('#codeEditor').css('height', $(window).height() - spaceNeeded);
+        $('#codeEditor').css('height', $(window).height() - vertSpaceNeeded - 20);
+        $('.mainContentWrapper').height($(window).height() - $('.mainContentWrapper').offset().top);
 //        document.getElementById('codeEditor').height = $(window).height()/20;
     });
-
     $(window).resize();
+
     $("#saveAsForm")
         .submit(function(){
             document.getElementById("saveas_form_code").value = editor.getValue();
@@ -43,7 +53,55 @@ function loadPage(){
         });
 
     //buildIFrame();
+    savePaneActive = true;
+    $(document).bind('mousemove',function(e){
+        if(!savePaneActive && e.pageX < 20 && e.pageY > document.getElementsByClassName('banner')[0].getBoundingClientRect().bottom){
+            $('#savesPaneContainer').toggle(100, fillWidth);
+            savePaneActive = true;
+        } else if(savePaneActive && e.pageX - 10 /* a little buffer so it doesn't catch when it's loading */ > document.getElementById('savesPaneContainer').getBoundingClientRect().right && e.pageY > document.getElementsByClassName('banner')[0].getBoundingClientRect().bottom){
+            $('#savesPaneContainer').toggle(100, fillWidth);
+            savePaneActive = false;
+        }
+    });
+    fillWidth();
 }
+
+function fillWidth(){
+    $('.mainContentWrapper').animate({width: $('.nonExpanding').width() - $('#rankPaneContainer').width()}, 100, function(){
+        editor.resize();
+    });
+}
+
+function adjustWeekValue(){
+    var seasonSelect = document.getElementById("season");
+    var weekSelect = document.getElementById('week');
+    for(var i = 0; i < weekSelectOptions.length; i++){
+        if(weekSelectOptions[i].value > numWeeksMap[seasonSelect.value]){
+            weekSelectOptions[i].style.display = 'none';
+        }else{
+            weekSelectOptions[i].style.display = '';
+        }
+    }
+    if(weekSelect.value > numWeeksMap[seasonSelect.value]){
+        weekSelect.value = numWeeksMap[seasonSelect.value];
+    }
+}
+
+function getSelectBoxValues(selectBox){
+    //console.log(selectBox);
+    var allOptions = selectBox.children;
+    //console.log(allOptions);
+    var returnOpts = [];
+    for(var i = 0; i < allOptions.length; i++){
+        //console.log(allOptions[i].tagName);
+        if(allOptions[i].tagName == 'OPTION'){
+            returnOpts.push(allOptions[i]);
+        }
+    }
+    //console.log(returnOpts);
+    return returnOpts;
+}
+
 
 function getSave(id, requestDiv){
 
@@ -66,12 +124,13 @@ function getSave(id, requestDiv){
 function loadSave(save){
     if(save === null){
         editor.setValue("function main(teams){\r\n    for(var i = 0; i < teams.length; i++){\r\n        opp_wins = 0;\r\n        opp_games = 0;\r\n        //console.log(teams[i]);\r\n        for(var j = 0; j < teams[i].schedule.length; j++){\r\n           // console.log(teams[i].schedule[j].opp);\r\n            //console.log(teams[i].schedule[j].opp.wins);\r\n            opp_wins += teams[i].schedule[j].opp.wins;\r\n            opp_games += teams[i].schedule[j].opp.games;\r\n        }\r\n        teams[i].opp_win_pct = opp_wins/opp_games;\r\n        teams[i].points = teams[i].schedule.length*teams[i].wins*teams[i].win_pct *\r\n            .5*opp_wins*teams[i].opp_win_pct - (teams[i].games - teams[i].wins);\r\n    }\r\n\r\n    teams.sort(function(a,b){\r\n        return b.points - a.points;\r\n    });\r\n\r\n    return teams;\r\n}");
-        editor.setValue(unescape("function%20main%28teams%29%7B%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20opp_wins%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20opp_games%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20for%28var%20j%20%3D%200%3B%20j%20%3C%20teams%5Bi%5D.schedule.length%3B%20j++%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20opp_wins%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.wins%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20opp_games%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.games%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.opp_wins%20%3D%20opp_wins%3B%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.opp_games%20%3D%20opp_games%3B%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20d2_wins%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20d2_games%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20for%28var%20j%20%3D%200%3B%20j%20%3C%20teams%5Bi%5D.schedule.length%3B%20j++%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20d2_wins%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.opp_wins%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20d2_games%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.opp_games%3B%0D%0A%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.d2_wins%20%3D%20d2_wins%3B%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.d2_games%20%3D%20d2_games%3B%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20%3D%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%201*teams%5Bi%5D.win_pct%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20+%201*teams%5Bi%5D.opp_wins/teams%5Bi%5D.opp_games%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20+%201*teams%5Bi%5D.d2_wins/teams%5Bi%5D.d2_games%3B%0D%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.fbs%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20*%3D%201.1%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.aq%20%7C%7C%20teams%5Bi%5D.name%20%3D%3D%20%22Notre%20Dame%22%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20*%3D%201.1%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20%0D%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.win_pct%20%3D%3D%201%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20console.log%28teams%5Bi%5D%29%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20for%28var%20g%20%3D%200%3B%20g%20%3C%20teams%5Bi%5D.schedule.length%3B%20g++%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20if%28%21teams%5Bi%5D.schedule%5Bg%5D.win%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20-%3D%20%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.05%20*%201/teams%5Bi%5D.schedule%5Bg%5D.opp.rankPoints%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%7D%0D%0A%0D%0A%20%20%20%20teams.sort%28function%28a%2Cb%29%7B%0D%0A%20%20%20%20%20%20%20%20return%20b.rankPoints%20-%20a.rankPoints%3B%0D%0A%20%20%20%20%7D%29%3B%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%2025%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20console.log%28teams%5Bi%5D.name%20+%20%27%3A%27%20+%20teams%5Bi%5D.rankPoints%29%3B%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20return%20teams%3B%0D%0A%7D"));
+        editor.setValue(unescape("function%20main%28teams%29%7B%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20opp_wins%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20opp_games%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20for%28var%20j%20%3D%200%3B%20j%20%3C%20teams%5Bi%5D.schedule.length%3B%20j++%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20opp_wins%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.wins%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20opp_games%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.games%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.opp_wins%20%3D%20opp_wins%3B%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.opp_games%20%3D%20opp_games%3B%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20d2_wins%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20d2_games%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20for%28var%20j%20%3D%200%3B%20j%20%3C%20teams%5Bi%5D.schedule.length%3B%20j++%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20d2_wins%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.opp_wins%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20d2_games%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.opp_games%3B%0D%0A%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.d2_wins%20%3D%20d2_wins%3B%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.d2_games%20%3D%20d2_games%3B%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20%3D%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%201*teams%5Bi%5D.win_pct%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20+%201*teams%5Bi%5D.opp_wins/teams%5Bi%5D.opp_games%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20+%201*teams%5Bi%5D.d2_wins/teams%5Bi%5D.d2_games%3B%0D%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.fbs%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20*%3D%201.1%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.aq%20%7C%7C%20teams%5Bi%5D.name%20%3D%3D%20%22Notre%20Dame%22%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20*%3D%201.1%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20%0D%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.win_pct%20%3D%3D%201%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20console.log%28teams%5Bi%5D%29%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20for%28var%20g%20%3D%200%3B%20g%20%3C%20teams%5Bi%5D.schedule.length%3B%20g++%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20if%28%21teams%5Bi%5D.schedule%5Bg%5D.win%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20-%3D%20%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.05%20*%201/teams%5Bi%5D.schedule%5Bg%5D.opp.rankPoints%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%7D%0D%0A%0D%0A%20%20%20%20teams.sort%28function%28a%2Cb%29%7B%0D%0A%20%20%20%20%20%20%20%20return%20b.rankPoints%20-%20a.rankPoints%3B%0D%0A%20%20%20%20%7D%29%3B%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%2025%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20console.log%28teams%5Bi%5D.name%20+%20%27%3A%27%20+%20teams%5Bi%5D.rankPoints%29%3B%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20return%20teams%3B%0D%0A%7D"), -1);
         getData(loadWheelDiv);
         return;
     }
     $("#saveForm").css('display', 'block');
-    editor.setValue(save.code);
+    editor.setValue(save.code, 1);
+
     var prevSave = document.getElementById('saveOption-' + document.getElementById("save_form_id").value);
     if(prevSave){
         prevSave.style.background= ''; //Reset background color to css default

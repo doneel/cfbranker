@@ -1,9 +1,53 @@
+body{
+	background-image: url('noisy-texture.png');
+	overflow: hidden;
+}
+
+@font-face{
+	font-family: fridayNightLights;
+	src: url('FNL_DEMO-KCFonts.ttf');
+}
+p.saveOptionName,
+p.saveOptionDate{
+	font-family: sans-serif;
+}
+#ifResultsPane{
+	background-color: rbga(73,72,62, .9);
+}
+.rankContainer{
+	overflow: hidden;
+	border: 1px solid black;
+}
+.rankNumber{
+	float: left;
+	font-size: 20px;
+	height: 100%;
+	border-right: 1px dotted gray;
+}
+.teamBox{
+	overflow: hidden;
+	float: left;
+	margin: 0 auto;
+}
+
+.teamBoxLogo{
+	float: left;
+	width: 28px;
+}
+
+.teamBoxName{
+	float: left;
+	margin: 0 auto;
+	color: #BBB;
+}
+
+
+
 .hidden{
 	display: none;
 }
 
-.sideContentWrapper > .sideContentContainer,
-.mainContentWrapper > .mainContentContainer{
+.sideContentWrapper > .sideContentContainer{
 	margin: 0 auto;
 	margin-top: 20px;
 	margin-bottom: 20px;
@@ -13,7 +57,7 @@
 	width: 25%;
 	float: left;
 	height: 100%;
-	background-color: #99999F;
+	background-color: rgba(153,153,159, .2);
 	vertical-align: middle;
 }
 
@@ -27,11 +71,18 @@
 .saveOption{
 	border: 1px dotted white;
 	overflow: hidden;
+	font-family: serif;
 	cursor: pointer;
 }
 
 .saveOption:hover{
 	background-color: #A7AAB6;
+}
+
+#rankPaneContainer{
+	float: left;
+	width: 300px;
+	height: auto;
 }
 
 .popupDialogContainer{
@@ -47,36 +98,48 @@
 }
 
 .mainContentWrapper{
-	width: 50%;
-	float: left;
 	overflow: hidden;
-	background-color: #666676;
+	float: left;
+}
+
+#rankPaneContainer{
+}
+
+.nonExpanding{
+	overflow: hidden;
+}
+
+.banner{
+	border-bottom: 1px solid black;
+	margin-bottom: 5px;
 }
 
 .bannerText{
 	display: inline;
 	font-size: 60px;
+	font-family: fridayNightLights;
+	color: yellow;
 }
+
 
 .loginControls{
 	float:right;
 }
 .sideContentContainer{
-	width: 84%;
+	width: 98%;
 	border: 1px solid black;
 	overflow: hidden;
 }
 
 .mainContentContainer{
-	width: 92%;
-	border: 1px solid black;
+	width: 100%;
 	overflow: hidden;
-	margin-bottom: 10px;
 }
 
 
 #codeEditor{
 	width: 100%;
+	border: 1px solid black;
 }
 
 .threeColArea{
@@ -143,6 +206,37 @@ html, body{
 
 .saveTextBox{
 	float: left;
+	font-family: sans-serif;
+}
+
+.savesPaneContainer{
+	width: 1px;
+}
+
+.savesPaneContainer:hover{
+	width: 84%;
+}
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: rgba(13,14,19,0.8);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(13,14,19,0.4);
 }
 /*
 #interfacePane{

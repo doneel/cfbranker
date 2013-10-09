@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20130916202541) do
 
   create_table "performances", force: true do |t|
     t.integer  "year"
+    t.integer  "date"
     t.integer  "team_code"
     t.integer  "game_code"
     t.integer  "rush_att"

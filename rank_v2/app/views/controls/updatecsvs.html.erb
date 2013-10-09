@@ -2,7 +2,7 @@
 	<div class="notice"><%= flash[:notice] %></div>
 <% end %>
 
-Teams
+<p>Teams</p>
 <%= form_tag  controls_uploadteams_path, multipart: true do %>
 	<%= file_field_tag	:file %>
 		Year:
@@ -11,7 +11,7 @@ Teams
 <% end %>
 
 </br>
-Games
+<p>Games</p>
 <%= form_tag  controls_uploadgames_path, multipart: true do %>
 	<%= file_field_tag	:file %>
 	Year:
@@ -20,7 +20,7 @@ Games
 <% end %>
 
 </br>
-Performances
+<p>Performances</p>
 <%= form_tag  controls_uploadperformances_path, multipart: true do %>
 	<%= file_field_tag	:file %>
 	Year:
@@ -28,7 +28,7 @@ Performances
 	<%= submit_tag :update %>
 <% end %>
 </br>
-Conferences
+<p>Conferences</p>
 <%= form_tag  controls_uploadconferences_path, multipart: true do %>
 	<%= file_field_tag	:file %>
 	Year:

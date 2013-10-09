@@ -9,5 +9,4 @@ class Season < ActiveRecord::Base
 		return teams
 	end
 
-	attr_accessor :numWeeks
 end

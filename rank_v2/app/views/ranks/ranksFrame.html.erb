@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en-US">
 	<head>
+		<%= stylesheet_link_tag "basic.css" %>
 		<script>
 			function messageListener(event){
 		        //console.log("MESASGE RECEIVED");
@@ -21,13 +22,31 @@
 				//console.log("Runnnig");
 				document.getElementById("ifResultsPane").innerHTML = "";
 		        for(var i = 0; i < 25; i++){ //toDisplay.length; i++){
+					var rankContainer = document.createElement('div');
+					rankContainer.className = 'rankContainer';
+
+					var rankNum = document.createElement('p');
+					rankNum.innerText = (i+1);
+					rankNum.className = 'rankNumber'
+
 		            var teamCont = document.createElement('div');
+		            teamCont.className = 'teamBox';
 		            var logo = document.createElement('img');
 		            logo.src =  urlheader + '/assets/team_logos/' + toDisplay[i].team_code + '.png';
 		            logo.width='40';
 		            teamCont.appendChild(logo);
-		            teamCont.innerHTML += "<p>" + (i+1) + ': ' + toDisplay[i].name + '</p>' + '</br>' ;//+ '<img alt="maybe" src="http://do-book.stanford.edu:3000/assets/team_logos/' + toDisplay[i].team_code + '.png">';
-		            document.getElementById("ifResultsPane").appendChild(teamCont);
+		            logo.className = 'teamBoxLogo'
+
+		            var displayName = document.createElement('p');
+		            displayName.innerText = toDisplay[i].name;
+		            displayName.className = 'teamBoxName'
+		            teamCont.appendChild(displayName);
+
+		            rankContainer.appendChild(rankNum);
+		            rankContainer.appendChild(teamCont);
+		            //teamCont.innerHTML += "<p>" + (i+1) + ': ' + toDisplay[i].name + '</p>'  ;//+ '<img alt="maybe" src="http://do-book.stanford.edu:3000/assets/team_logos/' + toDisplay[i].team_code + '.png">';
+		            document.getElementById("ifResultsPane").appendChild(rankContainer);
+
 		        }
     		}
 

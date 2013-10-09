@@ -28,6 +28,7 @@ class Game < ActiveRecord::Base
 			puts self.cleanRow(row.to_hash)
 			g = Game.create!(self.cleanRow(row.to_hash))
 			g.year = year
+
 			if first === nil
 				first = g
 				g.week = 1
@@ -43,7 +44,10 @@ class Game < ActiveRecord::Base
 			g.save
 			numRows += 1
 		end
-		Season.find(year).numWeeks = maxWeek
+		#Updated weeks moved to performances...
+		#s = Season.find(year)
+		#s.num_weeks = maxWeek
+		#s.save
 		return numRows
 	end
 
