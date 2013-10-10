@@ -22,16 +22,27 @@ function loadPage(){
     adjustWeekValue();
 
 
-    var vertSpaceNeeded = $('.mainContentWrapper').offset().top + $('.mainContentWrapper').height();
-    var horizSpaceNeeded = $('.mainContentWrapper')[0].getBoundingClientRect().right - $('#codeEditor')[0].getBoundingClientRect().right + 20;
+    var vertSpaceNeeded = $('.mainContentContainer').offset().top;
+    var horizSpaceNeeded = $('.mainContentContainer')[0].getBoundingClientRect().right - $('#codeEditor')[0].getBoundingClientRect().right + 20;
     $(window).resize(function(){
 //        console.log("resisizing" + $(window).height()/3);
 //        $('#interfacePane').css('height', $(window).height() - $('#interfacePane').offset().top);
+        $('.mainContentContainer').height($(window).height() - $('.mainContentContainer').offset().top);
         $('#codeEditor').css('height', $(window).height() - vertSpaceNeeded - 20);
-        $('.mainContentWrapper').height($(window).height() - $('.mainContentWrapper').offset().top);
 //        document.getElementById('codeEditor').height = $(window).height()/20;
     });
     $(window).resize();
+
+    var lastSaveTime = new Date();
+    /* Bind auto-saving */
+    editor.getSession().on('change', function(e) {
+        // e.type, etc
+        var now = new Date();
+        if(now.getMinutes() != lastSaveTime.getMinutes()){
+            $('#saveForm').submit();
+            lastSaveTime = now;
+        }
+    });
 
     $("#saveAsForm")
         .submit(function(){
@@ -50,26 +61,45 @@ function loadPage(){
     $("#saveForm")
         .submit(function(){
             document.getElementById('save_form_code').value = editor.getValue();
+            console.log('saved!');
         });
 
     //buildIFrame();
-    savePaneActive = true;
-    $(document).bind('mousemove',function(e){
-        if(!savePaneActive && e.pageX < 20 && e.pageY > document.getElementsByClassName('banner')[0].getBoundingClientRect().bottom){
-            $('#savesPaneContainer').toggle(100, fillWidth);
-            savePaneActive = true;
-        } else if(savePaneActive && e.pageX - 10 /* a little buffer so it doesn't catch when it's loading */ > document.getElementById('savesPaneContainer').getBoundingClientRect().right && e.pageY > document.getElementsByClassName('banner')[0].getBoundingClientRect().bottom){
-            $('#savesPaneContainer').toggle(100, fillWidth);
-            savePaneActive = false;
-        }
+    var savePaneActive = false; //we expand it to start with
+    $('#savesPaneContainer').css('width', '130%');
+    var savesPaneDefaultWidth = $('#savesPaneContainer').width();
+    savePaneActive = showHideSavesContainer(null, savePaneActive, savesPaneDefaultWidth);
+
+    $('#savesPaneContainer').resize(function(){
+        alert('resize');
+        $('.mainContentContainer').width($('.rightContainer').offset().left - $('.leftContainer').offset().left - $('#savesPaneContainer').width);
     });
-    fillWidth();
+
+    $(document).bind('mousemove',function(e){
+        savePaneActive = showHideSavesContainer(e, savePaneActive, savesPaneDefaultWidth);
+    });
 }
 
-function fillWidth(){
-    $('.mainContentWrapper').animate({width: $('.nonExpanding').width() - $('#rankPaneContainer').width()}, 100, function(){
-        editor.resize();
-    });
+function showHideSavesContainer(e, savePaneActive, savesPaneDefaultWidth){
+    /* For when page first loads */
+    if(e === null){
+        e = {};
+        e.pageX = 0;
+        e.pageY = document.height/2;
+    }
+
+        if(!savePaneActive && e.pageX < 20 && e.pageY > document.getElementsByClassName('banner')[0].getBoundingClientRect().bottom){
+        $('#savesPaneContainer').animate({width: savesPaneDefaultWidth}, {duration: 300, step: fillWidth});
+        savePaneActive = true;
+    } else if(savePaneActive && e.pageX - 10 /* a little buffer so it doesn't catch when it's loading */ > document.getElementById('savesPaneContainer').getBoundingClientRect().right && e.pageY > document.getElementsByClassName('banner')[0].getBoundingClientRect().bottom){
+        $('#savesPaneContainer').animate({width: 0}, {duration: 300, queue: false, step: fillWidth});
+        savePaneActive = false;
+    }
+    return savePaneActive;
+}
+
+function fillWidth(num, tween){
+    $('.mainContentContainer').width($('.rightContainer').offset().left - $('.leftContainer').offset().left - Math.ceil(tween.now));
 }
 
 function adjustWeekValue(){
@@ -129,7 +159,7 @@ function loadSave(save){
         return;
     }
     $("#saveForm").css('display', 'block');
-    editor.setValue(save.code, 1);
+    editor.setValue(save.code, -1);
 
     var prevSave = document.getElementById('saveOption-' + document.getElementById("save_form_id").value);
     if(prevSave){
@@ -202,7 +232,7 @@ function appendSaveOpt(save){
         text: save.timestamp
     }).appendTo(textContainer);
 
-    textContainer.onclick = function(){
+    container.onclick = function(){
         getSave(save.id, loadWheelDiv);
     };
 
@@ -261,7 +291,7 @@ var makeSpinner = function(){
 };
 
 var getData = function(loadWheelDiv){
- //   console.log(loadWheelDiv);
+    console.log(loadWheelDiv);
     var userAlgorithm = editor.getValue();
 
     var season = $("#season").val();

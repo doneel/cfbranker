@@ -3,14 +3,19 @@
 	<head>
 		<%= stylesheet_link_tag "basic.css" %>
 		<script>
+			var recentData;
 			function messageListener(event){
 		        //console.log("MESASGE RECEIVED");
 		        //console.log(event.origin);
 		        try{
 			    	document.getElementById("ifResultsPane").parentNode.style.background = "";
 			        eval(event.data.userAlgorithm);
-			        displayResults(main(remap(event.data.rawData)), window.location.protocol + "//" + window.location.host);
+			        if(event.data.rawData !== null){
+				        recentData = remap(event.data.rawData);
+			        }
+			        displayResults(main(recentData), window.location.protocol + "//" + window.location.host);
 			    }catch(err){
+			    	console.log(err);
 					document.getElementById("ifResultsPane").innerHTML = "";
 			    	document.getElementById("ifResultsPane").parentNode.style.background = "#AA0000";
 		            document.getElementById("ifResultsPane").innerHTML = "<p>" +  err.toString() + "</br>" + "Check the JS console!</p>";

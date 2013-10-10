@@ -22,6 +22,9 @@ class Conference < ActiveRecord::Base
 			c.year = year
 			numRows += 1
 			c.save
+
+
+
 		end
 		return numRows
 	end

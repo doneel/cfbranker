@@ -11,6 +11,7 @@ p.saveOptionName,
 p.saveOptionDate{
 	font-family: sans-serif;
 }
+
 #ifResultsPane{
 	background-color: rbga(73,72,62, .9);
 }
@@ -42,11 +43,55 @@ p.saveOptionDate{
 }
 
 
+#interfacePane{
+	overflow: hidden;
+}
+
+.leftContainer{
+	float: left;
+	overflow: hidden;
+	height: 100%;
+}
+
+.rightContainer{
+	float: right;
+	min-height: 100%;
+}
+
+#resultsPane{
+	height: 80%;
+	overflow: auto;
+}
+
+#rankPane{
+	height: 100%;
+}
+
+#workPane{
+}
+
+#prevSavesPane{
+	width: auto;
+}
+
+p{
+	font-family: sans-serif;
+}
+
+.sideContentWrapper{
+	float: left;
+	width: 50%;
+}
+
+.mainContentContainer{
+	float: left;
+}
 
 .hidden{
 	display: none;
 }
 
+/*
 .sideContentWrapper > .sideContentContainer{
 	margin: 0 auto;
 	margin-top: 20px;
@@ -60,14 +105,14 @@ p.saveOptionDate{
 	background-color: rgba(153,153,159, .2);
 	vertical-align: middle;
 }
-
+*/
 .saveButtons *{
 	float: left;
 }
-
+/*
 .saveControlsBox{
 }
-
+*/
 .saveOption{
 	border: 1px dotted white;
 	overflow: hidden;
@@ -81,8 +126,7 @@ p.saveOptionDate{
 
 #rankPaneContainer{
 	float: left;
-	width: 300px;
-	height: auto;
+	height: 100%;
 }
 
 .popupDialogContainer{
@@ -97,6 +141,7 @@ p.saveOptionDate{
 	float: right;
 }
 
+/*
 .mainContentWrapper{
 	overflow: hidden;
 	float: left;
@@ -108,7 +153,7 @@ p.saveOptionDate{
 .nonExpanding{
 	overflow: hidden;
 }
-
+*/
 .banner{
 	border-bottom: 1px solid black;
 	margin-bottom: 5px;
@@ -118,30 +163,32 @@ p.saveOptionDate{
 	display: inline;
 	font-size: 60px;
 	font-family: fridayNightLights;
-	color: yellow;
+	 background: -webkit-linear-gradient(gray, #fffc3d, gray);
+  	-webkit-background-clip: text;
+  	-webkit-text-fill-color: transparent;
 }
 
 
 .loginControls{
 	float:right;
 }
+
 .sideContentContainer{
 	width: 98%;
 	border: 1px solid black;
 	overflow: hidden;
 }
-
+/*
 .mainContentContainer{
 	width: 100%;
 	overflow: hidden;
 }
-
+*/
 
 #codeEditor{
-	width: 100%;
 	border: 1px solid black;
 }
-
+/*
 .threeColArea{
 	height: 100%;
 	overflow: hidden;
@@ -171,8 +218,8 @@ html, body{
 }
 
 .controlsBox *{
-	/*float: left;*/
-}
+	/*float: left;};*/
+
 .dataSelectorsForm{
 	float: left;
 }
@@ -209,16 +256,10 @@ html, body{
 	font-family: sans-serif;
 }
 
-.savesPaneContainer{
-	width: 1px;
-}
 
-.savesPaneContainer:hover{
-	width: 84%;
-}
 /* Let's get this party started */
 ::-webkit-scrollbar {
-    width: 12px;
+    width: 10px;
 }
 
 /* Track */
