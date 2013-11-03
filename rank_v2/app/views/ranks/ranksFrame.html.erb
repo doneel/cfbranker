@@ -22,35 +22,66 @@
 			    }
 		    }
 
+		    function buildRankBox(rank, teamObj, urlheader){
+
+				var rankContainer = document.createElement('div');
+				rankContainer.className = 'rankContainer';
+				rankContainer.style.height = '40px';
+				if(rankContainer.addEventListener){
+		             rankContainer.addEventListener("click", function() {
+		             	console.log(rank);
+		             	console.log(teamObj);
+		             });
+		        } else {
+		        	rankContainer.addEventListener("click", function() {
+		             	console.log(teamObj);
+		            });
+		        };
+		        if(rank + 1 > 25){
+		        	rankContainer.style.opacity = .3;
+		        }
+	            document.getElementById("ifResultsPane").appendChild(rankContainer);
+
+				var rankNum = document.createElement('p');
+				rankNum.innerText = (rank+1);
+				rankNum.className = 'rankNumber';
+	            rankContainer.appendChild(rankNum); /* Append before calcultaing height */
+
+	            var myHeight = rankNum.getBoundingClientRect().height;
+	            var containerHeight = rankNum.getBoundingClientRect().height;
+
+				rankNum.style.top = -(containerHeight - myHeight/2) + 'px';
+
+	            var teamCont = document.createElement('div');
+	            teamCont.className = 'teamBox';
+	            teamCont.style.height = '40px';
+	            var box = rankNum.getBoundingClientRect();
+	            var width = box.right - box.left;
+	            teamCont.style.left =  (width + 10) + 'px';
+
+	            var logo = document.createElement('img');
+	            logo.src =  urlheader + '/assets/team_logos/' + teamObj.team_code + '.png';
+	            logo.width='40';
+	            teamCont.appendChild(logo);
+	            logo.className = 'teamBoxLogo'
+	            logo.top = (teamCont.getBoundingClientRect().height - logo.getBoundingClientRect().height)/2 + 'px';
+
+	            var displayName = document.createElement('p');
+	            displayName.innerText = teamObj.name;
+	            displayName.className = 'teamBoxName'
+	            teamCont.appendChild(displayName);
+
+	            rankContainer.appendChild(teamCont);
+	            return teamCont;
+	    	}
 
 			function displayResults(toDisplay, urlheader){
 				//console.log("Runnnig");
 				document.getElementById("ifResultsPane").innerHTML = "";
-		        for(var i = 0; i < 25; i++){ //toDisplay.length; i++){
-					var rankContainer = document.createElement('div');
-					rankContainer.className = 'rankContainer';
-
-					var rankNum = document.createElement('p');
-					rankNum.innerText = (i+1);
-					rankNum.className = 'rankNumber'
-
-		            var teamCont = document.createElement('div');
-		            teamCont.className = 'teamBox';
-		            var logo = document.createElement('img');
-		            logo.src =  urlheader + '/assets/team_logos/' + toDisplay[i].team_code + '.png';
-		            logo.width='40';
-		            teamCont.appendChild(logo);
-		            logo.className = 'teamBoxLogo'
-
-		            var displayName = document.createElement('p');
-		            displayName.innerText = toDisplay[i].name;
-		            displayName.className = 'teamBoxName'
-		            teamCont.appendChild(displayName);
-
-		            rankContainer.appendChild(rankNum);
-		            rankContainer.appendChild(teamCont);
+		        for(var i = 0; i < 50; i++){ //toDisplay.length; i++){
+					buildRankBox(i, toDisplay[i], urlheader);
+		            //rankContainer.appendChild(teamCont);
 		            //teamCont.innerHTML += "<p>" + (i+1) + ': ' + toDisplay[i].name + '</p>'  ;//+ '<img alt="maybe" src="http://do-book.stanford.edu:3000/assets/team_logos/' + toDisplay[i].team_code + '.png">';
-		            document.getElementById("ifResultsPane").appendChild(rankContainer);
 
 		        }
     		}
@@ -113,7 +144,7 @@
 	        }
 		</script>
 	</head>
-	<body>
+	<body style="overflow: auto;">
 		<div id='ifResultsPane'></div>
 	</body>
 </html>

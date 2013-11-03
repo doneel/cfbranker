@@ -1,7 +1,7 @@
 <div id="loginDialog" class="popupDialog">
 </div>
 
-<div id="interfacePane" class="threeColArea">
+<div id="interfacePane" class="threeColArea" name="">
 
 	<div class="leftContainer">
 		<div class="sideContentWrapper" id="savesPaneContainer">
@@ -15,7 +15,15 @@
 			<!-- ace and helper in here !-->
 
 
-			<div class="saveButtons">
+			<div class="bottomBar">
+				<div class="centeringDiv">
+					<a id="saveButton" onclick="$('#saveForm').submit()"  class="mainControlButton">Save</a>
+					<a id="runButton" onclick="runUserAlgorithm(null, null)" class="mainControlButton">Run</a>
+
+
+				</div>
+			</div>
+			<div style="display: none" class="saveButtons">
 				<button onclick="runUserAlgorithm(null, null)">Run</button>
 				<% if @signed_in %>
 					<div class="saveButtonContainer">
@@ -70,11 +78,7 @@
 		</div>
 	</div>
 
-	<div class="bottomBar">
-		<p>Hopefully this is at the bottom.</p>
-	</div>
 </div>
-<%= @test %>
 <script type="application/javascript">
 	var savesArr = <%= if @saveArray then @saveArray.html_safe else [] end %>;
 	for(var i = 0; i < savesArr.length; i++){

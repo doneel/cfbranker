@@ -28,7 +28,11 @@ function loadPage(){
 //        console.log("resisizing" + $(window).height()/3);
 //        $('#interfacePane').css('height', $(window).height() - $('#interfacePane').offset().top);
         $('.mainContentContainer').height($(window).height() - $('.mainContentContainer').offset().top);
-        $('#codeEditor').css('height', $(window).height() - vertSpaceNeeded - 20);
+        $('.leftContainer').height($(window).height() - $('.leftContainer').offset().top);
+        $('#codeEditor').height( $('.leftContainer').height() - $('.bottomBar').height());
+        $('.rightContainer').height($(window).height() - $('.rightContainer').offset().top);
+
+        //$('#codeEditor').css('height', $(window).height() - vertSpaceNeeded - 20);
 //        document.getElementById('codeEditor').height = $(window).height()/20;
     });
     $(window).resize();
@@ -61,12 +65,16 @@ function loadPage(){
     $("#saveForm")
         .submit(function(){
             document.getElementById('save_form_code').value = editor.getValue();
-            console.log('saved!');
+            $('#saveButton').text('Saving...');
         });
+    $('#saveForm').bind('ajax:complete',function(json){
+            $('#saveButton').text('Save');
+            flashMessage($('#saveButton'), 'Saved!');
+    });
 
     //buildIFrame();
     var savePaneActive = false; //we expand it to start with
-    $('#savesPaneContainer').css('width', '130%');
+    $('#savesPaneContainer').css('width', '75%');
     var savesPaneDefaultWidth = $('#savesPaneContainer').width();
     savePaneActive = showHideSavesContainer(null, savePaneActive, savesPaneDefaultWidth);
 
@@ -78,6 +86,21 @@ function loadPage(){
     $(document).bind('mousemove',function(e){
         savePaneActive = showHideSavesContainer(e, savePaneActive, savesPaneDefaultWidth);
     });
+
+}
+
+function flashMessage(jqObj, message){
+    var prevMess = jqObj.text();
+    jqObj.text(message);
+    window.setTimeout(function(){
+        jqObj.text(prevMess);
+    }, 1000);
+}
+
+function buildDropDownBoxes(seasonArr, weekArr){
+    for(var i = 0; i < seasonArr.length; i++){
+       $('#season_dd');
+    }
 }
 
 function showHideSavesContainer(e, savePaneActive, savesPaneDefaultWidth){
@@ -86,20 +109,23 @@ function showHideSavesContainer(e, savePaneActive, savesPaneDefaultWidth){
         e = {};
         e.pageX = 0;
         e.pageY = document.height/2;
+        console.log('mousemoved!')
     }
-
-        if(!savePaneActive && e.pageX < 20 && e.pageY > document.getElementsByClassName('banner')[0].getBoundingClientRect().bottom){
+    if(!savePaneActive && e.pageX < 20 && e.pageY > document.getElementsByClassName('banner')[0].getBoundingClientRect().bottom){
         $('#savesPaneContainer').animate({width: savesPaneDefaultWidth}, {duration: 300, step: fillWidth});
         savePaneActive = true;
+        console.log('filling')
     } else if(savePaneActive && e.pageX - 10 /* a little buffer so it doesn't catch when it's loading */ > document.getElementById('savesPaneContainer').getBoundingClientRect().right && e.pageY > document.getElementsByClassName('banner')[0].getBoundingClientRect().bottom){
         $('#savesPaneContainer').animate({width: 0}, {duration: 300, queue: false, step: fillWidth});
         savePaneActive = false;
+        console.log('retracting')
     }
     return savePaneActive;
 }
 
 function fillWidth(num, tween){
     $('.mainContentContainer').width($('.rightContainer').offset().left - $('.leftContainer').offset().left - Math.ceil(tween.now));
+    editor.resize();
 }
 
 function adjustWeekValue(){
@@ -208,6 +234,35 @@ function appendSaveOpt(save){
     container.className = 'saveOption';
     container.id = 'saveOption-' + save.id;
 
+    var textContainer = document.createElement('div');
+    textContainer.onclick = function(){
+        getSave(save.id, loadWheelDiv);
+    };
+
+    container.appendChild(textContainer);
+
+
+    var nameContainer = document.createElement('div');
+    $('<p/>', {
+        class: 'saveOptionName',
+        text: save.name
+    }).appendTo(nameContainer);
+    textContainer.appendChild(nameContainer);
+
+    var dateContainer = document.createElement('div');
+    dateContainer.style.float = 'right';
+    $('<p/>', {
+        class: 'saveOptionDate',
+        text: save.timestamp
+    }).appendTo(dateContainer);
+    textContainer.appendChild(dateContainer);
+/*
+
+    var rightSaveDiv = document.createElement('div');
+
+
+
+
     var clearContainer = document.createElement('div');
     clearContainer.className = 'clear';
     container.appendChild(clearContainer);
@@ -244,7 +299,7 @@ function appendSaveOpt(save){
 
     var delButton = $('<button class="deleteButton" onclick="deleteSave(' + save.id + ')">Delete</button>');
     delButton.appendTo(container);
-
+*/
     $("#prevSavesPane").prepend(container);
 }
 
@@ -376,12 +431,10 @@ function runUserAlgorithm(userAlgorithm, data){
 
 /* todo
     X Logos for teams
-    * Header logo for site
+    X Header logo for site
     X error handling for their bad code
     * about/login/intro links at top of page
-    * auto saving? status on saving
-
-    Server:
+    * auto saving? status on saving Server:
     X basic caching
     X auto .csv parsing
 */
