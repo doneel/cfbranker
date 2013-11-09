@@ -22,16 +22,15 @@ function loadPage(){
     adjustWeekValue();
 
 
-    var vertSpaceNeeded = $('.mainContentContainer').offset().top;
-    var horizSpaceNeeded = $('.mainContentContainer')[0].getBoundingClientRect().right - $('#codeEditor')[0].getBoundingClientRect().right + 20;
     $(window).resize(function(){
-//        console.log("resisizing" + $(window).height()/3);
 //        $('#interfacePane').css('height', $(window).height() - $('#interfacePane').offset().top);
-        $('.mainContentContainer').height($(window).height() - $('.mainContentContainer').offset().top);
-        $('.leftContainer').height($(window).height() - $('.leftContainer').offset().top);
+        $('.mainContentContainer').height($(window).height() - $('.mainContentContainer').offset().top + 25);
+        $('.leftContainer').height($(window).height() - $('.leftContainer').offset().top - 10);
         $('#codeEditor').height( $('.leftContainer').height() - $('.bottomBar').height());
         $('.rightContainer').height($(window).height() - $('.rightContainer').offset().top);
-
+        $('.sideContentContainer').height($(window).height() - $('.leftContainer').offset().top - 10);
+        console.log("resisizing" + $('#codeEditor').height());
+        editor.resize();
         //$('#codeEditor').css('height', $(window).height() - vertSpaceNeeded - 20);
 //        document.getElementById('codeEditor').height = $(window).height()/20;
     });
@@ -50,13 +49,14 @@ function loadPage(){
 
     $("#saveAsForm")
         .submit(function(){
+            console.log(document.getElementById("saveas_form_name").value);
             document.getElementById("saveas_form_code").value = editor.getValue();
         })
         .bind('ajax:complete', function(){
         })
         .bind('ajax:success', function(xhr, data, status){
             appendSaveOpt(data);
-            $("#saveAsDialog").dialog('close');
+            //$("#saveAsDialog").dialog('close');
         })
         .bind('ajax:failure', function(xhr, status, error){
             console.log('error!: ' + error);
@@ -87,6 +87,7 @@ function loadPage(){
         savePaneActive = showHideSavesContainer(e, savePaneActive, savesPaneDefaultWidth);
     });
 
+    document.getElementById('prevSavesPane').appendChild(getSaveAsBox());
 }
 
 function flashMessage(jqObj, message){
@@ -158,6 +159,66 @@ function getSelectBoxValues(selectBox){
     return returnOpts;
 }
 
+function saveAsDialouge(){
+    if (state.signed_in){
+        showSaveAsBox();
+    }
+}
+
+function getSaveAsBox(){
+    var container = document.createElement('div');
+    container.className = 'newSaveOption';
+
+    var textContainer = document.createElement('span');
+    var text = $('<p/>', {
+        class: 'newSaveTitle',
+        text: 'New Save'
+    }).appendTo(textContainer);
+
+    var nameInput = document.createElement('input');
+    nameInput.className = 'styledTextInput'
+    $(nameInput).bind('keypress', function handler(event){
+       // if the key is ENTER
+       console.log(event.charCode);
+            console.log(nameInput);
+       if(event.which == 13){
+           // your code here
+            document.getElementById('saveas_form_name').value = $(nameInput).val();
+            console.log($(nameInput).text());
+            console.log(document.getElementById('saveas_form_name').value);
+            $('#saveAsForm').submit();
+            buttonSpan.style.display = '';
+            nameInput.style.display = 'none';
+       }
+    });
+    nameInput.style.display = 'none';
+    textContainer.appendChild(nameInput);
+
+    textContainer.style.float = 'left';
+
+    container.appendChild(textContainer);
+    var buttonSpan = document.createElement('span');
+    buttonSpan.style.float = 'right';
+    var button = document.createElement('i');
+    button.className = 'icon-ios7-plus';
+    button.className += ' ' + 'bigIcon';
+
+    buttonSpan.appendChild(button);
+    container.appendChild(buttonSpan);
+
+    container.onclick = function(){
+        if($(nameInput).is(':visible')){
+            /* Moved to the enter key handler */
+        } else{
+            /* Show it! */
+            buttonSpan.style.display = 'none';
+            nameInput.style.display = '';
+            $(nameInput).focus();
+        }
+    };
+
+    return container;
+}
 
 function getSave(id, requestDiv){
 
@@ -189,10 +250,10 @@ function loadSave(save){
 
     var prevSave = document.getElementById('saveOption-' + document.getElementById("save_form_id").value);
     if(prevSave){
-        prevSave.style.background= ''; //Reset background color to css default
+        prevSave.className = 'saveOption'; //style.background= ''; //Reset background color to css default
     }
     document.getElementById("save_form_id").value = save.id;
-    document.getElementById('saveOption-' + save.id).style.background = "#AAA";
+    document.getElementById('saveOption-' + save.id).className = 'saveOptionLoaded';//style.background = "#AAA";
     getData(loadWheelDiv);
 }
 
@@ -235,7 +296,8 @@ function appendSaveOpt(save){
     container.id = 'saveOption-' + save.id;
 
     var textContainer = document.createElement('div');
-    textContainer.onclick = function(){
+    textContainer.className = 'saveOptionLeftBox';
+    container.onclick = function(){
         getSave(save.id, loadWheelDiv);
     };
 
@@ -248,6 +310,22 @@ function appendSaveOpt(save){
         text: save.name
     }).appendTo(nameContainer);
     textContainer.appendChild(nameContainer);
+
+    var rightBox = document.createElement('div');
+    rightBox.className = 'saveOptionRightBox';
+    var button = document.createElement('i');
+    button.className = 'icon-ios7-trash';
+    button.className += ' ' + 'bigIcon';
+    button.className += ' ' + 'bigTrashIcon';
+    button.onclick = function(event){
+        deleteSave(save.id);
+        /* Stop propagation */
+        event.stopPropagation();
+        return false;
+    };
+
+    rightBox.appendChild(button);
+    container.appendChild(rightBox);
 
     var dateContainer = document.createElement('div');
     dateContainer.style.float = 'right';

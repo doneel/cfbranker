@@ -17,6 +17,24 @@ p.saveOptionDate{
 	font-size: 10px;
 	float: right;
 }
+
+.bigIcon{
+	font-size: 30px;
+	height: 50%;
+}
+.saveOptionLeftBox{
+	float: left;
+	color: #BBB;
+}
+.saveOptionRightBox{
+	float: right;
+	color: #BBB;
+}
+
+.bigTrashIcon:hover{
+	color: #cc1111;
+}
+
 .saveOptionName{
 }
 
@@ -95,6 +113,7 @@ p.saveOptionDate{
 
 #prevSavesPane{
 	width: auto;
+	overflow: auto;
 }
 
 p{
@@ -141,17 +160,48 @@ p{
 .saveControlsBox{
 }
 */
-.saveOption{
-	border: 1px dotted white;
+.saveOption, .newSaveOption{
+	border: 1px solid white;
 	overflow: hidden;
 	font-family: serif;
 	cursor: pointer;
+	background-color: rgba(20, 20, 40, .3);
 }
 
+.saveOptionLoaded{
+	border: 1px solid white;
+	overflow: hidden;
+	font-family: serif;
+	cursor: pointer;
+	background-color: rgba(20, 20, 40, .8);
+}
+
+.newSaveOption{
+	display: block;
+	margin-bottom: 10px;
+}
+
+.newSaveTitle{
+	margin: 0px auto;
+	float: left;
+}
 .saveOption:hover{
-	background-color: #A7AAB6;
+	background-color: rgba(20, 20, 40, .9);
 }
 
+.saveOption:hover .saveOptionLeftBox{
+	color: #4F8EF7;
+}
+
+.newSaveOption:hover{
+	color: #4F8EF7;
+}
+.newSaveOption:hover i{
+	color: #2F6ED7;
+}
+.saveOptionLoaded:hover .saveOptionLeftBox{
+	color: #4F8EF7;
+}
 
 
 #rankPaneContainer{
@@ -206,7 +256,6 @@ p{
 .sideContentContainer{
 	/*width: 98%;*/
 	border: 1px solid black;
-	overflow: hidden;
 }
 /*
 .mainContentContainer{
@@ -292,6 +341,7 @@ html, body{
 .saveTextBox{
 	float: left;
 	font-family: sans-serif;
+	font-weight: bold;
 }
 
 
@@ -444,7 +494,35 @@ html, body{
   background: linear-gradient(to right, #9bc7de 0%, #9bc7de 78%, #ffffff 78%, #ffffff 100%);
 }
 
+.styledTextInput{
 
+    padding: 5px;
+    border: 1px solid #DDDDDD;
+
+    /*Applying CSS3 gradient*/
+    background: -moz-linear-gradient(center top , #FFFFFF,  #EEEEEE 1px, #FFFFFF 20px);
+    background: -webkit-gradient(linear, left top, left 20, from(#FFFFFF), color-stop(5%, #EEEEEE) to(#FFFFFF));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FBFBFB', endColorstr='#FFFFFF');
+
+    /*Applying CSS 3radius*/
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+
+    /*Applying CSS3 box shadow*/
+    -moz-box-shadow: 0 0 2px #DDDDDD;
+    -webkit-box-shadow: 0 0 2px #DDDDDD;
+    box-shadow: 0 0 2px #DDDDDD;
+
+}
+.styledTextInput:hover
+{
+    border:1px solid #cccccc;
+}
+.styledTextInput:focus
+{
+    box-shadow:0 0 2px #FFFE00;
+}
 /*
 #interfacePane{
 	background-color: #CCC;

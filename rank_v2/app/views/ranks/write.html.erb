@@ -80,6 +80,12 @@
 
 </div>
 <script type="application/javascript">
+	state = {};
+	<% if @signed_in %>
+		state.signed_in = true;
+	<% else %>
+		state.signed_in = false;
+	<% end %>
 	var savesArr = <%= if @saveArray then @saveArray.html_safe else [] end %>;
 	for(var i = 0; i < savesArr.length; i++){
 		appendSaveOpt(savesArr[i]);
