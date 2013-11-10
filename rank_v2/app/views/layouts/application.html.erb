@@ -11,18 +11,18 @@
 
 <div class="banner">
   <h class="bannerText">CFB Ranker</h>
-  <i class="icon-social-github bigIcon"></i>
-  <div class="loginControls">
+
+  <div style="float: right;" class="loginControls">
     <% if user_signed_in? %>
-      <li>
-      <%= link_to('Logout', destroy_user_session_path, :method => :delete) %>
-      </li>
+      <%= link_to('', destroy_user_session_path, :method => :delete, :class => 'icon-log-out bannerIcon') %>
     <% else %>
-      <li>
-      <%= link_to('Login', new_user_session_path)  %>
-      </li>
+      <%= link_to('', new_user_session_path, {:class => 'icon-log-in bannerIcon'}) %>
     <% end %>
   </div>
+
+  <a class="bannerIcon icon-social-github bannerIcon" href="https://github.com/doneel/cfbranker"></a>
+  <a id="helpIcon" style="display:none;" class="bannerIcon icon-help-circled bannerIcon" href="https://github.com/doneel/cfbranker"></a>
+  <a class="bannerIcon icon-information-circled bannerIcon" href="https://github.com/doneel/cfbranker"></a>
 </div>
 
 <%= yield %>

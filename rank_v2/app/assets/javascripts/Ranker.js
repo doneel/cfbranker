@@ -64,6 +64,10 @@ function loadPage(){
 
     $("#saveForm")
         .submit(function(){
+            if(state.signed_in === false){
+                $("#loginDialog,#loginBackground").toggleClass("active");
+                return false;
+            }
             document.getElementById('save_form_code').value = editor.getValue();
             $('#saveButton').text('Saving...');
         });
@@ -85,6 +89,10 @@ function loadPage(){
 
     $(document).bind('mousemove',function(e){
         savePaneActive = showHideSavesContainer(e, savePaneActive, savesPaneDefaultWidth);
+    });
+
+    $("#loginDialog, #loginBackground").click(function () {
+        $("#loginDialog, #loginBackground").toggleClass("active");
     });
 
     document.getElementById('prevSavesPane').appendChild(getSaveAsBox());
@@ -110,7 +118,6 @@ function showHideSavesContainer(e, savePaneActive, savesPaneDefaultWidth){
         e = {};
         e.pageX = 0;
         e.pageY = document.height/2;
-        console.log('mousemoved!')
     }
     if(!savePaneActive && e.pageX < 20 && e.pageY > document.getElementsByClassName('banner')[0].getBoundingClientRect().bottom){
         $('#savesPaneContainer').animate({width: savesPaneDefaultWidth}, {duration: 300, step: fillWidth});
@@ -162,8 +169,15 @@ function getSelectBoxValues(selectBox){
 function saveAsDialouge(){
     if (state.signed_in){
         showSaveAsBox();
+    }else{
+        var SM = new SimpleModal({"btn_ok":"Alert button"});
+        SM.show({
+            "title":"Title",
+            "contents":"Your message..."
+        });
     }
 }
+
 
 function getSaveAsBox(){
     var container = document.createElement('div');
@@ -200,7 +214,7 @@ function getSaveAsBox(){
     var buttonSpan = document.createElement('span');
     buttonSpan.style.float = 'right';
     var button = document.createElement('i');
-    button.className = 'icon-ios7-plus';
+    button.className = 'icon-plus-circled';
     button.className += ' ' + 'bigIcon';
 
     buttonSpan.appendChild(button);
@@ -211,12 +225,18 @@ function getSaveAsBox(){
             /* Moved to the enter key handler */
         } else{
             /* Show it! */
-            buttonSpan.style.display = 'none';
-            nameInput.style.display = '';
-            $(nameInput).focus();
+            if (state.signed_in){
+                showSaveAsBox();
+                buttonSpan.style.display = 'none';
+                nameInput.style.display = '';
+                $(nameInput).focus();
+            }else{
+                console.log('not loggeed in brah');
+                $("#loginDialog,#loginBackground").toggleClass("active");
+            }
         }
     };
-
+    console.log(container);
     return container;
 }
 
@@ -424,7 +444,6 @@ var makeSpinner = function(){
 };
 
 var getData = function(loadWheelDiv){
-    console.log(loadWheelDiv);
     var userAlgorithm = editor.getValue();
 
     var season = $("#season").val();
@@ -450,7 +469,6 @@ function makeDataRequest(season, week, loadWheelDiv, userAlgorithm){
     }
     var rawTeamsData = null;
     var request = $.get("/req_data?year=" + season + "&week=" + week , function(data, status){
-        console.log(data);
         rawTeamsData = data;
         spinner2.stop();
         dataCache[season][week] = rawTeamsData;

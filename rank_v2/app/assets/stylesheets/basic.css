@@ -21,7 +21,27 @@ p.saveOptionDate{
 .bigIcon{
 	font-size: 30px;
 	height: 50%;
+	text-decoration: none;
+	color: black;
 }
+
+.bannerIcon{
+	margin-left: 30px;
+	float: right;
+	font-size: 40px;
+	margin-top: 5px;
+	text-decoration: none;
+	color: black;
+}
+
+.bannerIcon:hover{
+	color: #2F6ED7;
+}
+
+.bigIcon:hover{
+	color: #2F6ED7;
+}
+
 .saveOptionLeftBox{
 	float: left;
 	color: #BBB;
@@ -523,6 +543,47 @@ html, body{
 {
     box-shadow:0 0 2px #FFFE00;
 }
+
+#loginBackground{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+	background-color: rgba(20, 20, 20, 0.8 );
+    opacity: .50;
+    -webkit-opacity: .5;
+    -moz-opacity: .5;
+    z-index: 1000;
+}
+
+#loginDialog {
+	background-color: rgba(20, 20, 20, 0.8 );
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+
+    -webkit-box-shadow: 0 0 20px 0 #222;
+    -moz-box-shadow: 0 0 20px 0 #222;
+    box-shadow: 0 0 20px 0 #222;
+    color: #AAA;
+
+    display: none;
+    height: 100px;
+    left: 50%;
+    margin: -120px 0 0 -160px;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    width: 300px;
+    z-index: 1000;
+}
+
+#loginBackground.active, #loginDialog.active {
+    display: block;
+}
+
 /*
 #interfacePane{
 	background-color: #CCC;

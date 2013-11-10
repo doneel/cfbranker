@@ -3,6 +3,11 @@
 
 <div id="interfacePane" class="threeColArea" name="">
 
+	<div id="loginBackground"></div>
+	<div id="loginDialog">
+		<p>You need to <%= link_to('login', new_user_session_path)  %> in order to save!</p>
+	</div>
+
 	<div class="leftContainer">
 		<div class="sideContentWrapper" id="savesPaneContainer">
 			<div id="prevSavesPane" class="sideContentContainer">
@@ -25,15 +30,13 @@
 			</div>
 			<div style="display: none" class="saveButtons">
 				<button onclick="runUserAlgorithm(null, null)">Run</button>
-				<% if @signed_in %>
-					<div class="saveButtonContainer">
-						<%= form_for @algorithm, html: {id: 'saveForm', class: 'hidden'}, remote: true, url: algorithm_save_path do |f| %>
-							<%= f.text_area :code, :class => 'hidden', :id => 'save_form_code' %>
-							<%= f.hidden_field :id, :id => 'save_form_id' %>
-							<% f.submit :Save %>
-						<% end %>
-					</div>
-				<% end %>
+				<div class="saveButtonContainer">
+					<%= form_for @algorithm, html: {id: 'saveForm', class: 'hidden'}, remote: true, url: algorithm_save_path do |f| %>
+						<%= f.text_area :code, :class => 'hidden', :id => 'save_form_code' %>
+						<%= f.hidden_field :id, :id => 'save_form_id' %>
+						<%	 f.submit :Save %>
+					<% end %>
+				</div>
 
 				<button onclick="<%= if @signed_in then 'saveAsDialog()' else 'notLoggedInDialog()' end %>">Save As</button>
 
