@@ -96,6 +96,31 @@ function loadPage(){
     });
 
     document.getElementById('prevSavesPane').appendChild(getSaveAsBox());
+
+    document.getElementById('helpIcon').style.display = 'block';
+    initMessageButton(document.getElementById('helpIcon'), document.getElementById('helpDialog'), document.getElementById('helpBackground'),'active');
+
+    document.getElementById('infoIcon').style.display = 'block';
+    initMessageButton(document.getElementById('infoIcon'), document.getElementById('infoDialog'), document.getElementById('infoBackground'),'active');
+}
+
+function initMessageButton(domObjButton, messageDiv, backgroundDiv, classToggle){
+    $(domObjButton).click(function(){
+        $(backgroundDiv).toggleClass(classToggle);
+        $(messageDiv).toggleClass(classToggle);
+    });
+
+   $(messageDiv).click(function(){
+        $(backgroundDiv).toggleClass(classToggle);
+        $(messageDiv).toggleClass(classToggle);
+        return false;
+    });
+
+   $(backgroundDiv).click(function(){
+        $(backgroundDiv).toggleClass(classToggle);
+        $(messageDiv).toggleClass(classToggle);
+        return false;
+    });
 }
 
 function flashMessage(jqObj, message){

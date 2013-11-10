@@ -544,7 +544,7 @@ html, body{
     box-shadow:0 0 2px #FFFE00;
 }
 
-#loginBackground{
+.modalBackground{
     display: none;
     position: fixed;
     top: 0;
@@ -558,6 +558,7 @@ html, body{
     z-index: 1000;
 }
 
+
 #loginDialog {
 	background-color: rgba(20, 20, 20, 0.8 );
     -webkit-border-radius: 10px;
@@ -569,18 +570,64 @@ html, body{
     box-shadow: 0 0 20px 0 #222;
     color: #AAA;
 
-    display: none;
     height: 100px;
+    width: 300px;
+
+    display: none;
     left: 50%;
     margin: -120px 0 0 -160px;
     padding: 10px;
     position: absolute;
     top: 50%;
-    width: 300px;
     z-index: 1000;
 }
 
-#loginBackground.active, #loginDialog.active {
+#infoDialog{
+	background-color: rgba(20, 20, 20, 0.9 );
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+
+    -webkit-box-shadow: 0 0 20px 0 #222;
+    -moz-box-shadow: 0 0 20px 0 #222;
+    box-shadow: 0 0 20px 0 #222;
+    color: #AAA;
+
+    height: 90%;
+    width: 500px;
+
+    display: none;
+    left: 30%;
+    top: 5%;
+    padding: 10px;
+    position: absolute;
+    z-index: 1000;
+}
+
+#helpDialog{
+	background-color: rgba(20, 20, 20, 0.95 );
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+
+    -webkit-box-shadow: 0 0 20px 0 #222;
+    -moz-box-shadow: 0 0 20px 0 #222;
+    box-shadow: 0 0 20px 0 #222;
+    color: #AAA;
+
+    height: 400px;
+    width: 500px;
+
+    left: 40%;
+    top: 35%;
+    display: none;
+    margin: -120px 0 0 -160px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1000;
+}
+
+#loginBackground.active, #helpBackground.active, #infoBackground.active, #loginDialog.active, #helpDialog.active, #infoDialog.active{
     display: block;
 }
 
