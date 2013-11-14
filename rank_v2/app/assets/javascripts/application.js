@@ -15,6 +15,6 @@
 //= require turbolinks
 //= require_tree .
 //= require ace-builds/src-noconflict/ace.js
-//= require eligrey-jsandbox-35e73ca/src/jsandbox.js
+//= require jstat-1.0.0.min.js
 //= require spin.min.js
 //= require jquery.ui.all

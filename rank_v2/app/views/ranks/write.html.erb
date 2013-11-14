@@ -10,7 +10,18 @@
 
 	<div class="modalBackground" id="helpBackground"></div>
 	<div id="helpDialog">
-		<p>This is a sweet help dialog. Now you know everything</p>
+		<p>
+			<h3>Confused?</h3>
+			<h4>New to Javascript?</h4>
+				<a href="http://www.codecademy.com/tracks/javascript">Here's your first stop</a>. Lessons 1 - 11 will be useful!
+			<h4>JS Vet?</h4>
+			<a href="http://webmasters.stackexchange.com/questions/8525/how-to-open-the-javascript-console-in-different-browsers">Open up your javascript console.</a>
+			Type 'teams' (no quote marks). This is the object passed into the main method.</br>
+			Your job is to sort it.<br/>
+
+			<h4>What libraries are available?</h4>
+			<a href="http://jquery.com/">jQuery</a> and <a href="http://www.jstat.org/">jStat</a> are both loaded.
+		</p>
 	</div>
 
 	<div class="modalBackground" id="infoBackground"></div>
@@ -140,5 +151,6 @@
 		loadPage();
 		loadSave(<%= if @curAlg then @curAlg.html_safe else 'null' end %>);
 	});
+	window.onunload = function(){};
 
 </script>

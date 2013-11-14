@@ -41,7 +41,7 @@ function loadPage(){
     editor.getSession().on('change', function(e) {
         // e.type, etc
         var now = new Date();
-        if(now.getMinutes() != lastSaveTime.getMinutes()){
+        if(state.signed_in && now.getMinutes() != lastSaveTime.getMinutes()){
             $('#saveForm').submit();
             lastSaveTime = now;
         }
@@ -195,7 +195,7 @@ function saveAsDialouge(){
     if (state.signed_in){
         showSaveAsBox();
     }else{
-        var SM = new SimpleModal({"btn_ok":"Alert button"});
+        var SM = new SimpleModal({"btn_ok":"AAAlert button"});
         SM.show({
             "title":"Title",
             "contents":"Your message..."
@@ -286,7 +286,7 @@ function getSave(id, requestDiv){
 function loadSave(save){
     if(save === null){
         editor.setValue("function main(teams){\r\n    for(var i = 0; i < teams.length; i++){\r\n        opp_wins = 0;\r\n        opp_games = 0;\r\n        //console.log(teams[i]);\r\n        for(var j = 0; j < teams[i].schedule.length; j++){\r\n           // console.log(teams[i].schedule[j].opp);\r\n            //console.log(teams[i].schedule[j].opp.wins);\r\n            opp_wins += teams[i].schedule[j].opp.wins;\r\n            opp_games += teams[i].schedule[j].opp.games;\r\n        }\r\n        teams[i].opp_win_pct = opp_wins/opp_games;\r\n        teams[i].points = teams[i].schedule.length*teams[i].wins*teams[i].win_pct *\r\n            .5*opp_wins*teams[i].opp_win_pct - (teams[i].games - teams[i].wins);\r\n    }\r\n\r\n    teams.sort(function(a,b){\r\n        return b.points - a.points;\r\n    });\r\n\r\n    return teams;\r\n}");
-        editor.setValue(unescape("function%20main%28teams%29%7B%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20opp_wins%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20opp_games%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20for%28var%20j%20%3D%200%3B%20j%20%3C%20teams%5Bi%5D.schedule.length%3B%20j++%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20opp_wins%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.wins%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20opp_games%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.games%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.opp_wins%20%3D%20opp_wins%3B%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.opp_games%20%3D%20opp_games%3B%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20d2_wins%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20d2_games%20%3D%200%3B%0D%0A%20%20%20%20%20%20%20%20for%28var%20j%20%3D%200%3B%20j%20%3C%20teams%5Bi%5D.schedule.length%3B%20j++%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20d2_wins%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.opp_wins%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20d2_games%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.opp_games%3B%0D%0A%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.d2_wins%20%3D%20d2_wins%3B%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.d2_games%20%3D%20d2_games%3B%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20%3D%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%201*teams%5Bi%5D.win_pct%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20+%201*teams%5Bi%5D.opp_wins/teams%5Bi%5D.opp_games%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20+%201*teams%5Bi%5D.d2_wins/teams%5Bi%5D.d2_games%3B%0D%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.fbs%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20*%3D%201.1%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.aq%20%7C%7C%20teams%5Bi%5D.name%20%3D%3D%20%22Notre%20Dame%22%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20*%3D%201.1%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20%0D%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.win_pct%20%3D%3D%201%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20console.log%28teams%5Bi%5D%29%3B%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20for%28var%20g%20%3D%200%3B%20g%20%3C%20teams%5Bi%5D.schedule.length%3B%20g++%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20if%28%21teams%5Bi%5D.schedule%5Bg%5D.win%29%7B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20-%3D%20%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.05%20*%201/teams%5Bi%5D.schedule%5Bg%5D.opp.rankPoints%3B%0D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%20%20%20%20%7D%0D%0A%20%20%20%20%7D%0D%0A%0D%0A%20%20%20%20teams.sort%28function%28a%2Cb%29%7B%0D%0A%20%20%20%20%20%20%20%20return%20b.rankPoints%20-%20a.rankPoints%3B%0D%0A%20%20%20%20%7D%29%3B%0D%0A%20%20%20%20%0D%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%2025%3B%20i++%29%7B%0D%0A%20%20%20%20%20%20%20%20console.log%28teams%5Bi%5D.name%20+%20%27%3A%27%20+%20teams%5Bi%5D.rankPoints%29%3B%0D%0A%20%20%20%20%7D%0D%0A%20%20%20%20return%20teams%3B%0D%0A%7D"), -1);
+        editor.setValue(unescape("/**%0A%20*%20Sort%20teams%20by%20a%20chosen%20ranking%20criteria.%0A%20*%20%0A%20*%20@param%20%7BArray%7D%20teams%20%3A%20unsorted%20array%20of%20all%20team%20objects%0A%20*%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20containing%20schedules%20and%20games%0A%20*%20@return%20%7BArray%7D%20teams%3A%20sorted%20array%0A%20*/%0Afunction%20main%28teams%29%7B%0A%20%20%20%20%0A%20%20%20%20/*%20Calculates%20and%20adds%20a%20two%20new%20fields%20to%20each%20individual%20teams%3A%0A%20%20%20%20%20*%20%20the%20number%20of%20wins%20their%20opponents%20collectively%20have%20and%20the%0A%20%20%20%20%20*%20%20the%20number%20of%20total%20games%20their%20opponents%20collectively%20have.%0A%20%20%20%20%20*/%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0A%20%20%20%20%20%20%20%20opp_wins%20%3D%200%3B%0A%20%20%20%20%20%20%20%20opp_games%20%3D%200%3B%0A%20%20%20%20%20%20%20%20for%28var%20j%20%3D%200%3B%20j%20%3C%20teams%5Bi%5D.schedule.length%3B%20j++%29%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20opp_wins%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.wins%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20opp_games%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.games%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.opp_wins%20%3D%20opp_wins%3B%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.opp_games%20%3D%20opp_games%3B%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20%0A%20%20%20%20/*%20Using%20the%20two%20fields%20added%20above%2C%20we%20now%20calculate%20all%20the%20wins%0A%20%20%20%20%20*%20%20of%20our%20opponents%27%20opponents%20and%20the%20total%20number%20of%20games%20of%0A%20%20%20%20%20*%20%20our%20opponents%27%20opponents.%0A%20%20%20%20%20*/%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0A%20%20%20%20%20%20%20%20d2_wins%20%3D%200%3B%0A%20%20%20%20%20%20%20%20d2_games%20%3D%200%3B%0A%20%20%20%20%20%20%20%20for%28var%20j%20%3D%200%3B%20j%20%3C%20teams%5Bi%5D.schedule.length%3B%20j++%29%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20d2_wins%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.opp_wins%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20d2_games%20+%3D%20teams%5Bi%5D.schedule%5Bj%5D.opp.opp_games%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.d2_wins%20%3D%20d2_wins%3B%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.d2_games%20%3D%20d2_games%3B%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0A%20%20%20%20%20%20%20%20/*%20We%20generate%20a%20new%20field%20for%20each%20team%3A%20rankPoints%0A%20%20%20%20%20%20%20%20%20*%20It%27s%20a%20weighted%20average%20of%20a%20teams%20win%20percentage%2C%20their%0A%20%20%20%20%20%20%20%20%20*%20%20opponents%27%20win%20percentage%2C%20and%20their%20opponents%27%20opponents%27%0A%20%20%20%20%20%20%20%20%20*%20%20win%20percentage%2C%20weighted%202%2C%201%2C%201%20respectively.%0A%20%20%20%20%20%20%20%20%20*/%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20%3D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%202*teams%5Bi%5D.win_pct%0A%20%20%20%20%20%20%20%20%20%20%20%20+%201*teams%5Bi%5D.opp_wins/teams%5Bi%5D.opp_games%0A%20%20%20%20%20%20%20%20%20%20%20%20+%201*teams%5Bi%5D.d2_wins/teams%5Bi%5D.d2_games%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20/*%20We%20now%20give%20a%20point%20bonus%20to%20teams%20that%20are%20in%20the%20FBS%0A%20%20%20%20%20%20%20%20%20*%20%20division%20%28FCS%20teams%20are%20included%20here%21%29%20and%20for%20teams%0A%20%20%20%20%20%20%20%20%20*%20%20in%20automatic%20qualifier%20conferences.%0A%20%20%20%20%20%20%20%20%20*/%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.fbs%29%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20*%3D%201.1%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20if%28teams%5Bi%5D.aq%20%7C%7C%20teams%5Bi%5D.name%20%3D%3D%20%22Notre%20Dame%22%29%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20*%3D%201.1%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20/*%20We%27re%20going%20to%20punish%20teams%20extra%20for%20losing.%0A%20%20%20%20%20*%20%20Here%20we%20take%20off%20an%20amount%20of%20points%20inversely%20proportional%0A%20%20%20%20%20*%20%20to%20the%20%27rankPoints%27%20of%20an%20opponent%20they%20lost%20to%21%0A%20%20%20%20%20*/%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0A%20%20%20%20%20%20%20%20for%28var%20g%20%3D%200%3B%20g%20%3C%20teams%5Bi%5D.schedule.length%3B%20g++%29%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20if%28%21teams%5Bi%5D.schedule%5Bg%5D.win%29%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20teams%5Bi%5D.lossPenalty%20%3D%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.05%20*%201/teams%5Bi%5D.schedule%5Bg%5D.opp.rankPoints%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20/*%20We%20didn%27t%20just%20subtract%20the%20penalty%20off%20right%20away%20when%20we%0A%20%20%20%20%20*%20%20%20calculated%20it.%20Why%20would%20that%20have%20been%20a%20bad%20idea%3F%0A%20%20%20%20%20*/%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%20teams.length%3B%20i++%29%7B%0A%20%20%20%20%20%20%20%20teams%5Bi%5D.rankPoints%20-%3D%20teams%5Bi%5D.lossPenalty%3B%0A%20%20%20%20%7D%0A%0A%20%20%20%20/*%20We%27ve%20done%20all%20the%20hard%20work%2C%20now%20just%20sort%20the%20teams%20according%0A%20%20%20%20%20*%20%20to%20the%20number%20of%20points%20they%27ve%20earned%20in%20our%20ranking.%0A%20%20%20%20%20*/%0A%20%20%20%20teams.sort%28function%28a%2Cb%29%7B%0A%20%20%20%20%20%20%20%20return%20b.rankPoints%20-%20a.rankPoints%3B%0A%20%20%20%20%7D%29%3B%0A%20%20%20%20%0A%20%20%20%20/*%20Might%20be%20interesting%20to%20check%20out%20the%20gap%20in%20points%20between%0A%20%20%20%20%20*%20%20our%20top%20ranked%20teams.%0A%20%20%20%20%20*/%0A%20%20%20%20for%28var%20i%20%3D%200%3B%20i%20%3C%2025%3B%20i++%29%7B%0A%20%20%20%20%20%20%20%20console.log%28teams%5Bi%5D.rankPoints%29%3B%0A%20%20%20%20%7D%0A%20%20%20%20%0A%20%20%20%20return%20teams%3B%0A%7D"));
         getData(loadWheelDiv);
         return;
     }
@@ -379,50 +379,7 @@ function appendSaveOpt(save){
         text: save.timestamp
     }).appendTo(dateContainer);
     textContainer.appendChild(dateContainer);
-/*
 
-    var rightSaveDiv = document.createElement('div');
-
-
-
-
-    var clearContainer = document.createElement('div');
-    clearContainer.className = 'clear';
-    container.appendChild(clearContainer);
-
-    var topContainer = document.createElement('div');
-    topContainer.className = 'saveControlsBox';
-
-    var loadWheelDiv = document.createElement('div');
-    loadWheelDiv.className = 'saveLoadWheelDiv';
-
-    var clearDiv = document.createElement('div');
-    clearDiv.className = 'clear';
-
-    var textContainer = document.createElement('div');
-    textContainer.className = 'saveTextBox';
-    $('<p/>', {
-        class: 'saveOptionName',
-        text: save.name
-    }).appendTo(textContainer);
-    $('<p/>', {
-        class: 'saveOptionDate',
-        text: save.timestamp
-    }).appendTo(textContainer);
-
-    container.onclick = function(){
-        getSave(save.id, loadWheelDiv);
-    };
-
-    topContainer.appendChild(textContainer);
-    topContainer.appendChild(loadWheelDiv);
-    topContainer.appendChild(clearDiv);
-
-    container.appendChild(topContainer);
-
-    var delButton = $('<button class="deleteButton" onclick="deleteSave(' + save.id + ')">Delete</button>');
-    delButton.appendTo(container);
-*/
     $("#prevSavesPane").prepend(container);
 }
 
@@ -498,6 +455,7 @@ function makeDataRequest(season, week, loadWheelDiv, userAlgorithm){
         spinner2.stop();
         dataCache[season][week] = rawTeamsData;
         runUserAlgorithm(userAlgorithm, rawTeamsData);
+        return rawTeamsData;
     })
     .fail(function(){
         spinner2.stop();
@@ -506,7 +464,6 @@ function makeDataRequest(season, week, loadWheelDiv, userAlgorithm){
 
     pendingDataRequest = request;
 
-    return rawTeamsData;
 }
 
 
@@ -554,10 +511,7 @@ function runUserAlgorithm(userAlgorithm, data){
     X Logos for teams
     X Header logo for site
     X error handling for their bad code
-    * about/login/intro links at top of page
-    * auto saving? status on saving Server:
+    X about/login/intro links at top of page
+    X auto saving? status on saving Server:
     X basic caching
     X auto .csv parsing
-*/
-
-
