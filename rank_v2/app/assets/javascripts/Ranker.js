@@ -24,7 +24,7 @@ function loadPage(){
 
     $(window).resize(function(){
 //        $('#interfacePane').css('height', $(window).height() - $('#interfacePane').offset().top);
-        $('.mainContentContainer').height($(window).height() - $('.mainContentContainer').offset().top + 25);
+        /*$('.mainContentContainer').height($(window).height() - $('.mainContentContainer').offset().top + 25);
         $('.leftContainer').height($(window).height() - $('.leftContainer').offset().top - 10);
         $('#codeEditor').height( $('.leftContainer').height() - $('.bottomBar').height());
         $('.rightContainer').height($(window).height() - $('.rightContainer').offset().top);
@@ -33,6 +33,7 @@ function loadPage(){
         editor.resize();
         //$('#codeEditor').css('height', $(window).height() - vertSpaceNeeded - 20);
 //        document.getElementById('codeEditor').height = $(window).height()/20;
+*/
     });
     $(window).resize();
 
@@ -78,10 +79,11 @@ function loadPage(){
 
     //buildIFrame();
     var savePaneActive = false; //we expand it to start with
-    $('#savesPaneContainer').css('width', '75%');
+    $('#savesPaneContainer').css('width', '22%');
     var savesPaneDefaultWidth = $('#savesPaneContainer').width();
     savePaneActive = showHideSavesContainer(null, savePaneActive, savesPaneDefaultWidth);
 
+    /*
     $('#savesPaneContainer').resize(function(){
         alert('resize');
         $('.mainContentContainer').width($('.rightContainer').offset().left - $('.leftContainer').offset().left - $('#savesPaneContainer').width);
@@ -90,6 +92,7 @@ function loadPage(){
     $(document).bind('mousemove',function(e){
         savePaneActive = showHideSavesContainer(e, savePaneActive, savesPaneDefaultWidth);
     });
+*/
 
     $("#loginDialog, #loginBackground").click(function () {
         $("#loginDialog, #loginBackground").toggleClass("active");
@@ -515,3 +518,4 @@ function runUserAlgorithm(userAlgorithm, data){
     X auto saving? status on saving Server:
     X basic caching
     X auto .csv parsing
+*/

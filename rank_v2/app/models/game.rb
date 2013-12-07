@@ -22,27 +22,43 @@ class Game < ActiveRecord::Base
 	def self.import(file, year)
 		self.destroy_all(:year => year)
 		numRows = 0
-		first = nil
+		first = nil #date marking the end of week week 1. Anything within n weeks is in week n.
 		maxWeek = 0
+		failedGame = nil
+
 		CSV.foreach(file.path, headers: true) do |row|
 			puts self.cleanRow(row.to_hash)
 			g = Game.create!(self.cleanRow(row.to_hash))
 			g.year = year
 
 			if first === nil
-				first = g
-				g.week = 1
-			else
-				puts g.date
-				puts g.date.class.name
-				puts first.date
-				g.week = ((g.date - first.date)/7).to_i + 1
+				if g.date.wday <= 2
+
+					first = g.date + (2 - g.date.wday) #shift forward to Tuesday
+				else
+					first = g.date + (6 - g.date.wday) + 3 #shift to next week's Tuesday
+				end
+				first = first.clone - 7 #go back one week, don't do it after week 1
 			end
+
+			puts g.date
+			puts first
+			g.week = ((g.date - first)/7).to_i + 1
+			puts g.week
+			puts maxWeek
+			if g.week == nil
+				failedGame = g
+			end
+
 			if g.week > maxWeek
 				maxWeek = g.week
 			end
 			g.save
 			numRows += 1
+		end
+		if failedGame != nil
+			puts "SO MUCH FAILEURE"
+			puts failedGame
 		end
 		#Updated weeks moved to performances...
 		#s = Season.find(year)
@@ -65,8 +81,20 @@ class Game < ActiveRecord::Base
 		team_perf = Performance.find(:all, :conditions => ["game_code = ? AND team_code = ?", game_code, team_id]).first#Performance.where(:game_code => game_code, team_code => team_id) Performance.find(:all, :conditions => ["game_code = ? AND team_code = ?", game_code, team_id]).first
 		opp_perf = Performance.find(:all, :conditions => ["game_code = ? AND team_code = ?", game_code, opp_id]).first
 
-		pCand.team_score = team_perf.points
-		pCand.opp_score = opp_perf.points
+
+#		if team_perf === nil or opp_perf === nil
+#
+#			return nil
+#		end
+		begin
+			pCand.team_score = team_perf.points
+			pCand.opp_score = opp_perf.points
+		rescue
+			puts week
+			puts date
+		ensure
+			puts
+		end
 
 		pCand.win = false
 		if (pCand.team_score > pCand.opp_score)

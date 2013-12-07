@@ -33,12 +33,11 @@ class Team < ActiveRecord::Base
 	end
 
 	def self.getData(year, week)
-		puts "RUNNING"
+		#puts "RUNNING"
 		allTeams = Array.new
-		puts year
-		puts Team.where(:year => year)[0]
+		#puts year
+		#puts Team.where(:year => year)[0]
 		Team.where(:year => year).each do |team|
-			puts "ok.."
 			allTeams.push team.package(year, week.to_i)
 		end
 		return allTeams
@@ -48,16 +47,21 @@ class Team < ActiveRecord::Base
 		tp = TeamPackage.new
 		tp.name = name
 		tp.team_code = team_code
-		puts name
 
 		# SCHEDULE
 		sched = Array.new
 		Game.find_all_by_home_team_code(team_code).each do |game|
+			puts game.week
+			puts maxWeek
+			puts
 			if game.week <= maxWeek
 				sched << game.package(team_code, year)
 			end
 		end
 		Game.find_all_by_visit_team_code(team_code).each do |game|
+			puts game.week
+			puts maxWeek
+			puts game.id
 			if game.week <= maxWeek
 				sched << game.package(team_code, year)
 			end
