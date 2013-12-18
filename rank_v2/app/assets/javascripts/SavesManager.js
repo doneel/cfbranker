@@ -1,7 +1,7 @@
-function SavesManager(containingDiv, postLoadFunction, saveAsFunction, canSaveFlag, initialList){
+function SavesManager(containingDiv, preLoadFunction, postLoadFunction, saveAsFunction, canSaveFlag, initialList){
 	this.div = containingDiv;
 	this.canSaveFlag = canSaveFlag;
-
+	this.preLoadFunction = preLoadFunction;
 	this.postLoadFunction = postLoadFunction;
 	this.saveAsFunction = saveAsFunction;
 
@@ -108,6 +108,7 @@ SavesManager.prototype.setSelected = function(div){
 SavesManager.prototype.addEntry = function(entryData){
 	var context = this;
 	var loadFunc = function(){
+		context.preLoadFunction();
 		context.setSelected(this);
 		$.get(entryData.load_url, context.postLoadFunction);
 	};

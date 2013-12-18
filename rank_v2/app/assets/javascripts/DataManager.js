@@ -1,9 +1,12 @@
-function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, processDataFunc){
+function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallback, processDataFunc){
 	this.yearBox = yearBox;
 	this.weekBox = weekBox;
 	this.map = selectBoxMap;
 	this.getDataFunc = reqDataFunc;
+	this.afterGetCallback = afterReqCallback;
 	this.processDataFunc = processDataFunc;
+
+	this.dataCache = {};
 
 	var context = this;
 	$(this.yearBox).change(function(){
@@ -64,11 +67,29 @@ DataManager.prototype.fixSelects = function(){
 };
 
 DataManager.prototype.requestData = function(){
-	this.getDataFunc([$(this.yearBox).val(), $(this.weekBox).val()]);
+	var season = $(this.yearBox).val();
+	var week = $(this.weekBox).val();
+
+	if(this.dataCache[season] && this.dataCache[season][week]){
+		this.afterGetCallback(this.dataCache[season][week]);
+	}else{
+		if(!this.dataCache[season]){
+			this.dataCache[season] = [];
+		}
+		this.getDataFunc([season, week], this.afterGetCallback);
+	}
+
+
+
+
+
 };
 
 DataManager.prototype.updateData = function(newData){
 	this.rawData = newData;
 	this.processedData = this.processDataFunc($.extend(true, [], this.rawData));
+
+	this.dataCache[$(this.yearBox).val()][$(this.weekBox).val()] = newData;
+
 	return this.processedData;
 };

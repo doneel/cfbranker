@@ -40,11 +40,14 @@ CodeEditor.prototype.loadText = function(newText){
  * @param{function} saveFunc
  */
 CodeEditor.prototype.setSaveFunction = function(saveFunc){
-	try{
+
+	/*try{
 		saveFunc(this.aceEditor.getValue());
 	}catch(err){
+		console.log(err);
 		console.log('Could not execute the save function!');
 	}
+	*/
 	this.lastSave = new Date();
 	this.hasChanged = false;
 

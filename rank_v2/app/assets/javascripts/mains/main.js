@@ -7,10 +7,16 @@ $(document).ready(function(){
         editor.resize();
     });
 
-    sm = new SavesManager(document.querySelector('.saveBar'), loadSave, saveAs, true, savesArr);
+
+    initPausers();
+    sm = new SavesManager(document.querySelector('.saveBar'), preLoad, loadSave, saveAs, true, savesArr);
+
+    (function(){
+        savePauser = new DivPauser(document.querySelector('.saveList'));
+    })();
 
     cw = document.querySelector('.resultsPanel').contentWindow;
-    dm = new DataManager(document.querySelector('#yearBox'), document.querySelector('#weekBox'), numWeeksMap, getData, remap);
+    dm = new DataManager(document.querySelector('#yearBox'), document.querySelector('#weekBox'), numWeeksMap, getData, updateData, remap);
 
     hD = new MessageButton(document.getElementById('helpIcon'), document.getElementById('helpDialog'), document.getElementById('helpBackground'), 'active');
     iD = new MessageButton(document.getElementById('infoIcon'), document.getElementById('infoDialog'), document.getElementById('infoBackground'), 'active');
@@ -25,17 +31,29 @@ $(document).ready(function(){
     $('#helpIcon').css('display','block');
    // select the target node
 
+
+   dataPauser.on();
    $('iframe.resultsPanel').load(function(){
         dm.requestData();
    });
 
+   global = this;
+
 });
 
-var getData = function(optArray){
+var getData = function(optArray, callback){
+    dataPauser.on();
     var request = $.get('/req_data?' + 'year=' + optArray[0] + '&week=' + optArray[1], function(data, status){
-        updateData(data);
+        callback(data);
     });
 };
+
+function initPausers(){
+    (function(){
+       dataPauser = new DivPauser(document.querySelector('.rightSide'));
+       codePauser = new DivPauser(document.querySelector('.workPane'));
+    })();
+}
 
 function updateData(newData){
     /* Don't switch order */
@@ -43,6 +61,7 @@ function updateData(newData){
 
     /* Make available to user in teams array */
     teams = dm.updateData(newData);
+    dataPauser.off();
     runAlgorithm();
 }
 
@@ -77,9 +96,19 @@ function remap(jsonData){
     return jsonData;
 }
 
+
+var preLoad = function(){
+    (function(){
+        codePauser.on();
+    })();
+};
+
+
 var loadSave = function(data, status){
+    codePauser.off();
     editor.loadText(data.code);
     $('#save_form_id').val(data.id);
+    runAlgorithm();
 };
 
 var saveAs = function(name){
@@ -91,9 +120,11 @@ var saveAs = function(name){
 function initializeSaveAsForm(){
    $("#saveAsForm")
         .submit(function(){
+            savePauser.on();
             document.querySelector('#saveas_form_code').value = editor.getText();
         })
         .bind('ajax:complete', function(){
+            savePauser.off();
         })
         .bind('ajax:success', function(xhr, data, status){
                 sm.addEntry(data);
@@ -111,10 +142,13 @@ function initializeSaveAsForm(){
  * Set up actions to run when the saveform is submitted.
  */
 function initializeSaveForm(){
+    var context = this;
     $("#saveForm")
         .submit(function(){
+            context.savePauser.on();
         });
     $('#saveForm').bind('ajax:success',function(json){
+        context.savePauser.off();
         console.log(json);
     });
 }
