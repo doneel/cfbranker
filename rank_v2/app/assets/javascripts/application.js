@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
+//= require_directory .
 //= require ace-builds/src-noconflict/ace.js
 //= require jstat-1.0.0.min.js
 //= require spin.min.js

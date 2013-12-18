@@ -96,6 +96,7 @@ class Game < ActiveRecord::Base
 			puts
 		end
 
+
 		pCand.win = false
 		if (pCand.team_score > pCand.opp_score)
 			pCand.win = true
@@ -108,8 +109,10 @@ class Game < ActiveRecord::Base
 		pCand.neutral = (site == "NEUTRAL")
 
 		#BIG LOOP FOR ALL FIELDS
-		restricted_fields = Array.new(["updated_at", "created_at", "id", "year", "team_code"])
+		restricted_fields = Array.new(["updated_at", "created_at", "id", "year", "team_code", "date"])
 		num = 0
+		puts 'date incoming: '
+		puts pCand.date
 		team_perf.attribute_names.each do |field|
 			field2 = field
 			if restricted_fields.include?(field) # == "updated_at" or field == "created_at" or
@@ -127,11 +130,13 @@ class Game < ActiveRecord::Base
 			#if num < 412
 			#puts field
 			#puts field2
+
 			pCand.send(field2 + "=", team_perf[field])
 			#num += 1
 			#end
 		end
-
+		puts 'DATE BEFORE SUBMIT: '
+		puts pCand.date
 		return pCand
 	end
 end

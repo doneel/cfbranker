@@ -1,0 +1,74 @@
+.rankingsWrapper{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.rankings{
+	width: calc(100% + 15px);
+	overflow-y :scroll;
+	height: 100%;
+}
+
+.teamTile{
+	overflow: hidden;
+	position: relative;
+	height: 40px;
+	border-bottom: 1px solid black;
+	background-color: rgba(20, 20, 20, .5);
+
+	opacity: .5;
+}
+
+.teamTile:hover{
+	opacity: 1;
+}
+
+.numberingDiv{
+	float: left;
+	height: 100%;
+	left: 0px;
+	border-right: 1px double black;
+	width: 40px;
+
+}
+
+.rankNumber{
+	font-size: 18px;
+	font-weight: bold;
+	margin: 0px;
+	margin-top: 11px; /*calc(50% - 9px);*/
+	margin-right: 5px;
+	color: #AAA;
+	float: right;
+}
+
+.teamSide{
+	float: right;
+	width: calc(100% - 42px);
+	height: 100%;
+	position: relative;
+}
+
+.teamName{
+	position: absolute;
+	width: calc(100% - 40px);
+	font-size: 22px;
+	color: #AAA;
+	margin: 0;
+	left: 40px;
+	margin-top: 9px;
+	margin-left: 15px;
+}
+
+.teamLogo{
+	position: absolute;
+	left: 5px;
+	height: 40px;
+}
+
+
+body, html{
+	height: 100%;
+	margin: 0;
+}

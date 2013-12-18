@@ -24,6 +24,9 @@ class RanksController < ApplicationController
 				else
 					s.timestamp = Date::MONTHNAMES[alg.created_at.month] + ' ' + alg.created_at.mday.to_s + ', ' + alg.created_at.year.to_s
 				end
+				s.delete_url = "/algorithm/delete/?id=" + alg.id.to_s
+				s.load_url = "/algorithm/load/?id=" + alg.id.to_s
+
 				saveArray << s
 			end
 			@saveArray = saveArray.to_json
@@ -72,15 +75,18 @@ class RanksController < ApplicationController
 			year = Array.new(16)
 			year[params[:week].to_i] = @teamJSON
 			Rails.cache.write(params[:year], year)
+			puts 'HERES THE SENT DATA'
+			puts @teamJSON[1].schedule[1].opp;
+			puts @teamJSON[1].schedule[1].date;
 		end
 		render	:json => @teamJSON
 	end
 
 	def ranksFrame
-		render :layout => false
+		#render :layout => false
 	end
 end
 
 class Algorithm_Option
-	attr_accessor	:id, :name, :timestamp, :logo
+	attr_accessor	:id, :name, :timestamp, :logo, :delete_url, :load_url
 end

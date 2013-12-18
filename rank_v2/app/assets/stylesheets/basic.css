@@ -6,16 +6,6 @@ body{
 	font-family: fridayNightLights;
 	src: url('FNL_DEMO-KCFonts.ttf');
 }
-p.saveOptionName,
-p.saveOptionDate{
-	font-family: sans-serif;
-}
-
-.saveOptionDate{
-	font-style: italic;
-	font-size: 10px;
-	float: right;
-}
 
 .bigIcon{
 	font-size: 30px;
@@ -28,7 +18,7 @@ p.saveOptionDate{
 	margin-left: 30px;
 	float: right;
 	font-size: 40px;
-	margin-top: 5px;
+	margin-top: 10px;
 	text-decoration: none;
 	color: black;
 }
@@ -37,533 +27,281 @@ p.saveOptionDate{
 	color: #2F6ED7;
 }
 
-.bigIcon:hover{
-	color: #2F6ED7;
-}
-
-.saveOptionLeftBox{
-	float: left;
-	color: #BBB;
-}
-.saveOptionRightBox{
-	float: right;
-	color: #BBB;
-}
-
-.bigTrashIcon:hover{
-	color: #cc1111;
-}
-
-.saveOptionName{
-}
-
-#ifResultsPane{
-	background-color: rbga(73,72,62, .9);
-}
-.rankContainer{
-	overflow: hidden;
-	border: 1px solid black;
-	position: relative;
-	height: 30px;
-	background: #555;
-	opacity: .7;
-}
-
-.rankContainer:hover{
-	cursor: pointer;
-	opacity: 1.00;
-}
-
-.rankNumber{
-	position: absolute;
-/*	top: -50%;*/
-	font-size: 20px;
-	border-right: 1px dotted gray;
-}
-.teamBox{
-	overflow: hidden;
-/* 	padding-left: 20px; */
-	padding-top: 1px;
-	left: 35%;
-	position: absolute;
-}
-
-.teamBoxLogo{
-	float: left;
-/*	width: 28px; */
-}
-
-.teamBoxName{
-	float: left;
-	margin: 0 auto;
-	font-size: 20px;
-	color: #BBB;
-	padding-left: 10px;
-/*	margin-top: 1%; */
-}
-
-
-#interfacePane{
-	/*overflow: hidden;*/
-	width: 100%;
-}
-
-.leftContainer{
-	float: left;
-	width: 78%;
-
-}
-
-.rightContainer{
-	float: right;
-	width: 22%;
-}
-
-#resultsPane{
-	border: 1px solid black;
-	width: 98%;
-}
-
-#rankPane{
-	height: 100%;
-}
-
-
-#prevSavesPane{
-	width: auto;
-	overflow: auto;
-}
-
-p{
-	font-family: sans-serif;
-}
-
-.sideContentWrapper{
-	float: left;
-	width: 28%;
-}
-
-.mainContentContainer{
-	float: left;
-	width: 72%;
-}
-
-.hidden{
-	display: none;
-}
-
-/*
-.sideContentWrapper > .sideContentContainer{
-	margin: 0 auto;
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
-
-.sideContentWrapper{
-	width: 25%;
-	float: left;
-	height: 100%;
-	background-color: rgba(153,153,159, .2);
-	vertical-align: middle;
-}
-*/
-.saveButtons *{
-	float: left;
-}
-
-.bottomBark {
-	float: left;
-	margin: 5px;
-}
-/*
-.saveControlsBox{
-}
-*/
-.saveOption, .newSaveOption{
-	border: 1px solid white;
-	overflow: hidden;
-	font-family: serif;
-	cursor: pointer;
-	background-color: rgba(20, 20, 40, .3);
-}
-
-.saveOptionLoaded{
-	border: 1px solid white;
-	overflow: hidden;
-	font-family: serif;
-	cursor: pointer;
-	background-color: rgba(20, 20, 40, .8);
-}
-
-.newSaveOption{
-	display: block;
-	color: #BBB;
-	margin-bottom: 10px;
-	margin-right: 2px;
-	margin-left: 2px;
-}
-
-.newSaveTitle{
-	margin: 0px auto;
-	float: left;
-}
-.saveOption:hover{
-	background-color: rgba(20, 20, 40, .9);
-}
-
-.saveOption:hover .saveOptionLeftBox{
-	color: #4F8EF7;
-}
-
-.newSaveOption:hover{
-	color: #4F8EF7;
-}
-.newSaveOption:hover i{
-	color: #2F6ED7;
-}
-.saveOptionLoaded:hover .saveOptionLeftBox{
-	color: #4F8EF7;
-}
-
-
-#rankPaneContainer{
-	float: left;
-	height: 100%;
-}
-
-.popupDialogContainer{
-	background-color: #FF0000;
-	color: white;
-	background-color: rgba(20, 20, 20, 0.9 );
-	z-index: 999;
-	border: 1px solid white;
-}
-
-.deleteButton{
-	float: right;
-}
-
-/*
-.mainContentWrapper{
-	overflow: hidden;
-	float: left;
-}
-
-#rankPaneContainer{
-}
-
-.nonExpanding{
-	overflow: hidden;
-}
-*/
 .banner{
-	border-bottom: 1px solid black;
-	margin-bottom: 5px;
+        border-bottom: 1px solid black;
+        margin-bottom: 5px;
+        height: 60px;
 }
 
 .bannerText{
-	display: inline;
-	font-size: 60px;
-	font-family: fridayNightLights;
-	 background: -webkit-linear-gradient(gray, #fffc3d, gray);
-  	-webkit-background-clip: text;
-  	-webkit-text-fill-color: transparent;
+        display: inline;
+        font-size: 60px;
+        font-family: fridayNightLights;
+
+        background: -webkit-linear-gradient(gray, #fffc3d, gray);
+
+        color: #cfcc1d;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
 }
 
-
-.loginControls{
-	float:right;
+.saveBar{
+    float: left;
+    height: 100%;
+    width: 27%;
+    /*border-left: 1px solid black;*/
+    border-top: 1px solid black;
 }
 
-.sideContentContainer{
-	/*width: 98%;*/
-	border: 1px solid black;
-}
-/*
-.mainContentContainer{
-	width: 100%;
-	overflow: hidden;
-}
-*/
-
-#outputPane{
-	height: 99%;
-}
-
-#codeEditor{
-	border: 1px solid black;
+.saveEntry{
+    width: 100%;
+    height: 60px;
+    background: rgba(20, 20, 20, .5);
+    box-shadow:inset 0px 1px 22px 0px #1c1c1c;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
 }
 
-#rankPane{
-	width: 98%;
-	padding: 5px;
-}
-/*
-.threeColArea{
-	height: 100%;
-	overflow: hidden;
-}
-
-html, body{
-	height: 100%;
-}
-
-#rankPane{
-	background-color: #999;
-	height: 100%;
-	padding: 10px;
-	border: 2px solid gray;
-	width: 86%;
-	margin: 0px auto;
+.newSaveEntryButton{
+    width: calc(100% - 0px);
+    height: 40px;
+    background: rgba(20, 20, 20, .5);
+    box-shadow:inset 0px 1px 22px 0px #1c1c1c;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
 }
 
-#resultsPane{
-	background-color: #888;
-	height: 95%;
-	width: 96%;
-	margin: 0 auto;
-	border-right: none;
-	border-bottom: none;
-	display: block;
+.saveListWrapper{
+    position: absolute;
+    height: calc(100% - 43px);
+    overflow:hidden;
+    width: 100%;
 }
 
-.controlsBox *{
-	/*float: left;};*/
-
-.dataSelectorsForm{
-	float: left;
+.saveList{
+    height: 100%;
+    width: calc(100% + 16px);
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
-
-.clearingDiv{
-	clear: both;
+.newSaveName{
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    position: absolute;
+    margin: 0;
+    left: 55px;
+    top: calc(50% - 8px);
 }
 
-.loadWheelDiv{
-	height: 20px;
-	width: 20px;
-	float: left;
-}
-
-.saveLoadWheelDiv{
-	height: 20px;
-	width: 20px;
-	margin: 0px auto;
-	float: left;
-}
-
-.loadWheelDiv:after{
-	clear: both;
-}
-
-.controlsBox{
-	display: inline;
-}
-
-
-.saveTextBox{
-	float: left;
-	font-family: sans-serif;
-	font-weight: bold;
-}
-
-
-/* Let's get this party started */
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    background: rgba(13,14,19,0.8);
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
-}
-::-webkit-scrollbar-thumb:window-inactive {
-	background: rgba(13,14,19,0.4);
-}
-
-.centeringDiv{
-	display: inline;
-	margin-left: auto;
-	margin-right: auto;
-	width: 100%;
-}
-
-.mainControlButton {
-	margin: 5px;
-	margin-left: 20px;
-	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
-	box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background-color:#ededed;
-	-webkit-border-top-left-radius:2px;
-	-moz-border-radius-topleft:2px;
-	border-top-left-radius:2px;
-	-webkit-border-top-right-radius:2px;
-	-moz-border-radius-topright:2px;
-	border-top-right-radius:2px;
-	-webkit-border-bottom-right-radius:2px;
-	-moz-border-radius-bottomright:2px;
-	border-bottom-right-radius:2px;
-	-webkit-border-bottom-left-radius:2px;
-	-moz-border-radius-bottomleft:2px;
-	border-bottom-left-radius:2px;
-	text-indent:0;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	color:#777777;
-	font-family:Courier New;
-	font-size:15px;
-	font-weight:bold;
-	font-style:normal;
-	height:25px;
-	line-height:25px;
-	width:100px;
-	text-decoration:none;
-	text-align:center;
-	text-shadow:1px 1px 0px #ffffff;
-}
-.mainControlButton:hover {
-	background-color:#dfdfdf;
-}
-.mainControlButton:active {
-	position:relative;
-	top:1px;
-}
-
-
-/* DROPDOWN MENUS */
-.wrapper-dropdown-1 {
-    /* Size and position */
-    position: relative; /* Enable absolute positioning for children and pseudo elements */
-    width: 100px;
-    padding: 10px;
+.saveEntryNewName{
+    position: absolute;
+    width: 200px;
+    left: calc(50% - 100px);
+    top: calc(50% - 15px);
+    height: 30px;
+    padding-left: 2px;
+    color: #AAA;
     margin: 0 auto;
+    border: none;
+    background: rgba(200, 200, 200, .1);
+}
 
-    /* Styles */
-    background: #9bc7de;
-    color: #fff;
-    outline: none;
-    cursor: pointer;
+.newSaveIcon{
+    font-size: 30px;
+    float: right;
+    position: absolute;
+    right: 50px;
+    top: calc(50% - 15px);
+}
 
-    /* Font settings */
+.resultsPanel{
+    height: calc(100% - 2px);
+    background: green;
+    border: 1px solid black;
+    border-left: none;
+    overflow: hidden;
+}
+.saveEntry.selected{
+    background-color: #222;
+    box-shadow:inset 0px 1px 12px 0px #AcAc5c;
+}
+
+.newSaveEntryButton:hover .newSaveName{
+    color: #2F6ED7;
+}
+.newSaveEntryButton:hover, .saveEntry:hover .newSaveIcon{
+    color: #2F6ED7;
+}
+
+.saveEntryName{
+    font-family: Georgia;
+    font-weight: bold;
+    margin: 2px;
+    margin-top: 5px;
+    color: #555;
+}
+
+.saveEntryDate{
+    font-size: 11px;
+    margin: 2px;
+    color: #555;
+}
+
+.saveEntry:hover{
+    box-shadow:inset 0px 1px 12px 0px #AcAcAc;
+}
+
+.bigTrashIcon{
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    font-size: 30px;
+    color: #555;
+}
+
+.bigTrashIcon:hover{
+    color: #A01010;
+}
+
+.workPane{
+    height: 100%;
+    overflow: hidden;
+}
+
+.controlBar{
+    height: 40px;
+    width: auto;
+    box-shadow:inset 0px 1px 22px 0px #1c1c1c;
+    background: rgba(20, 20, 20, .50);
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.hidden{
+    display: none;
+}
+
+.leftSide{
+    float: left;
+    height: 100%;
+    width: 78%;
+}
+.rightSide{
+    float: left;
+    background: gray;
+    height: 100%;
+    width: 22%;
+}
+
+.interface{
+	height: calc(100% - 75px);
+}
+
+body, html{
+    height: 100%;
+}
+
+#codeEditorContainer{
+	height: calc(100% - 43px);
+    border: 1px solid black;
+}
+
+.controlsCenteringDiv{
+    margin: 0 auto;
+    width: 557px;
+}
+
+.controlButton{
+    margin-top: 7px;
+    margin-left: 10px;
+    margin-right: 10px;
+    -moz-box-shadow:inset 0px 1px 22px 0px #3c3c3c;
+    -webkit-box-shadow:inset 0px 1px 22px 0px #3c3c3c;
+    box-shadow:inset 0px 1px 22px 0px #1c1c1c;
+    background: rgba(20, 20, 20, .8);
+/*    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #333), color-stop(1, #444) );
+    background:-moz-linear-gradient( center top, #9ea9b0 5%, #d2e7fa 100% );
+*/
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#9ea9b0', endColorstr='#d2e7fa');
+    -webkit-border-top-left-radius:0px;
+    -moz-border-radius-topleft:0px;
+    border-top-left-radius:0px;
+    -webkit-border-top-right-radius:0px;
+    -moz-border-radius-topright:0px;
+    border-top-right-radius:0px;
+    -webkit-border-bottom-right-radius:0px;
+    -moz-border-radius-bottomright:0px;
+    border-bottom-right-radius:0px;
+    -webkit-border-bottom-left-radius:0px;
+    -moz-border-radius-bottomleft:0px;
+    border-bottom-left-radius:0px;
+    text-indent:0;
+    border: 1px solid black;
+    display:inline-block;
+    color: #777;
+    font-family:Trebuchet MS;
+    font-size:15px;
+    font-weight:bold;
+    font-style:normal;
+    height:26px;
+    line-height:26px;
+    width:104px;
+    text-decoration:none;
+    text-align:center;
+}
+.controlButton:hover {
+    border:1px solid #184663;
+    box-shadow:inset 0px 1px 22px 0px #5c5c5c;
+   /* background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #d2e7fa), color-stop(1, #9ea9b0) );
+    background:-moz-linear-gradient( center top, #d2e7fa 5%, #9ea9b0 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#d2e7fa', endColorstr='#9ea9b0');
+    background-color:#d2e7fa;
+    */
+}.controlButton:active {
+    position:relative;
+    top:1px;
+}
+
+.selectBox{
+    margin-top: -5px;
+    height: 28px;
+    width: 60px;
+    background: rgba(20, 20, 20, .8);
+    color: #777;
     font-weight: bold;
 }
 
-.wrapper-dropdown-1:after {
-    content: "";
-    width: 0;
-    height: 0;
-    position: absolute;
-    right: 16px;
-    top: 50%;
-    margin-top: -6px;
-    border-width: 6px 0 6px 6px;
-    border-style: solid;
-    border-color: transparent #fff;
+option.selectBoxOption{
+    width: 60px;
+    height: 45px;
 }
 
-.wrapper-dropdown-1 .dropdown {
-    /* Size & position */
-    position: absolute;
-    top: 100%;
-    left: 0; /* Size */
-    right: 0; /* Size */
-
-    /* Styles */
-    background: #fff;
-    font-weight: normal; /* Overwrites previous font-weight: bold; */
-
-    /* Hiding */
-    opacity: 0;
-    pointer-events: none;
+.selectBoxLabel{
+    margin-left: 10px;
+    font-weight: bold;
+    color: #555;
 }
 
-.wrapper-dropdown-1 .dropdown li a {
-    display: block;
-    text-decoration: none;
-    color: #9e9e9e;
-    padding: 10px 20px;
+#loginBackground.active, #helpBackground.active, #infoBackground.active, #loginDialog.active, #helpDialog.active, #infoDialog.active{
+     display: block;
 }
-
-/* Hover state */
-.wrapper-dropdown-1 .dropdown li:hover a {
-    background: #f3f8f8;
-}
-
-/* Active state */
-.wrapper-dropdown-1.active .dropdown {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.wrapper-dropdown-1.active:after {
-    border-color: #9bc7de transparent;
-    border-width: 6px 6px 0 6px ;
-    margin-top: -3px;
-}
-
-.wrapper-dropdown-1.active {
-  background: #9bc7de;
-  background: linear-gradient(to right, #9bc7de 0%, #9bc7de 78%, #ffffff 78%, #ffffff 100%);
-}
-
-.styledTextInput{
-
-    padding: 5px;
-    border: 1px solid #DDDDDD;
-
-    /*Applying CSS3 gradient*/
-    background: -moz-linear-gradient(center top , #FFFFFF,  #EEEEEE 1px, #FFFFFF 20px);
-    background: -webkit-gradient(linear, left top, left 20, from(#FFFFFF), color-stop(5%, #EEEEEE) to(#FFFFFF));
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FBFBFB', endColorstr='#FFFFFF');
-
-    /*Applying CSS 3radius*/
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-
-    /*Applying CSS3 box shadow*/
-    -moz-box-shadow: 0 0 2px #DDDDDD;
-    -webkit-box-shadow: 0 0 2px #DDDDDD;
-    box-shadow: 0 0 2px #DDDDDD;
-
-}
-.styledTextInput:hover
-{
-    border:1px solid #cccccc;
-}
-.styledTextInput:focus
-{
-    box-shadow:0 0 2px #FFFE00;
-}
-
-.modalBackground{
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-	background-color: rgba(20, 20, 20, 0.8 );
-    opacity: .50;
-    -webkit-opacity: .5;
-    -moz-opacity: .5;
-    z-index: 1000;
-}
-
 
 #loginDialog {
-	background-color: rgba(20, 20, 20, 0.8 );
+    background-color: rgba(20, 20, 20, 0.8 );
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -572,6 +310,7 @@ html, body{
     -moz-box-shadow: 0 0 20px 0 #222;
     box-shadow: 0 0 20px 0 #222;
     color: #AAA;
+    font-weight: bolder;
 
     height: 100px;
     width: 300px;
@@ -586,7 +325,7 @@ html, body{
 }
 
 #infoDialog{
-	background-color: rgba(20, 20, 20, 0.9 );
+    background-color: rgba(20, 20, 20, 0.9 );
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -608,7 +347,7 @@ html, body{
 }
 
 #helpDialog{
-	background-color: rgba(20, 20, 20, 0.95 );
+    background-color: rgba(20, 20, 20, 0.95 );
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
@@ -630,120 +369,17 @@ html, body{
     z-index: 1000;
 }
 
-#loginBackground.active, #helpBackground.active, #infoBackground.active, #loginDialog.active, #helpDialog.active, #infoDialog.active{
-    display: block;
+.modalBackground{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(20, 20, 20, 0.8 );
+    opacity: .50;
+    -webkit-opacity: .5;
+    -moz-opacity: .5;
+    z-index: 1000;
 }
 
-/*
-#interfacePane{
-	background-color: #CCC;
-	width: 100%;
-	height: 100%;
-}
-
-.hidden{
-	display: none;
-}
-
-.saveButtonContainer{
-	display:inline;
-}
-
-.clear{
-	clear: both;
-}
-.saveOption{
-	display: inline-block;
-}
-.controlsBox{
-	display: inline;
-	clear: both;
-}
-
-.controlsBox *{
-	float: left;
-}
-
-.saveControlsBox{
-	overflow: hidden;
-}
-.saveTextBox{
-	float: left;
-}
-.sdsaveControlsBox *{
-}
-
-#prevSavesPane{
-	background-color: #AAA;
-	height: 100%;
-	padding: 10px;
-	border: 2px solid grey;
-	float: left;
-	clear: left;
-	width: 21%;
-}
-
-#contentPane{
-	background-color: #BBB;
-	height: 100%;
-	padding: 10px;
-	border: 2px solid grey;
-}
-
-#outputPane{
-	background-color: #999;
-	height: 100%;
-	padding: 10px;
-	border: 2px solid grey;
-	float: right;
-	width: 21%;
-}
-
-.sideContentContainer{
-	width: 25%;
-	height: auto;
-}
-
-.mainContentContainer{
-	width: 50%;
-	height: auto;
-}
-
-#rankPane{
-	background-color: #999;
-	height: 80%;
-	padding: 10px;
-	border: 2px solid grey;
-	float: right;
-	width: 90%;
-}
-.loadWheelDiv{
-	width: 8%;
-	height: 8%;
-}
-
-#resultsPane{
-	background-color: #888;
-	width: 95%;
-	float: none;
-	height: 95%;
-	border-right: none;
-	border-bottom: none;
-	display: block;
-}
-
-#workPane{
-	height: 100%;
-	width: 46%;
-	float: left;
-}
-
-#codeEditor{
-	height: 90%;
-	width: 100%;
-}
-
-html, body{
-	height: 100%;
-}
-*/

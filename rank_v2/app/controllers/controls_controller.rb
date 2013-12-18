@@ -1,5 +1,7 @@
 class ControlsController < ApplicationController
 
+	before_filter	:check_for_admin
+
 	before_filter :check_for_year
 	skip_before_action :check_for_year, only: [:updatecsvs]
 	def uploadteams
@@ -45,4 +47,6 @@ class ControlsController < ApplicationController
 	def performance_params
 	  params.require(:performance).permit(:points)
 	end
+
+	def check_for_admin
 end
