@@ -19,16 +19,17 @@ class RanksController < ApplicationController
 				s = Algorithm_Option.new
 				s.id = alg.id
 				s.name = alg.save_name
-				if (alg.created_at.today?)
-					s.timestamp = "Today, at " + alg.created_at.strftime("%H:%M:%S")
+				if (alg.updated_at.today?)
+					s.timestamp = "Today, at " + alg.updated_at.strftime("%H:%M:%S")
 				else
-					s.timestamp = Date::MONTHNAMES[alg.created_at.month] + ' ' + alg.created_at.mday.to_s + ', ' + alg.created_at.year.to_s
+					s.timestamp = Date::MONTHNAMES[alg.updated_at.month] + ' ' + alg.updated_at.mday.to_s + ', ' + alg.updated_at.year.to_s
 				end
 				s.delete_url = "/algorithm/delete/?id=" + alg.id.to_s
 				s.load_url = "/algorithm/load/?id=" + alg.id.to_s
-
+				s.last_time = alg.updated_at
 				saveArray << s
 			end
+			saveArray.sort! {|a,b| a.last_time <=> b.last_time}
 			@saveArray = saveArray.to_json
 		end
 
@@ -88,5 +89,5 @@ class RanksController < ApplicationController
 end
 
 class Algorithm_Option
-	attr_accessor	:id, :name, :timestamp, :logo, :delete_url, :load_url
+	attr_accessor	:id, :name, :timestamp, :logo, :delete_url, :load_url, :last_time
 end

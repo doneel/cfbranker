@@ -7,6 +7,9 @@ $(document).ready(function(){
         editor.resize();
     });
 
+    $(function(){
+        $('select').selectric();
+    });
 
     initPausers();
     sm = new SavesManager(document.querySelector('.saveBar'), preLoad, loadSave, saveAs, true, savesArr);
@@ -36,8 +39,6 @@ $(document).ready(function(){
    $('iframe.resultsPanel').load(function(){
         dm.requestData();
    });
-
-   global = this;
 
 });
 
@@ -105,6 +106,7 @@ var preLoad = function(){
 
 
 var loadSave = function(data, status){
+    console.log(data);
     codePauser.off();
     editor.loadText(data.code);
     $('#save_form_id').val(data.id);
@@ -112,6 +114,7 @@ var loadSave = function(data, status){
 };
 
 var saveAs = function(name){
+    editor.setDefaultText();
     document.getElementById('saveas_form_name').value = name;
     $('#saveAsForm').submit();
 };
@@ -121,7 +124,9 @@ function initializeSaveAsForm(){
    $("#saveAsForm")
         .submit(function(){
             savePauser.on();
-            document.querySelector('#saveas_form_code').value = editor.getText();
+            document.getElementById('saveas_form_code').value = editor.getText();
+            console.log(editor.getText());
+            console.log(document.getElementById('saveas_form_code').value);
         })
         .bind('ajax:complete', function(){
             savePauser.off();
@@ -149,7 +154,6 @@ function initializeSaveForm(){
         });
     $('#saveForm').bind('ajax:success',function(json){
         context.savePauser.off();
-        console.log(json);
     });
 }
 

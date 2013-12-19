@@ -1,4 +1,5 @@
 <%= javascript_include_tag 'mains/main.js' %>
+<%= stylesheet_link_tag 'selectric.css' %>
 
 <div class="modalBackground"id="loginBackground"></div>
 <div id="loginDialog">
@@ -70,11 +71,11 @@
                     <div class="controlsCenteringDiv">
                         <a class="controlButton" id="saveButton" onclick="saveCode()">Save</a>
                         <a class="controlButton" onclick="runAlgorithm()">Run</a>
-                        <label class="selectBoxLabel">Year</label>
-                        <select class="selectBox" id="yearBox">Season
+                        <label class="selectBoxLabel" >Year</label>
+                        <select  id="yearBox">Season
                         </select>
-                        <label class="selectBoxLabel">Week</label>
-                        <select class="selectBox" id="weekBox">Week
+                        <label class="selectBoxLabel" >Week</label>
+                        <select  id="weekBox">Week
                         </select>
                     </div>
                 </div>

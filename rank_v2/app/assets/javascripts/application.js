@@ -18,3 +18,4 @@
 //= require jstat-1.0.0.min.js
 //= require spin.min.js
 //= require jquery.ui.all
+//= require jquery.selectric.min.js

@@ -110,7 +110,9 @@ SavesManager.prototype.addEntry = function(entryData){
 	var loadFunc = function(){
 		context.preLoadFunction();
 		context.setSelected(this);
-		$.get(entryData.load_url, context.postLoadFunction);
+		$.get(entryData.load_url, function(data, status){
+			context.postLoadFunction(data, status);
+		});
 	};
 
 
@@ -131,7 +133,12 @@ SavesManager.prototype.addEntry = function(entryData){
 
 	var delFunc = function(event){
 		$.get(entryData.delete_url, function(data, status){
+			var prev = container[0].previousSibling;
+			if(!prev){
+				prev = container[0].nextSibling;
+			}
 			container[0].parentNode.removeChild(container[0]);
+			$(prev).trigger('click');
 		});
 		event.stopPropagation();
 

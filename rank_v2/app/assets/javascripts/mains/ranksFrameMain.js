@@ -21,6 +21,10 @@ function buildTeamTile(rank, team){
 
     var teamTile = document.createElement('div');
     teamTile.className = 'teamTile';
+    var context = this;
+    teamTile.onclick = function(){
+        console.log(team);
+    };
 
     var numberingDiv = document.createElement('div');
     numberingDiv.className = 'numberingDiv';

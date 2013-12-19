@@ -19,10 +19,18 @@
 	background-color: rgba(20, 20, 20, .5);
 	margin-top: -1px;
 	opacity: .5;
+	-webkit-user-select: none; /* Chrome/Safari */
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+
+	/* Rules below not implemented in browsers yet */
+	-o-user-select: none;
+	user-select: none;
 }
 
 .teamTile:hover{
 	opacity: 1;
+	cursor: pointer;
 }
 
 .numberingDiv{
