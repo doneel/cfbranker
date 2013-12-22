@@ -76,7 +76,6 @@ class RanksController < ApplicationController
 			year = Array.new(16)
 			year[params[:week].to_i] = @teamJSON
 			Rails.cache.write(params[:year], year)
-			puts 'HERES THE SENT DATA'
 			puts @teamJSON[1].schedule[1].opp;
 			puts @teamJSON[1].schedule[1].date;
 		end
