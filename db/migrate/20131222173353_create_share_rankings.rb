@@ -1,6 +1,8 @@
 class CreateShareRankings < ActiveRecord::Migration
 	  def change
 		    create_table :share_rankings do |t|
+		    	t.integer :year
+
 		    	t.integer :r1
 				t.integer :r2
 				t.integer :r3

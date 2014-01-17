@@ -1,3 +1,5 @@
+/* s = new Sharer(dm, editor.getText(), '/shares/create', numWeeksMap) */
+
 function Ranker(div, rawData, rankingCode, representFunc, dataProcessFunction){
 	this.div = div;
 	this.rawData = rawData;

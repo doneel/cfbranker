@@ -26,7 +26,15 @@ function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallba
 
 DataManager.prototype.getRawData = function(){
 	return this.rawData;
-}
+};
+
+DataManager.prototype.setDataReturnFunction = function(newFunc){
+	this.afterGetCallback = newFunc;
+};
+
+DataManager.prototype.getDataReturnFunction = function(){
+	return this.afterGetCallback;
+};
 
 DataManager.prototype.addOptions = function(){
 	while(this.yearBox.hasChildNodes() ){
@@ -66,23 +74,35 @@ DataManager.prototype.fixSelects = function(){
 	}
 };
 
-DataManager.prototype.requestData = function(){
-	var season = $(this.yearBox).val();
-	var week = $(this.weekBox).val();
+DataManager.prototype.requestData = function(yearNum, weekNum, exData){
+
+	var season;
+	if (typeof yearNum === 'undefined'){
+		season = $(this.yearBox).val();
+	} else{
+		season = yearNum;
+	}
+	var week;
+	if (typeof weekNum === 'undefined'){
+		week = $(this.weekBox).val();
+	} else{
+		week = weekNum;
+	}
+
+	var extraData = exData;
+	if (typeof exData === 'undefined'){
+		extraData = null;
+	}
+
 
 	if(this.dataCache[season] && this.dataCache[season][week]){
-		this.afterGetCallback(this.dataCache[season][week]);
+		this.afterGetCallback(this.dataCache[season][week], extraData);
 	}else{
 		if(!this.dataCache[season]){
 			this.dataCache[season] = [];
 		}
-		this.getDataFunc([season, week], this.afterGetCallback);
+		this.getDataFunc([season, week], this.afterGetCallback, extraData);
 	}
-
-
-
-
-
 };
 
 DataManager.prototype.updateData = function(newData){

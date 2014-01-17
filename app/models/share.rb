@@ -1,3 +1,3 @@
 class Share < ActiveRecord::Base
-	has_one 	:share_ranking
+	has_many 	:share_rankings
 end

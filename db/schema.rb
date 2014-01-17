@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 20131222173353) do
   end
 
   create_table "share_rankings", force: true do |t|
+    t.integer  "year"
     t.integer  "r1"
     t.integer  "r2"
     t.integer  "r3"
@@ -374,7 +375,8 @@ ActiveRecord::Schema.define(version: 20131222173353) do
   end
 
   create_table "shares", force: true do |t|
-    t.integer  "share_url_extension"
+    t.integer  "user_id"
+    t.text     "code"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

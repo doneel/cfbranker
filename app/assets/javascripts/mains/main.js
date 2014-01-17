@@ -42,10 +42,10 @@ $(document).ready(function(){
 
 });
 
-var getData = function(optArray, callback){
+var getData = function(optArray, callback, exData){
     dataPauser.on();
     var request = $.get('/req_data?' + 'year=' + optArray[0] + '&week=' + optArray[1], function(data, status){
-        callback(data);
+        callback(data, exData);
     });
 };
 
@@ -64,6 +64,7 @@ function updateData(newData){
     teams = dm.updateData(newData);
     dataPauser.off();
     runAlgorithm();
+    return teams;
 }
 
 function runAlgorithm(){
