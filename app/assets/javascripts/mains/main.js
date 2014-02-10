@@ -23,6 +23,7 @@ $(document).ready(function(){
 
     hD = new MessageButton(document.getElementById('helpIcon'), document.getElementById('helpDialog'), document.getElementById('helpBackground'), 'active');
     iD = new MessageButton(document.getElementById('infoIcon'), document.getElementById('infoDialog'), document.getElementById('infoBackground'), 'active');
+    shareDialog = new MessageButton(document.getElementById('shareButton'), document.getElementById('shareDialog'), document.getElementById('shareBackground'), 'active');
 
     if(!state.signed_in){
         sm.setCanSave(false);
@@ -35,10 +36,13 @@ $(document).ready(function(){
    // select the target node
 
 
+
+
    dataPauser.on();
    $('iframe.resultsPanel').load(function(){
         dm.requestData();
    });
+
 
 });
 
@@ -107,7 +111,7 @@ var preLoad = function(){
 
 
 var loadSave = function(data, status){
-    console.log(data);
+    //console.log(data);
     codePauser.off();
     editor.loadText(data.code);
     $('#save_form_id').val(data.id);

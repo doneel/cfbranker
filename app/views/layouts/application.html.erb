@@ -11,7 +11,6 @@
 
 <div class="banner">
   <a href="/" class="bannerText">CFB Ranker</a>
-
   <div style="float: right;" class="loginControls">
     <% if user_signed_in? %>
       <%= link_to('', destroy_user_session_path, :method => :delete, :class => 'icon-log-out bannerIcon') %>
@@ -24,6 +23,10 @@
   <a id="helpIcon" style="display:none;" class="bannerIcon icon-help-circled bannerIcon"></a>
   <a id="infoIcon" class="bannerIcon icon-information-circled bannerIcon"></a>
 </div>
+
+<% flash.each do |name, msg| -%>
+      <%= content_tag :div, msg, class: 'flashMessage' %>
+<% end -%>
 
 <%= yield %>
 

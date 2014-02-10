@@ -5,10 +5,12 @@ RankV2::Application.routes.draw do
   get "algorithm/load"
   devise_for :users
   get '/controls/updatecsvs', to: 'controls#updatecsvs'
+  get '/controls/noaccess', to: 'controls#deniedAccess'
   post '/controls/uploadteams', to: 'controls#uploadteams'
   post '/controls/uploadgames', to: 'controls#uploadgames'
   post '/controls/uploadperformances', to: 'controls#uploadperformances'
   post '/controls/uploadconferences', to: 'controls#uploadconferences'
+
 
   get '/create', to: 'ranks#write'
   get '/req_data', to: 'ranks#getData'

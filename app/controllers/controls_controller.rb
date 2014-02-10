@@ -4,6 +4,7 @@ class ControlsController < ApplicationController
 
 	before_filter :check_for_year
 	skip_before_action :check_for_year, only: [:updatecsvs]
+	skip_before_action :check_for_admin, only: [:deniedAccess]
 	def uploadteams
 		num = Team.import(params[:file], params[:year])
 		flash[:notice] = "Succesfully added #{num} teams"
@@ -49,4 +50,10 @@ class ControlsController < ApplicationController
 	end
 
 	def check_for_admin
+		unless current_user.try(:admin?)
+			flash[:error] = "You're not an admin, sorry."
+			redirect_to '/controls/noaccess'
+		end
+	end
+
 end

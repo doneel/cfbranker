@@ -37,7 +37,6 @@ class RanksController < ApplicationController
 
 		@algorithm = Algorithm.new
 		@new_algorithm = Algorithm.new
-#		@teamJSON = Year.find(Team.getAllJSON.to_s)
 		@availableYears = Season.all.inject(Array.new) do |sel, season|
 			sel << [season.year, season.year]
 		end
@@ -45,14 +44,11 @@ class RanksController < ApplicationController
 		Season.all.each do |season|
 			@maxWeeks[season.year] = season.num_weeks
 		end
-		puts "MAx weeks"
-		puts @maxWeeks
 		@availableWeeks = Array.new
 		for i in 1..15
 			@availableWeeks << [i, i]
 		end
 		@availableWeeks << ["Final", 20]
-		puts "SEROUSLY"
 		puts @availableYears
 	end
 

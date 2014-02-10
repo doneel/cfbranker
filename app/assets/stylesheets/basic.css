@@ -7,6 +7,7 @@ body{
 	src: url('FNL_DEMO-KCFonts.ttf');
 }
 
+
 .bigIcon{
 	font-size: 30px;
 	height: 50%;
@@ -130,7 +131,7 @@ body{
 
 .resultsPanel{
     height: calc(100% - 2px);
-    background: green;
+    background: none;
     border: 1px solid black;
     border-left: none;
     overflow: hidden;
@@ -224,13 +225,16 @@ body, html{
 .controlsCenteringDiv{
     margin: 0 auto;
     width: 557px;
+    height: 100%;
 }
 
 .controlButton{
+    /*
     top: 0px;
     margin-top: 3px;
     margin-left: 10px;
     margin-right: 10px;
+    */
     -moz-box-shadow:inset 0px 1px 22px 0px #3c3c3c;
     -webkit-box-shadow:inset 0px 1px 22px 0px #3c3c3c;
     box-shadow:inset 0px 1px 22px 0px #1c1c1c;
@@ -253,7 +257,9 @@ body, html{
     border-bottom-left-radius:0px;
     text-indent:0;
     border: 1px solid black;
+
     display:inline-table;
+
     color: #777;
     font-family:Trebuchet MS;
     font-size:15px;
@@ -266,7 +272,7 @@ body, html{
     text-align:center;
 }
 .controlButton:hover {
-    border:1px solid #184663;
+    border:1px solid #5c5c5c;
     box-shadow:inset 0px 1px 22px 0px #5c5c5c;
    /* background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #d2e7fa), color-stop(1, #9ea9b0) );
     background:-moz-linear-gradient( center top, #d2e7fa 5%, #9ea9b0 100% );
@@ -301,8 +307,29 @@ option.selectBoxOption{
     color: #555;
 }
 
-#loginBackground.active, #helpBackground.active, #infoBackground.active, #loginDialog.active, #helpDialog.active, #infoDialog.active{
+.dialog.active, .modalBackground.active, #loginBackground.active, #helpBackground.active, #infoBackground.active, #loginDialog.active, #helpDialog.active, #infoDialog.active{
      display: block;
+}
+
+.dialog{
+    background-color: rgba(20, 20, 20, 0.9 );
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+
+    -webkit-box-shadow: 0 0 20px 0 #222;
+    -moz-box-shadow: 0 0 20px 0 #222;
+    box-shadow: 0 0 20px 0 #222;
+    color: #AAA;
+
+    width: 500px;
+
+    display: none;
+    left: 30%;
+    top: 5%;
+    padding: 10px;
+    position: absolute;
+    z-index: 1000;
 }
 
 #loginDialog {

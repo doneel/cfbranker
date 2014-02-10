@@ -22,6 +22,16 @@
 </div>
 
 
+<div class="modalBackground" id="shareBackground"></div>
+<div class="dialog" id="shareDialog">
+    <p>
+        <h1>Sharing is currently under development!</h1>
+        <p>This feature opens up a potential hornets' next of security issues.</p>
+        <p>Until I can get some technical aspects nailed down, we're gonna err on the safe side. If you've got some expertise and would like to
+            help out, please reach out!
+        </p>
+    </p>
+</div>
 
 <div class="modalBackground" id="infoBackground"></div>
 <div id="infoDialog">
@@ -68,16 +78,21 @@
             	<div id="codeEditorContainer">
             	</div>
                 <div class="controlBar">
-                    <div class="controlsCenteringDiv">
-                        <a class="controlButton" id="saveButton" onclick="saveCode()">Save</a>
-                        <a class="controlButton" onclick="runAlgorithm()">Run</a>
-                        <label class="selectBoxLabel" >Year</label>
-                        <select  id="yearBox">Season
-                        </select>
-                        <label class="selectBoxLabel" >Week</label>
-                        <select  id="weekBox">Week
-                        </select>
-                    </div>
+                    <table class="controlsCenteringDiv">
+                        <tbody>
+                            <tr>
+                                <td><a class="controlButton" id="saveButton" onclick="saveCode()">Save</a></td>
+                                <td><a class="controlButton" onclick="runAlgorithm()">Run</a></td>
+                                <td><label class="selectBoxLabel" >Year</label></td>
+                                <td><select  id="yearBox">Season</td>
+                                <td></select></td>
+                                <td><label class="selectBoxLabel" >Week</label></td>
+                                <td><select  id="weekBox">Week</td>
+                                <td></select></td>
+                                <td><a class="controlButton" id="shareButton">Share</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
         </div>
     </div>
