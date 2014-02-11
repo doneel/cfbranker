@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20140210203146) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "algorithms", force: true do |t|
     t.integer  "user_id"
     t.text     "code"
@@ -43,7 +46,6 @@ ActiveRecord::Schema.define(version: 20140210203146) do
 
   create_table "performances", force: true do |t|
     t.integer  "year"
-    t.integer  "date"
     t.integer  "team_code"
     t.integer  "game_code"
     t.integer  "rush_att"
@@ -408,7 +410,7 @@ ActiveRecord::Schema.define(version: 20140210203146) do
     t.boolean  "admin",                  default: false
   end
 
-  add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end
