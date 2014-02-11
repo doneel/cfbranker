@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+#HeRKU
+gem 'rails_12factor', group: :production
+
 gem 'jquery-ui-rails'
 
 #danny's auth
