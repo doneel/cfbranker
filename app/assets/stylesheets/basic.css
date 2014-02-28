@@ -131,6 +131,7 @@ body{
 
 .resultsPanel{
     height: calc(100% - 2px);
+    width: calc(100% - 1px);
     background: none;
     border: 1px solid black;
     border-left: none;

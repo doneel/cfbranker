@@ -50,20 +50,20 @@ class Team < ActiveRecord::Base
 
 		# SCHEDULE
 		sched = Array.new
-		Game.find_all_by_home_team_code(team_code).each do |game|
-			puts game.week
-			puts maxWeek
-			puts game.date
-			puts
+		Game.where(:home_team_code => team_code, :year => year).each do |game|
+			#puts game.week
+			#puts maxWeek
+			#puts game.date
+			#puts
 			if game.week <= maxWeek
 				sched << game.package(team_code, year)
 			end
 		end
-		Game.find_all_by_visit_team_code(team_code).each do |game|
-			puts game.week
-			puts maxWeek
-			puts game.id
-			puts game.date
+		Game.where(:visit_team_code => team_code, :year => year).each do |game|
+			#puts game.week
+			#puts maxWeek
+			#puts game.id
+			#puts game.date
 
 			if game.week <= maxWeek
 				sched << game.package(team_code, year)
@@ -75,7 +75,7 @@ class Team < ActiveRecord::Base
 		# COUNT GAMES AND WINS -> WIN %
 		games = 0
 		wins = 0
-		puts 'dates!'
+		#puts 'dates!'
 		sched.each do |game|
 			puts game.date
 			if(game.win == true)

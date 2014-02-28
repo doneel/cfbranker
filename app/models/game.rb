@@ -1,5 +1,5 @@
 class Game < ActiveRecord::Base
-	#self.primary_key = "game_code" No longer
+	self.primary_key = "game_code" #No longer... yes longer I guess
 	has_many :performances
 	belongs_to :season, :foreign_key => 'year'
 
@@ -78,9 +78,11 @@ class Game < ActiveRecord::Base
 		pCand.team = Team.find_by(:team_code => team_id, :year => year).name
 		pCand.opp = Team.find_by(:team_code => opp_id, :year => year).name
 
-		team_perf = Performance.find(:all, :conditions => ["game_code = ? AND team_code = ?", game_code, team_id]).first#Performance.where(:game_code => game_code, team_code => team_id) Performance.find(:all, :conditions => ["game_code = ? AND team_code = ?", game_code, team_id]).first
-		opp_perf = Performance.find(:all, :conditions => ["game_code = ? AND team_code = ?", game_code, opp_id]).first
+#                     find(:all, :conditions => ["game_code = ? AND team_code = ?", game_code, team_id]).first#Performance.where(:game_code => game_code, team_code => team_id) Performance.find(:all, :conditions => ["game_code = ? AND team_code = ?", game_code, team_id]).first
+		#opp_perf = Performance.find(:all, :conditions => ["game_code = ? AND team_code = ?", game_code, opp_id]).first
 
+		team_perf = Performance.where(:game_code => game_code, :team_code => team_id).first
+		opp_perf = Performance.where(:game_code => game_code, :team_code => opp_id).first
 
 #		if team_perf === nil or opp_perf === nil
 #
@@ -90,10 +92,7 @@ class Game < ActiveRecord::Base
 			pCand.team_score = team_perf.points
 			pCand.opp_score = opp_perf.points
 		rescue
-			puts week
-			puts date
 		ensure
-			puts
 		end
 
 
@@ -111,8 +110,6 @@ class Game < ActiveRecord::Base
 		#BIG LOOP FOR ALL FIELDS
 		restricted_fields = Array.new(["updated_at", "created_at", "id", "year", "team_code", "date"])
 		num = 0
-		puts 'date incoming: '
-		puts pCand.date
 		team_perf.attribute_names.each do |field|
 			field2 = field
 			if restricted_fields.include?(field) # == "updated_at" or field == "created_at" or
@@ -135,8 +132,7 @@ class Game < ActiveRecord::Base
 			#num += 1
 			#end
 		end
-		puts 'DATE BEFORE SUBMIT: '
-		puts pCand.date
+		#puts pCand.date
 		return pCand
 	end
 end

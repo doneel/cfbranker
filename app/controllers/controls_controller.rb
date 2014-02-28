@@ -52,7 +52,7 @@ class ControlsController < ApplicationController
 	def check_for_admin
 		unless current_user.try(:admin?)
 			flash[:error] = "You're not an admin, sorry."
-			redirect_to '/controls/noaccess'
+			#redirect_to '/controls/noaccess'
 		end
 	end
 

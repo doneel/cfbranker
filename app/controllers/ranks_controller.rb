@@ -16,18 +16,7 @@ class RanksController < ApplicationController
 			end
 			saveArray = Array.new
 			saves.each do |alg|
-				s = Algorithm_Option.new
-				s.id = alg.id
-				s.name = alg.save_name
-				if (alg.updated_at.today?)
-					s.timestamp = "Today, at " + alg.updated_at.strftime("%H:%M:%S")
-				else
-					s.timestamp = Date::MONTHNAMES[alg.updated_at.month] + ' ' + alg.updated_at.mday.to_s + ', ' + alg.updated_at.year.to_s
-				end
-				s.delete_url = "/algorithm/delete/?id=" + alg.id.to_s
-				s.load_url = "/algorithm/load/?id=" + alg.id.to_s
-				s.last_time = alg.updated_at
-				saveArray << s
+				saveArray << alg.getAlgorithmOption
 			end
 			saveArray.sort! {|a,b| a.last_time <=> b.last_time}
 			@saveArray = saveArray.to_json
@@ -49,7 +38,7 @@ class RanksController < ApplicationController
 			@availableWeeks << [i, i]
 		end
 		@availableWeeks << ["Final", 20]
-		puts @availableYears
+		#puts @availableYears
 	end
 
 	def getData
@@ -72,8 +61,8 @@ class RanksController < ApplicationController
 			year = Array.new(16)
 			year[params[:week].to_i] = @teamJSON
 			Rails.cache.write(params[:year], year)
-			puts @teamJSON[1].schedule[1].opp;
-			puts @teamJSON[1].schedule[1].date;
+			#puts @teamJSON[1].schedule[1].opp;
+			#puts @teamJSON[1].schedule[1].date;
 		end
 		render	:json => @teamJSON
 	end
@@ -83,6 +72,3 @@ class RanksController < ApplicationController
 	end
 end
 
-class Algorithm_Option
-	attr_accessor	:id, :name, :timestamp, :logo, :delete_url, :load_url, :last_time
-end

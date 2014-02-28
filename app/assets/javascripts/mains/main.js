@@ -137,6 +137,7 @@ function initializeSaveAsForm(){
             savePauser.off();
         })
         .bind('ajax:success', function(xhr, data, status){
+                console.log(data);
                 sm.addEntry(data);
                 $('#save_form_id').val(data.id);
         })

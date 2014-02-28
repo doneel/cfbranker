@@ -107,6 +107,7 @@ SavesManager.prototype.setSelected = function(div){
 
 SavesManager.prototype.addEntry = function(entryData){
 	var context = this;
+        console.log(entryData);
 	var loadFunc = function(){
 		context.preLoadFunction();
 		context.setSelected(this);

@@ -32,11 +32,11 @@ ActiveRecord::Schema.define(version: 20140210203146) do
   end
 
   create_table "games", force: true do |t|
-    t.integer  "game_code"
+    t.integer  "game_code",       limit: 8
     t.date     "date"
-    t.integer  "visit_team_code"
-    t.integer  "home_team_code"
-    t.integer  "stadium_code"
+    t.integer  "visit_team_code", limit: 8
+    t.integer  "home_team_code",  limit: 8
+    t.integer  "stadium_code",    limit: 8
     t.string   "site"
     t.integer  "week"
     t.integer  "year"
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 20140210203146) do
   create_table "performances", force: true do |t|
     t.integer  "year"
     t.integer  "team_code"
-    t.integer  "game_code"
+    t.integer  "game_code",             limit: 8
     t.integer  "rush_att"
     t.integer  "rush_yard"
     t.integer  "rush_td"
@@ -384,7 +384,7 @@ ActiveRecord::Schema.define(version: 20140210203146) do
   end
 
   create_table "teams", force: true do |t|
-    t.integer  "team_code"
+    t.integer  "team_code",       limit: 8
     t.string   "name"
     t.integer  "conference_code"
     t.integer  "year"

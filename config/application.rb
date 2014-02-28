@@ -22,6 +22,10 @@ module RankV2
     # config.i18n.default_locale = :de
        #
     #for horoku
-    config.assets.initialize_on_precompile = false
+    #config.assets.initialize_on_precompile = false
+    #config.assets.precompile += ['*.js', '*.css', '.svg', '.woff', '.ttf', "mains/main.js", "mains/rankFrameMain.js", "selectric,css", "basic.css"]
+    #config.assets.paths << Rails.root.join('app', 'assets', 'fonts', 'team_logos')
+    config.assets.enabled = false
+    config.assets.compile = true 
   end
 end

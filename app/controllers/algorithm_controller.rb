@@ -34,17 +34,9 @@ class AlgorithmController < ApplicationController
 		if @a.save
 		  	flash[:notice] = "It totally saved!"
 		  	flash[:color]= "valid"
-			aj = Algorithm_Option.new
-			aj.name = @a.save_name
-			aj.id = @a.id
-			if (@a.created_at.today?)
-				aj.timestamp = "Today, at " + @a.created_at.strftime("%H:%M:%S")
-			else
-				aj.timestamp = Date::MONTHNAMES[@a.created_at.month] + ' ' + @a.created_at.mday.to_s + ', ' + @a.created_at.year.to_s
-			end
 			current_user.current_alg_id = @a.id
 			current_user.save
-			render :json => aj
+			render :json => @a.getAlgorithmOption
 		else
 			flash[:notice] = "Form is invalid"
 		  	flash[:color]= "invalid"

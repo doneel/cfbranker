@@ -3,8 +3,8 @@ class CreatePerformances < ActiveRecord::Migration
     create_table :performances do |t|
     	t.integer			"year"
 
-		t.integer  		 	"team_code"
-		t.integer   		"game_code"
+		t.integer  		"team_code"
+		t.column                "game_code", :bigint
 		t.integer   		"rush_att"
 		t.integer   		"rush_yard"
 		t.integer   		"rush_td"
