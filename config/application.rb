@@ -24,8 +24,12 @@ module RankV2
     #for horoku
     #config.assets.initialize_on_precompile = false
     #config.assets.precompile += ['*.js', '*.css', '.svg', '.woff', '.ttf', "mains/main.js", "mains/rankFrameMain.js", "selectric,css", "basic.css"]
-    #config.assets.paths << Rails.root.join('app', 'assets', 'fonts', 'team_logos')
-    config.assets.enabled = false
+    config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
+    config.assets.enabled = true
     config.assets.compile = true 
+    config.assets.precompile += %w( separate-*.js )
+    config.assets.precompile += %w( *.ttf  )
+    config.assets.precompile += %w( *.woff )
+    config.assets.precompile += %w( *.svg )
   end
 end

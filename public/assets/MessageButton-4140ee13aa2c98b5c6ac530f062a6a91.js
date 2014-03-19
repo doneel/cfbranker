@@ -1,0 +1,1 @@
+function MessageButton(o,s,e,n){var c=function(){$(e).click()};$(o).click(function(){$(e).addClass(n),$(s).addClass(n),$(window).on("keydown",c)}),$(e).click(function(){return $(e).removeClass(n),$(s).removeClass(n),$(window).off("keydown",c),!1})}MessageButton.prototype.hide=function(){$(backgrounddiv).toggleclass(classtoggle),$(messagediv).toggleclass(classtoggle)};

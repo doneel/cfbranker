@@ -1,0 +1,1 @@
+__ace_shadowed__.define("ace/snippets/soy_template",["require","exports","module"],function(e,t){t.snippetText="",t.scope="soy_template"});

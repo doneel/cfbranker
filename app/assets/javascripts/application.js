@@ -13,7 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_directory .
+//= require_directory ./globals
 //= require ace-builds/src-noconflict/ace.js
 //= require ace-builds/src-noconflict/theme-monokai.js
 //= require ace-builds/src-noconflict/mode-javascript.js

@@ -1,0 +1,1 @@
+__ace_shadowed__.define("ace/snippets/jsoniq",["require","exports","module"],function(e,s){s.snippetText="",s.scope="jsoniq"});

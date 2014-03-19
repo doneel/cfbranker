@@ -1,5 +1,5 @@
 window.onload = function(){
-	if(window.addEventListener){
+    if(window.addEventListener){
 		addEventListener("message", getMessage, false);
     } else{
 		attachEvent("onmessage", getMessage);
@@ -39,13 +39,17 @@ function buildTeamTile(rank, team){
     teamSide.className = 'teamSide';
     teamTile.appendChild(teamSide);
 
-    var teamLogo = document.createElement('img');
-    teamLogo.className = 'teamLogo';
-    try{
-        teamLogo.src = '/assets/team_logos/' + team.team_code + '.png';
-    }catch(error){}
+    
+    var teamLogoContainer = document.createElement('div');
+    teamLogoContainer.className = ' teamLogo';
 
-    teamSide.appendChild(teamLogo);
+    var teamLogo =  document.createElement('div');
+    teamLogo.className += ' team-logo';
+    teamLogo.className += ' team' + team.team_code;
+
+    teamLogoContainer.appendChild(teamLogo);
+
+    teamSide.appendChild(teamLogoContainer);
 
     var teamName = document.createElement('p');
     teamName.className = 'teamName';

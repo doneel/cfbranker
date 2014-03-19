@@ -1,3 +1,6 @@
 /*
  *= require jquery.ui.all
+ *= require selectric.css
+ *= require selectric
+ *= require_directory .
  */

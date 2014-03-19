@@ -1,0 +1,1 @@
+__ace_shadowed__.define("ace/snippets/curly",["require","exports","module"],function(e,c){c.snippetText="",c.scope="curly"});

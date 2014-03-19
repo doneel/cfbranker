@@ -77,7 +77,7 @@ class Team < ActiveRecord::Base
 		wins = 0
 		#puts 'dates!'
 		sched.each do |game|
-			puts game.date
+			#puts game.date
 			if(game.win == true)
 				wins += 1
 			end

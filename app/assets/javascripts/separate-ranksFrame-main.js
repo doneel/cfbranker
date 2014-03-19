@@ -1,0 +1,1 @@
+//= require ./mains/ranksFrameMain.js

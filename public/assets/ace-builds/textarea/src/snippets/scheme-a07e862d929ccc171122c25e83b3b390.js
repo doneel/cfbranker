@@ -1,0 +1,1 @@
+__ace_shadowed__.define("ace/snippets/scheme",["require","exports","module"],function(e,s){s.snippetText="",s.scope="scheme"});

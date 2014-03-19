@@ -1,0 +1,1 @@
+__ace_shadowed__.define("ace/snippets/lucene",["require","exports","module"],function(e,n){n.snippetText="",n.scope="lucene"});
