@@ -41,6 +41,7 @@ CodeEditor.prototype.resize = function(){
 
 CodeEditor.prototype.loadText = function(newText){
 	this.aceEditor.setValue(newText);
+        this.aceEditor.clearSelection();
 };
 
 /**
