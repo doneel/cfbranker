@@ -71,7 +71,7 @@ class RanksController < ApplicationController
 	end
 
 	def ranksFrame
-		#render :layout => false
+		render :layout => false
 	end
 end
 
