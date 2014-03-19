@@ -10,7 +10,8 @@ function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallba
 
 	var context = this;
 	$(this.yearBox).change(function(){
-			context.fixSelects();
+			context.resetWeeks($(this).val());
+                        console.log($(this).val());
 			context.requestData();
 	});
 	$(this.weekBox).change(function(){
@@ -44,6 +45,8 @@ DataManager.prototype.addOptions = function(){
 	while(this.weekBox.hasChildNodes() ){
 		this.weekBox.removeChild(this.weekBox.lastChild);
 	}
+
+        console.log(this.map);
 	var largest = 0;
 	for(var opt in this.map){
 		if(this.map.hasOwnProperty(opt)){
@@ -52,11 +55,15 @@ DataManager.prototype.addOptions = function(){
 			$(newOpt).val(opt);
 			this.yearBox.appendChild(newOpt);
 			if(opt > largest){
-					largest = opt;
+			    largest = opt;
 			}
 		}
 	}
 	$(this.yearBox).val(largest);
+        this.resetWeeks(largest);
+
+
+/*        
 
 	for(var i = 1; i < this.map[largest]; i++){
 		var newOpt = document.createElement('option');
@@ -66,7 +73,25 @@ DataManager.prototype.addOptions = function(){
 		this.weekBox.appendChild(newOpt);
 		$(this.weekBox).val(i);
 	}
+        */
 };
+
+DataManager.prototype.resetWeeks = function(year){
+    console.log(year);
+    this.weekBox.innerHTML = "";
+    var optsArray = this.map[year];
+    console.log(this.map[year]);
+    for(var i = 0; i < optsArray.length; i++){
+        var newOpt = document.createElement('option');
+        newOpt.innerHTML = optsArray[i][0];
+        newOpt.className = 'selectBoxOption';
+        $(newOpt).val(optsArray[i][0]);
+        this.weekBox.appendChild(newOpt);
+        console.log(newOpt);
+    }
+
+}
+
 
 DataManager.prototype.fixSelects = function(){
 	if($(weekBox).val() > this.map[$(this.yearBox).val()]){

@@ -30,8 +30,19 @@ class RanksController < ApplicationController
 			sel << [season.year, season.year]
 		end
 		@maxWeeks = Hash.new
+
+                @weeksMap = Hash.new
 		Season.all.each do |season|
 			@maxWeeks[season.year] = season.num_weeks
+                        @weeksMap[season.id] = Array.new
+                        maxReg = season.lastRegWeek
+                        max = season.maxWeek
+                        for i in 1..maxReg
+                            @weeksMap[season.id] << [i, i]
+                        end
+                        @weeksMap[season.id] << ["Bowls", max]
+
+
 		end
 		@availableWeeks = Array.new
 		for i in 1..15
