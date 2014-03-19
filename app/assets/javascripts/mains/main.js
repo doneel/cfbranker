@@ -119,7 +119,8 @@ var loadSave = function(data, status){
 };
 
 var saveAs = function(name){
-    editor.setDefaultText();
+    //editor.setDefaultText();
+    //Use the text in the editor as the new save text
     document.getElementById('saveas_form_name').value = name;
     $('#saveAsForm').submit();
 };
