@@ -25,6 +25,18 @@ DivPauser.prototype.on = function(){
 
 	this.div.appendChild(this.cover);
 	this.isOn = true;
+
+        var context = this;
+        
+        $(this.div).bind('resize', {context: context}, this.updateSpinner);
+};
+
+DivPauser.prototype.updateSpinner = function(e){
+            context = e.data.context;
+            
+            context.spinner.stop();
+            context.spinner = context.makeSpinner();
+            context.spinner.spin(context.div);
 };
 
 DivPauser.prototype.off = function(){
@@ -38,6 +50,7 @@ DivPauser.prototype.off = function(){
 
 	this.isOn = false;
 
+        $(this.div).unbind('resize', this.updateSpinner);
 };
 
 DivPauser.prototype.makeSpinner = function(){

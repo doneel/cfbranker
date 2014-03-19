@@ -4,7 +4,8 @@ $(document).ready(function(){
 	editor = new CodeEditor('codeEditorContainer', 'javascript', saveCode);
 
 	expandingDiv = new ExpandingDiv(document.querySelector('.saveBar'), '0%', '100%', function(){
-        editor.resize();
+            editor.resize();
+            $('.workPane').resize();
     });
 
     $(function(){
