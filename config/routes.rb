@@ -10,7 +10,7 @@ RankV2::Application.routes.draw do
   post '/controls/uploadgames', to: 'controls#uploadgames'
   post '/controls/uploadperformances', to: 'controls#uploadperformances'
   post '/controls/uploadconferences', to: 'controls#uploadconferences'
-
+  post '/controls/cacheall', to: 'controls#cacheall'
 
   get '/create', to: 'ranks#write'
   get '/req_data', to: 'ranks#getData'

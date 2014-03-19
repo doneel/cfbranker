@@ -29,6 +29,24 @@ class ControlsController < ApplicationController
 		redirect_to '/controls/updatecsvs'
 	end
 
+        def cacheall
+            year = params[:year]
+            ((Array (1..15)) << 20).each do |week|
+
+                @teamJSON = Team.getData(year, week)
+                if Rails.cache.exist?(year)
+                    yearArray = Rails.cache.read(year)
+                else
+                    yearArray = Array.new(16)
+                end
+                yearArray[week] = @teamJSON
+                Rails.cache.write(year, yearArray)
+            end
+
+		flash[:notice] = "All cached, good work."
+		redirect_to '/controls/updatecsvs'
+        end
+
 	def updatecsvs
 		#@text = Performance.findTeamPoints('Stanford')
 		#@sampleJSON = Team.getAllJSON
