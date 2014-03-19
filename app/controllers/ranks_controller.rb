@@ -26,10 +26,6 @@ class RanksController < ApplicationController
 
 		@algorithm = Algorithm.new
 		@new_algorithm = Algorithm.new
-		@availableYears = Season.all.inject(Array.new) do |sel, season|
-			sel << [season.year, season.year]
-		end
-		@maxWeeks = Hash.new
 
                 @weeksMap = Hash.new
 		Season.all.each do |season|
@@ -41,15 +37,7 @@ class RanksController < ApplicationController
                             @weeksMap[season.id] << [i, i]
                         end
                         @weeksMap[season.id] << ["Bowls", max]
-
-
 		end
-		@availableWeeks = Array.new
-		for i in 1..15
-			@availableWeeks << [i, i]
-		end
-		@availableWeeks << ["Final", 20]
-		#puts @availableYears
 	end
 
 	def getData

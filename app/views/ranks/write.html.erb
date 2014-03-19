@@ -134,8 +134,5 @@
     var savesArr = <%= if @saveArray then @saveArray.html_safe else [] end %>;
 
     /* Read the available weeks for each year */
-    var numWeeksMap = <%= @maxWeeks.to_json.html_safe %>;
-
     var weeksMap = <%= @weeksMap.to_json.html_safe %>;
-    console.log(numWeeksMap);
 </script>
