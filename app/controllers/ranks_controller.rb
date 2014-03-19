@@ -27,17 +27,21 @@ class RanksController < ApplicationController
 		@algorithm = Algorithm.new
 		@new_algorithm = Algorithm.new
 
-                @weeksMap = Hash.new
-		Season.all.each do |season|
-			@maxWeeks[season.year] = season.num_weeks
-                        @weeksMap[season.id] = Array.new
-                        maxReg = season.lastRegWeek
-                        max = season.maxWeek
-                        for i in 1..maxReg
-                            @weeksMap[season.id] << [i, i]
-                        end
-                        @weeksMap[season.id] << ["Bowls", max]
-		end
+                if Rails.cache.exist?(:weeksMap)
+                    @weeksMap = Rails.cache.read(:weeksMap)
+                else
+                    @weeksMap = Hash.new
+                    Season.all.each do |season|
+                            @weeksMap[season.year] = Array.new
+                            maxReg = season.lastRegWeek
+                            max = season.maxWeek
+                            for i in 1..maxReg
+                                @weeksMap[season.year] << [i, i]
+                            end
+                            @weeksMap[season.year] << ["Bowls", max]
+                    end
+                    Rails.cache.write(:weeksMap, @weeksMap)
+                end
 	end
 
 	def getData
