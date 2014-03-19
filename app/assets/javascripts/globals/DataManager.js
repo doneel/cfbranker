@@ -85,7 +85,7 @@ DataManager.prototype.resetWeeks = function(year){
         var newOpt = document.createElement('option');
         newOpt.innerHTML = optsArray[i][0];
         newOpt.className = 'selectBoxOption';
-        $(newOpt).val(optsArray[i][0]);
+        $(newOpt).val(optsArray[i][1]);
         this.weekBox.appendChild(newOpt);
         console.log(newOpt);
     }
