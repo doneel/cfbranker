@@ -1,20 +1,23 @@
-function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallback, processDataFunc){
+function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallback, processDataFunc, changeCallBack){
 	this.yearBox = yearBox;
 	this.weekBox = weekBox;
 	this.map = selectBoxMap;
 	this.getDataFunc = reqDataFunc;
 	this.afterGetCallback = afterReqCallback;
 	this.processDataFunc = processDataFunc;
+        this.changeCallBack = changeCallBack;
 
 	this.dataCache = {};
 
 	var context = this;
 	$(this.yearBox).change(function(){
-			context.resetWeeks($(this).val());
-			context.requestData();
+                context.resetWeeks($(this).val());
+                context.requestData();
+                context.changeCallBack();
 	});
 	$(this.weekBox).change(function(){
 		context.requestData();
+                context.changeCallBack();
 	});
 
 	$(yearBox).on('mouseover', function(event){
@@ -86,7 +89,6 @@ DataManager.prototype.resetWeeks = function(year){
     }
     $(this.weekBox).val(optsArray[optsArray.length - 1][1]);
     
-
 }
 
 

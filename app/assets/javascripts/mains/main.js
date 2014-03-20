@@ -20,7 +20,7 @@ $(document).ready(function(){
     })();
 
     cw = document.querySelector('.resultsPanel').contentWindow;
-    dm = new DataManager(document.querySelector('#yearBox'), document.querySelector('#weekBox'), weeksMap, getData, updateData, remap);
+    dm = new DataManager(document.querySelector('#yearBox'), document.querySelector('#weekBox'), weeksMap, getData, updateData, remap, updateSelectricBoxes);
 
     hD = new MessageButton(document.getElementById('helpIcon'), document.getElementById('helpDialog'), document.getElementById('helpBackground'), 'active');
     iD = new MessageButton(document.getElementById('infoIcon'), document.getElementById('infoDialog'), document.getElementById('infoBackground'), 'active');
@@ -43,10 +43,12 @@ $(document).ready(function(){
    $('iframe.resultsPanel').load(function(){
         dm.requestData();
    });
-
-
 });
 
+
+function updateSelectricBoxes(){
+    $('select').selectric('refresh');
+}
 var getData = function(optArray, callback, exData){
     dataPauser.on();
     var request = $.get('/req_data?' + 'year=' + optArray[0] + '&week=' + optArray[1], function(data, status){
