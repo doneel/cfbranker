@@ -1,1 +1,0 @@
-__ace_shadowed__.define("ace/snippets/golang",["require","exports","module"],function(e,n){n.snippetText="",n.scope="golang"});

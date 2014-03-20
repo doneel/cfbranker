@@ -1,1 +1,0 @@
-__ace_shadowed__.define("ace/snippets/autohotkey",["require","exports","module"],function(e,o){o.snippetText="",o.scope="autohotkey"});

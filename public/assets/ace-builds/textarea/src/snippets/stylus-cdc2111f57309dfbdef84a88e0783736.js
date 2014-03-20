@@ -1,1 +1,0 @@
-__ace_shadowed__.define("ace/snippets/stylus",["require","exports","module"],function(e,s){s.snippetText="",s.scope="stylus"});

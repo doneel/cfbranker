@@ -1,1 +1,0 @@
-__ace_shadowed__.define("ace/snippets/json",["require","exports","module"],function(e,s){s.snippetText="",s.scope="json"});

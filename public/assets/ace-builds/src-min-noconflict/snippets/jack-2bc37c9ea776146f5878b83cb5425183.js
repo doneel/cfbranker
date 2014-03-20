@@ -1,1 +1,0 @@
-ace.define("ace/snippets/jack",["require","exports","module"],function(e,c){c.snippetText="",c.scope="jack"});

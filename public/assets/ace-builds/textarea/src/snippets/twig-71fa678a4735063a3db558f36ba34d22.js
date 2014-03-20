@@ -1,1 +1,0 @@
-__ace_shadowed__.define("ace/snippets/twig",["require","exports","module"],function(e,i){i.snippetText="",i.scope="twig"});

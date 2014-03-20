@@ -1,1 +1,0 @@
-__ace_shadowed__.define("ace/snippets/matlab",["require","exports","module"],function(e,a){a.snippetText="",a.scope="matlab"});
