@@ -14,9 +14,9 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_directory ./globals
-//= require ace-builds/src-noconflict/ace.js
-//= require ace-builds/src-noconflict/theme-monokai.js
-//= require ace-builds/src-noconflict/mode-javascript.js
+//= require ace.js
+//= require theme-monokai.js
+//= require mode-javascript.js
 //= require jstat-1.0.0.min.js
 //= require spin.min.js
 //= require jquery.ui.all
