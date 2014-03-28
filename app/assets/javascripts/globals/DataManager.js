@@ -23,7 +23,7 @@ function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallba
 	$(yearBox).on('mouseover', function(event){
 		event.stopPropagation();
 	});
-
+        
 	this.addOptions();
 }
 
@@ -63,7 +63,6 @@ DataManager.prototype.addOptions = function(){
 	$(this.yearBox).val(largest);
         this.resetWeeks(largest);
 
-
 /*        
 
 	for(var i = 1; i < this.map[largest]; i++){
@@ -79,7 +78,11 @@ DataManager.prototype.addOptions = function(){
 
 DataManager.prototype.resetWeeks = function(year){
     this.weekBox.innerHTML = "";
+    if (this.map[year] == null){
+        return;
+    }
     var optsArray = this.map[year];
+    console.log(this.map);
     for(var i = 0; i < optsArray.length; i++){
         var newOpt = document.createElement('option');
         newOpt.innerHTML = optsArray[i][0];

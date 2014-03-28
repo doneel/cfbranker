@@ -42,6 +42,7 @@ class ControlsController < ApplicationController
                 yearArray[week] = @teamJSON
                 Rails.cache.write(year, yearArray)
             end
+            Rails.cache.delete(:weeksMap);
 
 		flash[:notice] = "All cached, good work."
 		redirect_to '/controls/updatecsvs'
