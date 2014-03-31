@@ -122,7 +122,8 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
 	}
         
         var context = this;
-        var giveTrimmed = function(data, extraData){
+        var giveTrimmed = function(rawData, extraData){
+            data = $.extend(true, [], rawData)
             var trimmed = extractSubWeek(data, week);
             context.afterGetCallback(trimmed, extraData);
         }
@@ -140,7 +141,7 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
 		        this.getDataFunc([season, this.map[season][this.map[season].length-1][1]], this.afterGetCallback, extraData);
 		}
                 else{
-                    console.log("Trimming down data for a season we already have!");
+                    console.log("Trimming down data for a season we already have!" + lastWeek);
                     giveTrimmed(this.dataCache[season][lastWeek]);
 
                     /* Have the season's data, just trim down */
