@@ -157,8 +157,18 @@ function extractSubWeek(teamsArr, weekNum){
         while(team.schedule.length > 0 && team.schedule[team.schedule.length - 1].week > weekNum){
             team.schedule.pop();
         }
+        calcTeamStats(team);
     }
     return teamsArr;
+}
+
+function calcTeamStats(team){
+    team.games = team.schedule.length;
+    team.wins = 0;
+    for(var i = 0; i < team.games; i++){
+        if(team.schedule[i].win) team.wins++;
+    }
+    team.win_pct = team.wins / team.games;
 }
 
 
