@@ -73,7 +73,6 @@ function initPausers(){
 function updateData(newData){
     /* Don't switch order */
     //cw.postMessage({newCode: editor.getText(), rawData: newData}, '*');//window.location.protocol + '//' + window.location.host);
-    console.log("Updating cache and running algorithm."); 
     /* Make available to user in teams array */
     teams = dm.updateData(newData);
     dataPauser.off();

@@ -102,7 +102,6 @@ DataManager.prototype.fixSelects = function(){
 };
 
 DataManager.prototype.requestData = function(yearNum, weekNum, exData){
-    console.log("New Request!");
 
 	var season;
 	if (typeof yearNum === 'undefined'){
@@ -128,21 +127,17 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
             var trimmed = context.trimmingFunction(data, week);
             context.afterGetCallback(trimmed, extraData);
         }
-        console.log(this.dataCache);
 	if(this.dataCache[season] && this.dataCache[season][week]){
-                console.log('cache hit!');
 		this.afterGetCallback(this.dataCache[season][week], extraData);
 	}else{
                 var lastWeek = this.map[season][this.map[season].length-1][1];
                 /* Never requested anything */
 		if(!this.dataCache[season]){
-                        console.log("Requesting the season's data.");
 			this.dataCache[season] = [];
                         var doubleArr = [season, this.map[season][this.map[season].length-1][1]];
 		        this.getDataFunc([season, this.map[season][this.map[season].length-1][1]], this.afterGetCallback, extraData);
 		}
                 else{
-                    console.log("Trimming down data for a season we already have!" + lastWeek);
                     giveTrimmed(this.dataCache[season][lastWeek]);
 
                     /* Have the season's data, just trim down */
@@ -159,8 +154,6 @@ DataManager.prototype.updateData = function(newData){
 
 	this.dataCache[$(this.yearBox).val()][$(this.weekBox).val()] = newData;
 
-        console.log("Wrote cache for " + $(this.yearBox).val() + " " + $(this.weekBox).val());
-        console.log(newData);
 
 	return this.processedData;
 };
