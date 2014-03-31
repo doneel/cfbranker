@@ -1,4 +1,4 @@
-function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallback, processDataFunc, changeCallBack){
+function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallback, processDataFunc, trimFunc, changeCallBack){
 	this.yearBox = yearBox;
 	this.weekBox = weekBox;
 	this.map = selectBoxMap;
@@ -6,6 +6,7 @@ function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallba
 	this.afterGetCallback = afterReqCallback;
 	this.processDataFunc = processDataFunc;
         this.changeCallBack = changeCallBack;
+        this.trimmingFunction = trimFunc
 
 	this.dataCache = {};
 
@@ -124,7 +125,7 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
         var context = this;
         var giveTrimmed = function(rawData, extraData){
             data = $.extend(true, [], rawData)
-            var trimmed = extractSubWeek(data, week);
+            var trimmed = context.trimmingFunction(data, week);
             context.afterGetCallback(trimmed, extraData);
         }
         console.log(this.dataCache);

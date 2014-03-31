@@ -20,7 +20,13 @@ $(document).ready(function(){
     })();
 
     cw = document.querySelector('.resultsPanel').contentWindow;
-    dm = new DataManager(document.querySelector('#yearBox'), document.querySelector('#weekBox'), weeksMap, getData, updateData, remap, updateSelectricBoxes);
+    dm = new DataManager(document.querySelector('#yearBox'), document.querySelector('#weekBox'), 
+            weeksMap, 
+            getData, 
+            updateData, 
+            remap,
+            extractSubWeek, 
+            updateSelectricBoxes);
 
     hD = new MessageButton(document.getElementById('helpIcon'), document.getElementById('helpDialog'), document.getElementById('helpBackground'), 'active');
     iD = new MessageButton(document.getElementById('infoIcon'), document.getElementById('infoDialog'), document.getElementById('infoBackground'), 'active');
