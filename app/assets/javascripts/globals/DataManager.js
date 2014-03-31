@@ -82,7 +82,6 @@ DataManager.prototype.resetWeeks = function(year){
         return;
     }
     var optsArray = this.map[year];
-    console.log(this.map);
     for(var i = 0; i < optsArray.length; i++){
         var newOpt = document.createElement('option');
         newOpt.innerHTML = optsArray[i][0];
@@ -102,6 +101,7 @@ DataManager.prototype.fixSelects = function(){
 };
 
 DataManager.prototype.requestData = function(yearNum, weekNum, exData){
+    console.log("New Request!");
 
 	var season;
 	if (typeof yearNum === 'undefined'){
@@ -120,15 +120,33 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
 	if (typeof exData === 'undefined'){
 		extraData = null;
 	}
-
-
+        
+        var context = this;
+        var giveTrimmed = function(data, extraData){
+            var trimmed = extractSubWeek(data, week);
+            context.afterGetCallback(trimmed, extraData);
+        }
+        console.log(this.dataCache);
 	if(this.dataCache[season] && this.dataCache[season][week]){
+                console.log('cache hit!');
 		this.afterGetCallback(this.dataCache[season][week], extraData);
 	}else{
+                var lastWeek = this.map[season][this.map[season].length-1][1];
+                /* Never requested anything */
 		if(!this.dataCache[season]){
+                        console.log("Requesting the season's data.");
 			this.dataCache[season] = [];
+                        var doubleArr = [season, this.map[season][this.map[season].length-1][1]];
+		        this.getDataFunc([season, this.map[season][this.map[season].length-1][1]], this.afterGetCallback, extraData);
 		}
-		this.getDataFunc([season, week], this.afterGetCallback, extraData);
+                else{
+                    console.log("Trimming down data for a season we already have!");
+                    giveTrimmed(this.dataCache[season][lastWeek]);
+
+                    /* Have the season's data, just trim down */
+//                    this.afterGetCallback(this.dataCache[season][this.dataCache[season].length-1], giveTrimmed, extraData);
+    //		this.getDataFunc([season, week], giveTrimmed, extraData);
+		}
 	}
 };
 
@@ -136,7 +154,11 @@ DataManager.prototype.updateData = function(newData){
 	this.rawData = newData;
 	this.processedData = this.processDataFunc($.extend(true, [], this.rawData));
 
+
 	this.dataCache[$(this.yearBox).val()][$(this.weekBox).val()] = newData;
+
+        console.log("Wrote cache for " + $(this.yearBox).val() + " " + $(this.weekBox).val());
+        console.log(newData);
 
 	return this.processedData;
 };

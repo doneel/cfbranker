@@ -49,6 +49,7 @@ $(document).ready(function(){
 function updateSelectricBoxes(){
     $('select').selectric('refresh');
 }
+
 var getData = function(optArray, callback, exData){
     dataPauser.on();
     var request = $.get('/req_data?' + 'year=' + optArray[0] + '&week=' + optArray[1], function(data, status){
@@ -66,7 +67,7 @@ function initPausers(){
 function updateData(newData){
     /* Don't switch order */
     //cw.postMessage({newCode: editor.getText(), rawData: newData}, '*');//window.location.protocol + '//' + window.location.host);
-
+    console.log("Updating cache and running algorithm."); 
     /* Make available to user in teams array */
     teams = dm.updateData(newData);
     dataPauser.off();
@@ -148,6 +149,16 @@ function initializeSaveAsForm(){
         .bind('ajax:failure', function(xhr, status, error){
             console.log('error!: ' + error);
         });
+}
+
+function extractSubWeek(teamsArr, weekNum){
+    for(var i = 0; i < teamsArr.length; i++){
+        team = teamsArr[i];
+        while(team.schedule.length > 0 && team.schedule[team.schedule.length - 1].week > weekNum){
+            team.schedule.pop();
+        }
+    }
+    return teamsArr;
 }
 
 
