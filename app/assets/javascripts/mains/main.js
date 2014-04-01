@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	initializeSaveForm();
-    initializeSaveAsForm();
+        initializeSaveAsForm();
 	editor = new CodeEditor('codeEditorContainer', 'javascript', saveCode);
 
 	expandingDiv = new ExpandingDiv(document.querySelector('.saveBar'), '0%', '100%', function(){
@@ -81,7 +81,7 @@ function updateData(newData){
 }
 
 function runAlgorithm(){
-    cw.postMessage({newCode: editor.getText(), rawData: dm.getRawData()}, '*');//window.location.protocol + '//' + window.location.host);
+    document.querySelector('.resultsPanel').contentWindow.postMessage({newCode: editor.getText(), rawData: dm.getRawData()}, '*');//window.location.protocol + '//' + window.location.host);
 }
 
 function remap(jsonData){

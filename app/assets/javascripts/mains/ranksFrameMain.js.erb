@@ -1,4 +1,4 @@
-window.onload = function(){
+$(document).ready(function(){
     if(window.addEventListener){
 		addEventListener("message", getMessage, false);
     } else{
@@ -8,7 +8,7 @@ window.onload = function(){
 
     $('.banner').css('display', 'none');
 
-};
+});
 
 function getMessage(event){
 	ranker.updateCode(event.data.newCode);
