@@ -1,7 +1,9 @@
-<%= javascript_include_tag 'separate-ranksFrame-main' %>
-<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-<%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-<%= csrf_meta_tags %>
+<head>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag 'separate-ranksFrame-main' %>
+    <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+    <%= csrf_meta_tags %>
+</head>
 
 <div class="rankingsWrapper">
 	<div class="rankings">
