@@ -30,7 +30,7 @@ $(document).ready(function(){
 
     hD = new MessageButton(document.getElementById('helpIcon'), document.getElementById('helpDialog'), document.getElementById('helpBackground'), 'active');
     iD = new MessageButton(document.getElementById('infoIcon'), document.getElementById('infoDialog'), document.getElementById('infoBackground'), 'active');
-    shareDialog = new MessageButton(document.getElementById('shareButton'), document.getElementById('shareDialog'), document.getElementById('shareBackground'), 'active');
+    //shareDialog = new MessageButton(document.getElementById('shareButton'), document.getElementById('shareDialog'), document.getElementById('shareBackground'), 'active');
 
     if(!state.signed_in){
         sm.setCanSave(false);
@@ -49,7 +49,17 @@ $(document).ready(function(){
    $('iframe.resultsPanel').load(function(){
         dm.requestData();
    });
+
+   attachShareButton();
 });
+
+function attachShareButton(){
+    $('#shareButton').on('click', function(){
+        var time = dm.getSelectedString();
+
+        document.querySelector('.resultsPanel').contentWindow.postMessage({share: true, week: time.week, season: time.year, newCode: editor.getText(), rawData: dm.getRawData()}, '*');//window.location.protocol + '//' + window.location.host);
+    });
+}
 
 
 function updateSelectricBoxes(){

@@ -11,9 +11,34 @@ $(document).ready(function(){
 });
 
 function getMessage(event){
+        if(event.data.share == true){
+            openResultsTab(event.data);
+            return;
+        }
 	ranker.updateCode(event.data.newCode);
 	ranker.updateData(event.data.rawData);
-	ranker.run();
+        ranker.run();
+}
+
+function openResultsTab(resultsData){
+    var weekDisplayStr;
+    if (resultsData.week == "Bowl"){
+        weekDisplayStr = "Final Rankings";
+    }else{
+        weekDisplayStr = "Week " + resultsData.week;
+    }
+    var yourDOCTYPE = "<!DOCTYPE html>";
+    var printPreview = window.open('about:blank', '_');
+    var printDocument = printPreview.document;
+    printDocument.open();
+    printDocument.write(yourDOCTYPE+
+            "<html>"+
+            "<div class=\"resultsWrapper\">" + 
+            "<div class=\"resultsWeekLabel\">" + resultsData.season + " " + weekDisplayStr + "</div>" + 
+            "<div> "+
+            document.documentElement.innerHTML+ "</div></div>"+
+       "</html>");
+    printDocument.close();
 }
 
 function buildTeamTile(rank, team){
