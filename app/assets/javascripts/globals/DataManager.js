@@ -32,6 +32,14 @@ DataManager.prototype.getRawData = function(){
 	return this.rawData;
 };
 
+DataManager.prototype.getSelectedValue = function(){
+    return {year: $(this.yearBox).val(), week: $(this.weekBox).val()};
+}
+
+DataManager.prototype.getSelectedString = function(){
+    return {year: $(this.yearBox).find('option:selected').text(),  week: $(this.weekBox).find('option:selected').text()};
+}
+
 DataManager.prototype.setDataReturnFunction = function(newFunc){
 	this.afterGetCallback = newFunc;
 };
