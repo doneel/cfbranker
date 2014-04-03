@@ -148,11 +148,9 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
 		        this.getDataFunc([season, this.map[season][this.map[season].length-1][1]], this.afterGetCallback, extraData);
 		}
                 else{
+                    /* Have the season's data, just trim down */
                     giveTrimmed(this.dataCache[season][lastWeek], extraData);
 
-                    /* Have the season's data, just trim down */
-//                    this.afterGetCallback(this.dataCache[season][this.dataCache[season].length-1], giveTrimmed, extraData);
-    //		this.getDataFunc([season, week], giveTrimmed, extraData);
 		}
 	}
 };
