@@ -29,9 +29,13 @@ function openResultsTab(resultsData, source, origin){
     }
     var yourDOCTYPE = "<!DOCTYPE html>";
     var htmlCode = yourDOCTYPE+
-            "<html>"+
-            "<div class=\"resultsWrapper\">" + 
-            "<div class=\"resultsWeekLabel\">" + resultsData.season + " " + weekDisplayStr + "</div>" + 
+        "<html>"+
+        "<head><script>function toggleCode(){ console.log('asdf'); codeShown = typeof(codeShown) == 'undefined' ? false : codeShown;" + 
+        "if(codeShown){$('.showCodeButton').text('Show Code'); $('.resultsWrapper').removeClass('results-sided'); $('.resultsWrapper').addClass('results-centered'); codeShown = false;}" + 
+        "else{$('.showCodeButton').text('Hide Code'); $('.resultsWrapper').removeClass('results-centered'); $('.resultsWrapper').addClass('results-sided'); codeShown = true;}};</script></head>"+
+            "<div class=\"resultsWrapper results-centered\">" +
+            "<div class=\"resultsWeekLabel dateLabel\">" + resultsData.season + " " + weekDisplayStr + "</div>" + 
+            "<div class=\" showCodeButton resultsWeekLabel\" onclick=\"toggleCode()\">Show Code</div>" + 
             "<div> "+
             document.documentElement.innerHTML+ "</div></div>"+
             "</html>";
