@@ -15,12 +15,12 @@ function getMessage(event){
 	ranker.updateData(event.data.rawData);
         ranker.run();
         if(event.data.share == true){
-            openResultsTab(event.data);
+            openResultsTab(event.data, event.source, event.origin);
             return;
         }
 }
 
-function openResultsTab(resultsData){
+function openResultsTab(resultsData, source, origin){
     var weekDisplayStr;
     if (resultsData.week == "Bowl"){
         weekDisplayStr = "Final Rankings";
@@ -28,17 +28,15 @@ function openResultsTab(resultsData){
         weekDisplayStr = "Week " + resultsData.week;
     }
     var yourDOCTYPE = "<!DOCTYPE html>";
-    var printPreview = window.open('about:blank', '_');
-    var printDocument = printPreview.document;
-    printDocument.open();
-    printDocument.write(yourDOCTYPE+
+    var htmlCode = yourDOCTYPE+
             "<html>"+
             "<div class=\"resultsWrapper\">" + 
             "<div class=\"resultsWeekLabel\">" + resultsData.season + " " + weekDisplayStr + "</div>" + 
             "<div> "+
             document.documentElement.innerHTML+ "</div></div>"+
-       "</html>");
-    printDocument.close();
+            "</html>";
+    source.postMessage({resultsPageFlag: true, pageHTML : htmlCode}, origin);
+
 }
 
 function buildTeamTile(rank, team){

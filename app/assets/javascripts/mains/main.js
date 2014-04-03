@@ -56,6 +56,20 @@ $(document).ready(function(){
 function attachShareButton(){
     $('#shareButton').on('click', function(){
         var time = dm.getSelectedString();
+        var newTab = window.open('about:blank', '_')
+        var tabDoc = newTab.document;
+        var openTabFunction = function(event){
+            console.log('got a message');
+            if(event.data.resultsPageFlag == true){
+                    tabDoc.open();
+                    tabDoc.write(event.data.pageHTML);
+                    tabDoc.close();
+            }
+            console.log(this);
+            window.removeEventListener('message', this, false);
+        }
+
+        window.addEventListener('message', openTabFunction, false);
 
         document.querySelector('.resultsPanel').contentWindow.postMessage({share: true, week: time.week, season: time.year, newCode: editor.getText(), rawData: dm.getRawData()}, '*');//window.location.protocol + '//' + window.location.host);
     });
