@@ -93,17 +93,18 @@ function initPausers(){
     })();
 }
 
-function updateData(newData){
+function updateData(newData, extraData){
     /* Don't switch order */
     //cw.postMessage({newCode: editor.getText(), rawData: newData}, '*');//window.location.protocol + '//' + window.location.host);
     /* Make available to user in teams array */
-    teams = dm.updateData(newData);
+    teams = dm.updateData(newData, extraData.year, extraData.week);
     dataPauser.off();
     runAlgorithm();
     return teams;
 }
 
 function runAlgorithm(){
+    if(dm.getRawData() == undefined || dm.getRawData().length == 0) return;
     document.querySelector('.resultsPanel').contentWindow.postMessage({newCode: editor.getText(), rawData: dm.getRawData()}, '*');//window.location.protocol + '//' + window.location.host);
 }
 

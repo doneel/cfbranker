@@ -126,8 +126,10 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
 
 	var extraData = exData;
 	if (typeof exData === 'undefined'){
-		extraData = null;
+		extraData = {};
 	}
+        extraData.week = week;
+        extraData.year = season;
         
         var context = this;
         var giveTrimmed = function(rawData, extraData){
@@ -146,7 +148,7 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
 		        this.getDataFunc([season, this.map[season][this.map[season].length-1][1]], this.afterGetCallback, extraData);
 		}
                 else{
-                    giveTrimmed(this.dataCache[season][lastWeek]);
+                    giveTrimmed(this.dataCache[season][lastWeek], extraData);
 
                     /* Have the season's data, just trim down */
 //                    this.afterGetCallback(this.dataCache[season][this.dataCache[season].length-1], giveTrimmed, extraData);
@@ -155,12 +157,12 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
 	}
 };
 
-DataManager.prototype.updateData = function(newData){
+DataManager.prototype.updateData = function(newData, year, week){
 	this.rawData = newData;
 	this.processedData = this.processDataFunc($.extend(true, [], this.rawData));
 
 
-	this.dataCache[$(this.yearBox).val()][$(this.weekBox).val()] = newData;
+	this.dataCache[year][week] = newData;
 
 
 	return this.processedData;
