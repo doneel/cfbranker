@@ -11,13 +11,13 @@ $(document).ready(function(){
 });
 
 function getMessage(event){
+	ranker.updateCode(event.data.newCode);
+	ranker.updateData(event.data.rawData);
+        ranker.run();
         if(event.data.share == true){
             openResultsTab(event.data);
             return;
         }
-	ranker.updateCode(event.data.newCode);
-	ranker.updateData(event.data.rawData);
-        ranker.run();
 }
 
 function openResultsTab(resultsData){
