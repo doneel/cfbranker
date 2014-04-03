@@ -55,17 +55,16 @@ $(document).ready(function(){
 
 function attachShareButton(){
     $('#shareButton').on('click', function(){
+        if(dm.getRawData() == undefined) return;
         var time = dm.getSelectedString();
         var newTab = window.open('about:blank', '_')
         var tabDoc = newTab.document;
         var openTabFunction = function(event){
-            console.log('got a message');
             if(event.data.resultsPageFlag == true){
                     tabDoc.open();
                     tabDoc.write(event.data.pageHTML);
                     tabDoc.close();
             }
-            console.log(this);
             window.removeEventListener('message', this, false);
         }
 
