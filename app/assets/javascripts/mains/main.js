@@ -58,7 +58,7 @@ function attachShareButton(){
         if(dm.getRawData() == undefined) return;
         var time = dm.getSelectedString();
         var newTab = window.open('about:blank', '_')
-        var tabDoc = newTab.document;
+        var tabDoc = newTab.document.open();
         var openTabFunction = function(event){
             if(event.data.resultsPageFlag == true){
                     tabDoc.open();
