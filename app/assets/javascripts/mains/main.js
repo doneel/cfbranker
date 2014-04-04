@@ -61,7 +61,6 @@ function attachShareButton(){
         var tabDoc = newTab.document.open();
         var openTabFunction = function(event){
             if(event.data.resultsPageFlag == true){
-                    tabDoc.open();
                     tabDoc.write(event.data.pageHTML);
                     tabDoc.close();
             }
