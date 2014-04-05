@@ -43,7 +43,6 @@ Ranker.prototype.run = function(){
             var result = runFunction(this.data);
             //result = this.rankingFunction(this.data);
         }catch(err){
-            console.log(err.stack);
             return err;
         }
 

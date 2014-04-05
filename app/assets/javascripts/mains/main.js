@@ -51,6 +51,9 @@ $(document).ready(function(){
    });
 
    attachShareButton();
+
+   errorHelper = new ErrorHelper(editor.aceEditor);
+   window.addEventListener('message', function(error){errorHelper.noteError(error)}, false);
 });
 
 function attachShareButton(){
@@ -60,6 +63,9 @@ function attachShareButton(){
         var newTab = window.open('about:blank', '_')
         var tabDoc = newTab.document.open();
         var openTabFunction = function(event){
+            if(event.data.failFlag == true){
+                newTab.close();
+            }
             if(event.data.resultsPageFlag == true){
                     tabDoc.write(event.data.pageHTML);
                     tabDoc.close();

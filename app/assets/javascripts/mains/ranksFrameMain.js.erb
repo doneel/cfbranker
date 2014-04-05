@@ -13,12 +13,31 @@ $(document).ready(function(){
 function getMessage(event){
 	ranker.updateCode(event.data.newCode);
 	ranker.updateData(event.data.rawData);
-        ranker.run();
+        var error = ranker.run();
+        if(error != undefined){
+            event.source.postMessage({failFlag: true, error: stringifyError(error)}, event.origin);
+            return;
+        }
+        else{
+            event.source.postMessage({failFlag: false}, event.origin);
+        }
         if(event.data.share == true){
             openResultsTab(event.data, event.source, event.origin);
             return;
         }
 }
+
+/*
+ * From: Brian Larsen @ Stack Overflow
+ * http://stackoverflow.com/questions/18391212/is-it-not-possible-to-stringify-an-error-using-json-stringify
+ */
+var stringifyError = function(err, filter, space) {
+    var plainObject = {};
+    Object.getOwnPropertyNames(err).forEach(function(key) {
+        plainObject[key] = err[key];
+    });
+    return JSON.stringify(plainObject, filter, space);
+};
 
 function openResultsTab(resultsData, source, origin){
     var weekDisplayStr;
@@ -35,6 +54,7 @@ function openResultsTab(resultsData, source, origin){
         "window.onload = function(){"+
             "var code = \"" + encodeURI(resultsData.newCode) + "\";" + 
             "editor = new CodeEditor('editor-div', 'javascript', null);" + 
+            "editor.aceEditor.setEditable(false);"+
         "};" + 
         "function toggleCode(){ console.log('asdf'); codeShown = typeof(codeShown) == 'undefined' ? false : codeShown;" + 
         "if(codeShown){$('.showCodeButton').text('Show Code'); $('.resultsWrapper').removeClass('results-sided'); $('.resultsWrapper').addClass('results-centered'); codeShown = false; $('.code-container').addClass('code-container-hidden');}" + 
