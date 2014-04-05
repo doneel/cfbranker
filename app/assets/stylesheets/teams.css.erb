@@ -2,6 +2,8 @@
     font-family: franchise;
     src: url(<%= asset_url 'Franchise-Bold-hinted.ttf' %>);
 }
+
+
 .rankingsWrapper{
 	width: 100%;
 	height: 100%;
@@ -12,12 +14,32 @@
 	width: calc(100% + 15px);
 	overflow-y :scroll;
 	height: 100%;
-    }
+}
 
 .showCodeButton{
     text-size: 18px;
     height: 10px;
 }
+
+.code-container{
+    width: 800px;
+    height: calc(100% - 22px);
+    float: left;
+    margin: 50px;
+    border: 1px solid black;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#editor-div{
+    height: 100%;
+}
+
+.code-container-hidden{
+    display: none;
+}
+
+
 
 .showCodeButton:hover{
     color: #2F6ED7;
@@ -26,19 +48,20 @@
 }
 
 .results-centered{
-    left: calc(50% - 150px);
+    margin-left: calc(50% - 150px);
 }
 
 .results-sided{
-    right: calc(100px);
 }
 
 .resultsWrapper{
-        position: absolute;
-        width: 300px;
-        top: 20px;
-        border: 1px solid black;
-        margin-bottom: 20px;
+    overflow: hidden;
+    height: calc(100% - 22px);
+    float: left;
+    width: 300px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid black;
 }
 
 .resultsWeekLabel{

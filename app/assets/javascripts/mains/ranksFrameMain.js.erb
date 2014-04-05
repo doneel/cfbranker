@@ -30,15 +30,24 @@ function openResultsTab(resultsData, source, origin){
     var yourDOCTYPE = "<!DOCTYPE html>";
     var htmlCode = yourDOCTYPE+
         "<html>"+
-        "<head><script>function toggleCode(){ console.log('asdf'); codeShown = typeof(codeShown) == 'undefined' ? false : codeShown;" + 
-        "if(codeShown){$('.showCodeButton').text('Show Code'); $('.resultsWrapper').removeClass('results-sided'); $('.resultsWrapper').addClass('results-centered'); codeShown = false;}" + 
-        "else{$('.showCodeButton').text('Hide Code'); $('.resultsWrapper').removeClass('results-centered'); $('.resultsWrapper').addClass('results-sided'); codeShown = true;}};</script></head>"+
+        "<head>" + document.getElementsByTagName('head')[0].innerHTML + 
+        "<script>" +
+        "window.onload = function(){"+
+            "var code = \"" + encodeURI(resultsData.newCode) + "\";" + 
+            "editor = new CodeEditor('editor-div', 'javascript', null);" + 
+        "};" + 
+        "function toggleCode(){ console.log('asdf'); codeShown = typeof(codeShown) == 'undefined' ? false : codeShown;" + 
+        "if(codeShown){$('.showCodeButton').text('Show Code'); $('.resultsWrapper').removeClass('results-sided'); $('.resultsWrapper').addClass('results-centered'); codeShown = false; $('.code-container').addClass('code-container-hidden');}" + 
+        "else{$('.showCodeButton').text('Hide Code'); $('.resultsWrapper').removeClass('results-centered'); $('.resultsWrapper').addClass('results-sided'); codeShown = true;$('.code-container').removeClass('code-container-hidden');}"+
+        "};</script></head>"+
+        "<body>"+
+            "<div class=\"code-container code-container-hidden\"><div id=\"editor-div\"></div></div>" + 
             "<div class=\"resultsWrapper results-centered\">" +
             "<div class=\"resultsWeekLabel dateLabel\">" + resultsData.season + " " + weekDisplayStr + "</div>" + 
             "<div class=\" showCodeButton resultsWeekLabel\" onclick=\"toggleCode()\">Show Code</div>" + 
-            "<div> "+
-            document.documentElement.innerHTML+ "</div></div>"+
+            document.body.innerHTML+ "</div></body>"+
             "</html>";
+    console.log(htmlCode);
     source.postMessage({resultsPageFlag: true, pageHTML : htmlCode}, origin);
 
 }

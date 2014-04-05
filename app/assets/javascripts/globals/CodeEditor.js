@@ -1,22 +1,22 @@
 function CodeEditor(divId, language, saveFunction){
-	this.containerId = divId;
+    this.containerId = divId;
 
 
-    ace.config.set("workerPath", "javascript/ace-builds/src-noconflict");
+    //ace.config.set("workerPath", "javascript/ace-builds/src-noconflict");
     this.aceEditor = ace.edit(this.containerId);
-	this.aceEditor.getSession().setUseWorker(false);
+    this.aceEditor.getSession().setUseWorker(false);
     this.aceEditor.setTheme("ace/theme/monokai");
     this.aceEditor.setValue('');
     this.setLanguage(language);
 
 
-	/* Setup the calling of the ajax saving function if they give one */
-	if (!(typeof saveFunction === 'undefined')){
-		this.setSaveFunction(saveFunction);
-	}
+    /* Setup the calling of the ajax saving function if they give one */
+    if (!(typeof saveFunction === 'undefined')){
+            this.setSaveFunction(saveFunction);
+    }
 
     this.aceEditor.onFocus(function(){
-		this.resize();
+        this.resize();
     });
 
 
