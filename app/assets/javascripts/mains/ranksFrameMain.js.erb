@@ -47,7 +47,7 @@ function openResultsTab(resultsData, source, origin){
         "window.onload = function(){"+
             "var code = \"" + encodeURI(resultsData.newCode) + "\";" + 
             "editor = new CodeEditor('editor-div', 'javascript', null);" + 
-            "editor.aceEditor.setEditable(false);"+
+            "editor.aceEditor.setReadOnly(true);"+
         "};" + 
         "function toggleCode(){ console.log('asdf'); codeShown = typeof(codeShown) == 'undefined' ? false : codeShown;" + 
         "if(codeShown){$('.showCodeButton').text('Show Code'); $('.resultsWrapper').removeClass('results-sided'); $('.resultsWrapper').addClass('results-centered'); codeShown = false; $('.code-container').addClass('code-container-hidden');}" + 
