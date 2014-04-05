@@ -101,11 +101,9 @@ ErrorHelper.prototype.noteError = function(event){
 }
 
 ErrorHelper.prototype.getLineNumber = function(stackTrace){
-    console.log(stackTrace[0]);
 
-    var regex = new RegExp(':(\\d+):|$')
+    var regex = new RegExp(':(\\d+)(?::|$)')
     var finds = regex.exec(stackTrace[0]);
-    console.log('finds', finds);
     return finds.pop();
 }
 
