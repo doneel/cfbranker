@@ -7,15 +7,19 @@ $(document).ready(function(){
     ranker = new Ranker(document.querySelector('.rankings'), null, null, buildTeamTile, remap);
 
     $('.banner').css('display', 'none');
-
+    
+    window.onerror = function(error){
+        console.log("error detected...", error);
+    };
 });
 
 function getMessage(event){
 	ranker.updateCode(event.data.newCode);
 	ranker.updateData(event.data.rawData);
-        var error = ranker.run();
-        if(error != undefined){
-            event.source.postMessage({failFlag: true, error: stringifyError(error)}, event.origin);
+        var return_error = ranker.run();
+        if(return_error != undefined){
+            var type = return_error instanceof SyntaxError ? "SyntaxError": "RuntimeError";
+            event.source.postMessage({failFlag: true, error: {message: return_error.message, type: type, code: event.data.newCode, stack: printStackTrace({e: return_error})}}, event.origin);
             return;
         }
         else{
@@ -27,17 +31,6 @@ function getMessage(event){
         }
 }
 
-/*
- * From: Brian Larsen @ Stack Overflow
- * http://stackoverflow.com/questions/18391212/is-it-not-possible-to-stringify-an-error-using-json-stringify
- */
-var stringifyError = function(err, filter, space) {
-    var plainObject = {};
-    Object.getOwnPropertyNames(err).forEach(function(key) {
-        plainObject[key] = err[key];
-    });
-    return JSON.stringify(plainObject, filter, space);
-};
 
 function openResultsTab(resultsData, source, origin){
     var weekDisplayStr;

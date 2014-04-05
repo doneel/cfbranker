@@ -21,3 +21,4 @@
 //= require spin.min.js
 //= require jquery.ui.all
 //= require jquery.selectric.min.js
+//= require stacktrace.js
