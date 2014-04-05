@@ -3,7 +3,8 @@
 function Ranker(div, rawData, rankingCode, representFunc, dataProcessFunction){
 	this.div = div;
 	this.rawData = rawData;
-	this.rankingFunction = eval(rankingCode);
+	//this.rankingFunction = eval(rankingCode);
+        this.updateCode(rankingCode);
 	this.representFunc = representFunc;
 
 	this.shouldProcess = true;
@@ -24,15 +25,28 @@ Ranker.prototype.updateData = function(newRaw){
 };
 
 Ranker.prototype.updateCode = function(newCode){
-	this.rankingFunction = eval('this.rankingFunction = ' + newCode);
+	this.rankingFunctionCode = "runFunction = function(teams){try{" + newCode + " return main(teams);}catch(error){throw error;}}";
 };
 
 Ranker.prototype.run = function(){
+
+        /* Remove displayed and stored traces of last run*/
 	while (this.div.firstChild ){
 		this.div.removeChild( this.div.firstChild );
 	}
+        var result = null;
 
-	result = this.rankingFunction(this.data);
+        try{
+            var newScript = document.createElement('script');
+            newScript.innerHTML = this.rankingFunctionCode;
+            document.getElementsByTagName('head')[0].appendChild(newScript);
+            var result = runFunction(this.data);
+            //result = this.rankingFunction(this.data);
+        }catch(err){
+            console.log(err.stack);
+            return err;
+        }
+
 	for(var i = 0; i < result.length; i++){
 		this.div.appendChild(this.representFunc(i, result[i]));
 	}
