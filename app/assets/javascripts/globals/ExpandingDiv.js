@@ -27,7 +27,7 @@ function ExpandingDiv(div, minWidth, minHeight, callback, data){
 }
 
 /* Distance in pixels from the div's edges to place the triggering threshold */
-ExpandingDiv.triggerMargin = 10;
+ExpandingDiv.triggerMargin = 1;
 
 /* Milliseconds to spend growing/shrinking */
 ExpandingDiv.animationTime = 500;
