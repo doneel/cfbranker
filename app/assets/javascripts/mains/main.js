@@ -58,6 +58,12 @@ $(document).ready(function(){
 
 function attachShareButton(){
     $('#shareButton').on('click', function(){
+        s = new Sharer(dm, editor.getText(), $('#save_form_id').val(), '/shares/create', weeksMap);
+        /* Generate map. Submit loaded algorithm id & map */
+    });
+
+    /*
+    $('#shareButton').on('click', function(){
         if(dm.getRawData() == undefined) return;
         var time = dm.getSelectedString();
         var newTab = window.open('about:blank', '_')
@@ -77,6 +83,7 @@ function attachShareButton(){
 
         document.querySelector('.resultsPanel').contentWindow.postMessage({share: true, week: time.week, season: time.year, newCode: editor.getText(), rawData: dm.getRawData()}, '*');//window.location.protocol + '//' + window.location.host);
     });
+    */
 }
 
 

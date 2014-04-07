@@ -1,6 +1,7 @@
-function Sharer(dataManager, runCode, submitUrl, allWeeksMap){
+function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap){
 	var context = this;
-
+        
+        this.algorithmId = algorithmId;
 
 	this.dm = dataManager;
 	this.dmPrevFunc = dm.getDataReturnFunction();
@@ -13,15 +14,22 @@ function Sharer(dataManager, runCode, submitUrl, allWeeksMap){
 	this.requestsFilled = 0;
 
 	this.dmPrevFunc = dm.setDataReturnFunction(function(newData, dateObj){
-		var runnableData = context.dm.updateData(newData);
+                var year = dateObj['year'];
+                var week = dateObj['week'][0];
+		var runnableData = context.dm.updateData(newData, dateObj['year'], dateObj['week']);
+
 		if(context.rankMap[dateObj['year']] === undefined){
 			context.rankMap[dateObj['year']] = {};
 		}
 		context.rankMap[dateObj['year']][dateObj['week']] = context.frame.contentWindow.runOnWeek(dateObj['year'], dateObj['week'], runnableData, context.rankingFunction);
+                console.log('Wrote in: ', week);
 		context.requestsFilled += 1;
 		if(context.allMade && context.requestsFilled === context.requestsMade){
 			context.submit();
 		}
+                else{
+                    console.log('All requests made: ', context.allMade, ' Filled: ' +  context.requestsMade  + '/' + context.requestsFilled );
+                }
 	});
 
 
@@ -35,6 +43,7 @@ function Sharer(dataManager, runCode, submitUrl, allWeeksMap){
 
 	this.frame = document.createElement('iframe');
 	this.frame.id = 'sFrame';
+        this.frame.style.display = 'none';
 	/* TODO: Add sandbox property */
 
 
@@ -57,7 +66,7 @@ function Sharer(dataManager, runCode, submitUrl, allWeeksMap){
 
 Sharer.prototype.submit = function(){
 	console.log(this.rankMap);
-	$.post(this.submitUrl, {map: this.rankMap, code: this.run})
+	$.post(this.submitUrl, {map: this.rankMap, algorithm_id: this.algorithmId})
 		.done(function(data){
 			console.log('submit worked correctly yayyy!');
 			console.log(data);
@@ -72,20 +81,32 @@ var runWrapperForFrame = function(){
 }
 
 Sharer.prototype.runAll = function(){
-	console.log('go go go');
+        console.log('beggingin runAll');
+        var requestBuffer = [];
 	for(var year in this.map){
 		if(this.map.hasOwnProperty(year)){
-			for(var week = 1; week <= this.map[year]; week++){
-				var dateObj = {};
-				console.log(year);
-				dateObj['year']= year;
-				dateObj['week']= week;
-				this.dm.requestData(year, week, dateObj);
-				this.requestsMade += 1;
-			}
+                    for(var i = 0; i < this.map[year].length; i++){
+                        var week = this.map[year][i];
+//			for(var week = 1; week <= this.map[year]; week++){
+                        var dateObj = {};
+                        dateObj['year']= year;
+                        dateObj['week']= week;
+                        console.log('Requestiong: ' + week);
+                        this.requestsMade += 1;
+                        requestBuffer.push({year: year, week: week, dateObj: dateObj});
+		    }
 		}
 	}
-	this.allMade = true;
+        
+        /* Request data can have callbacks or not. Put requests in buffer so
+         *  we know when we are done making all requests before we make the
+         *  last one.
+         */
+        for(var i = 0; i < requestBuffer.length; i++){
+            var req = requestBuffer[i];
+	    if(i == requestBuffer.length - 1) this.allMade = true;
+            this.dm.requestData(req.year, req.week, req.dateObj);
+        }
 };
 
 Sharer.prototype.runOnWeek = function(year, week, data, runFunc){
@@ -97,7 +118,7 @@ Sharer.prototype.runOnWeek = function(year, week, data, runFunc){
 	console.log(data)
 	*/
 	var fullData = runFunc(data);
-	var teamCodeArr = {};
+	var teamCodeArr = [];
 	for(var i = 0; i < fullData.length; i++){
 		teamCodeArr[i] = fullData[i].team_code;
 	}

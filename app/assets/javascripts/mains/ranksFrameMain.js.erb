@@ -42,7 +42,8 @@ function openResultsTab(resultsData, source, origin){
     var yourDOCTYPE = "<!DOCTYPE html>";
     var htmlCode = yourDOCTYPE+
         "<html>"+
-        "<head>" + document.getElementsByTagName('head')[0].innerHTML + 
+        "<head>" + '<%= javascript_include_tag "application", "data-turbolinks-track" => true %>' + 
+        '<%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>' +
         "<script>" +
         "window.onload = function(){"+
             "var code = \"" + encodeURI(resultsData.newCode) + "\";" + 
