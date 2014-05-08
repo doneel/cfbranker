@@ -118,21 +118,7 @@
 <% end %>
 </div>
 
+<%= hidden_field_tag "signed-in", @signed_in, {:id => 'signed-in' }%>
+<%= hidden_field_tag "save-array", @saveArray, {:id => 'save-array' }%>
+<%= hidden_field_tag "weeks-map", @weeksMap, {:id => 'weeks-map' }%>
 
-<script type="application/javascript">
-
-    state = {};
-
-    /* Read if user is signed in */
-    <% if @signed_in %>
-        state.signed_in = true;
-    <% else %>
-        state.signed_in = false;
-    <% end %>
-
-    /* Read previous saves from server */
-    var savesArr = <%= if @saveArray then @saveArray.html_safe else [] end %>;
-
-    /* Read the available weeks for each year */
-    var weeksMap = <%= @weeksMap.to_json.html_safe %>;
-</script>

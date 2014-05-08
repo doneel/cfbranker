@@ -4,7 +4,7 @@ class RanksController < ApplicationController
 
 	def write
 		@signed_in = false
-		@saveArray = nil
+		@saveArray = Array.new
 		@curAlg = nil
 		if user_signed_in?
 			@signed_in = true
@@ -14,20 +14,20 @@ class RanksController < ApplicationController
 					@curAlg = Algorithm.find(current_user.current_alg_id).to_json
 				end
 			end
-			saveArray = Array.new
 			saves.each do |alg|
-				saveArray << alg.getAlgorithmOption
+				@saveArray << alg.getAlgorithmOption
 			end
-			saveArray.sort! {|a,b| a.last_time <=> b.last_time}
-			@saveArray = saveArray.to_json
-		end
+			@saveArray.sort! {|a,b| a.last_time <=> b.last_time}
+                end
+                @saveArray = @saveArray.to_json
+
 
 
 
 		@algorithm = Algorithm.new
 		@new_algorithm = Algorithm.new
 
-                @weeksMap = Season.getWeeksMap
+                @weeksMap = Season.getWeeksMap.to_json
 
 	end
 
