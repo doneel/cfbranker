@@ -2,6 +2,14 @@
 	<div class="notice"><%= flash[:notice] %></div>
 <% end %>
 
+<p>Zipped Folder</p>
+<%= form_tag  controls_uploadzip_path, multipart: true do %>
+	<%= file_field_tag	:file %>
+		Year:
+	<%= text_field_tag	:year %>
+	<%= submit_tag :update %>
+<% end %>
+
 <p>Teams</p>
 <%= form_tag  controls_uploadteams_path, multipart: true do %>
 	<%= file_field_tag	:file %>
@@ -36,9 +44,7 @@
 	<%= submit_tag :update %>
 <% end %>
 
-<p>Cache Year</p>
+<p>Update Cache</p>
 <%= form_tag  controls_cacheall_path do %>
-	Year:
-	<%= text_field_tag	:year %>
-	<%= submit_tag :update %>
+	<%= submit_tag :Recache%>
 <% end %>

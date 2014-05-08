@@ -1,1 +1,1 @@
-//= require ./mains/main.js
+//= require ./mains/main.js.erb

@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'csv'
+require 'zip/zip'
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
@@ -31,5 +32,6 @@ module RankV2
     config.assets.precompile += %w( *.ttf  )
     config.assets.precompile += %w( *.woff )
     config.assets.precompile += %w( *.svg )
+    config.cache_store = :memory_store
   end
 end

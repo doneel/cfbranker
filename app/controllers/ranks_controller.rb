@@ -1,5 +1,4 @@
 class RanksController < ApplicationController
-
 	respond_to	:html, :json
 
 	def write
@@ -20,9 +19,6 @@ class RanksController < ApplicationController
 			@saveArray.sort! {|a,b| a.last_time <=> b.last_time}
                 end
                 @saveArray = @saveArray.to_json
-
-
-
 
 		@algorithm = Algorithm.new
 		@new_algorithm = Algorithm.new

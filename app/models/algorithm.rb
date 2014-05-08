@@ -1,5 +1,7 @@
 class Algorithm < ActiveRecord::Base
 	belongs_to :user
+        has_one :share
+
 	attr_accessor :timestamp
 
         def getAlgorithmOption

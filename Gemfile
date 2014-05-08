@@ -40,6 +40,7 @@ gem 'jbuilder', '~> 1.2'
 #Danny - faster server
 gem 'unicorn'
 
+gem 'zip'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
