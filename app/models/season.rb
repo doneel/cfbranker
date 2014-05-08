@@ -6,10 +6,33 @@ class Season < ActiveRecord::Base
 	has_many :performances
 
 	def getAllTeams
-		return teams
+	    return teams
 	end
 
+        def self.getWeeksMap
+            if Rails.cache.exist?(:weeksMap)
+                puts 'cached map'
+                return Rails.cache.read(:weeksMap)
+            end
+            weeksMap = Hash.new
+            Season.all.each do |season|
+
+                # Generate array of weeks for weeksMap
+                weeksMap[season.year] = Array.new
+                maxReg = season.lastRegWeek
+                max = season.maxWeek
+                for i in 1..maxReg
+                    weeksMap[season.year] << [i, i]
+                end
+                weeksMap[season.year] << ["Bowls", max]
+            end
+            Rails.cache.write(:weeksMap, weeksMap)
+
+            return weeksMap
+        end
+
         def maxWeek
+            puts self.year
             return Game.where(:year => self.year).order(:week).last().week
         end
 

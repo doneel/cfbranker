@@ -27,21 +27,8 @@ class RanksController < ApplicationController
 		@algorithm = Algorithm.new
 		@new_algorithm = Algorithm.new
 
-                if Rails.cache.exist?(:weeksMap)
-                    @weeksMap = Rails.cache.read(:weeksMap)
-                else
-                    @weeksMap = Hash.new
-                    Season.all.each do |season|
-                            @weeksMap[season.year] = Array.new
-                            maxReg = season.lastRegWeek
-                            max = season.maxWeek
-                            for i in 1..maxReg
-                                @weeksMap[season.year] << [i, i]
-                            end
-                            @weeksMap[season.year] << ["Bowls", max]
-                    end
-                    Rails.cache.write(:weeksMap, @weeksMap)
-                end
+                @weeksMap = Season.getWeeksMap
+
 	end
 
 	def getData
@@ -49,25 +36,9 @@ class RanksController < ApplicationController
 #		@teamJSON = Team.getData(params[:year], params[:week])
 #		render	:json => @teamJSON
 #		return
-		if Rails.cache.exist?(params[:year])
-			weekData = Rails.cache.read(params[:year])[params[:week].to_i]
-			if weekData != nil
-				@teamJSON = weekData
-			else
-				@teamJSON = Team.getData(params[:year], params[:week])
-				year = Rails.cache.read(params[:year])
-				year[params[:week].to_i] = @teamJSON
-				Rails.cache.write(params[:year], year)
-			end
-		else
-			@teamJSON = Team.getData(params[:year], params[:week])
-			year = Array.new(16)
-			year[params[:week].to_i] = @teamJSON
-			Rails.cache.write(params[:year], year)
-			#puts @teamJSON[1].schedule[1].opp;
-			#puts @teamJSON[1].schedule[1].date;
-		end
-		render	:json => @teamJSON
+	   
+            render :json => Team.getData(params[:year], params[:week])
+            return
 	end
 
 	def ranksFrame

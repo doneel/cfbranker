@@ -8,6 +8,7 @@ class Team < ActiveRecord::Base
 	@@AQ_CONFS = [821,25354,823,827,24312,905,911];
 
 
+
 	def self.cleanRow(hash)
 		replacementHash = Hash.new
 		hash.each do |key, value|
@@ -33,13 +34,15 @@ class Team < ActiveRecord::Base
 	end
 
 	def self.getData(year, week)
-		#puts "RUNNING"
-		allTeams = Array.new
-		#puts year
-		#puts Team.where(:year => year)[0]
+                if Rails.cache.exist?(year.to_s + '-' + week.to_s)
+                    return Rails.cache.read(year.to_s + '-' + week.to_s)
+                end
+		
+                allTeams = Array.new
 		Team.where(:year => year).each do |team|
 			allTeams.push team.package(year, week.to_i)
 		end
+                Rails.cache.write(year.to_s + '-' + week.to_s, allTeams)
 		return allTeams
 	end
 
