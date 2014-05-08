@@ -74,22 +74,14 @@ class ControlsController < ApplicationController
 	end
 
         def cacheall
-            year = params[:year]
-            ((Array (1..15)) << 20).each do |week|
-
-                @teamJSON = Team.getData(year, week)
-                if Rails.cache.exist?(year)
-                    yearArray = Rails.cache.read(year)
-                else
-                    yearArray = Array.new(16)
+            Rails.cache.clear
+            weeksMap = Season.getWeeksMap
+            weeksMap.each do |year, array|
+                array.each do |week|
+                    Team.getData(year,week[1])
                 end
-                yearArray[week] = @teamJSON
-                Rails.cache.write(year, yearArray)
             end
-            Rails.cache.delete(:weeksMap);
-
-		flash[:notice] = "All cached, good work."
-		redirect_to '/controls/updatecsvs'
+            redirect_to '/controls/updatecsvs'
         end
 
 	def updatecsvs
