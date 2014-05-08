@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 20140210203146) do
 
   create_table "shares", force: true do |t|
     t.integer  "user_id"
-    t.integer  "algorithm_id"
+    t.text     "algorithm_text"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

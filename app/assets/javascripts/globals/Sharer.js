@@ -65,8 +65,7 @@ function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap){
 }
 
 Sharer.prototype.submit = function(){
-	console.log(this.rankMap);
-	$.post(this.submitUrl, {map: this.rankMap, algorithm_id: this.algorithmId})
+	$.post(this.submitUrl, {map: this.rankMap, algorithm_code: this.run})
 		.done(function(data){
 			console.log('submit worked correctly yayyy!');
 			console.log(data);
