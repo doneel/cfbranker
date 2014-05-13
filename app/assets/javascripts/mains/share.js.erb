@@ -1,20 +1,64 @@
 $(document).ready(function(){
     ranker = new Ranker(document.querySelector('.rankings'), null, main, buildTeamTile, null);
-    var rankingsArr = JSON.parse($('#rankingsArray').val());
-    loadRanking(rankingsArr[rankingsArr.length-1]);
+    rankingsArr = JSON.parse($('#rankingsArray').val());
+    loadRanking(rankingsArr.length-1);
 });
 
 function main(teams){
     return teams;
 }
 
-function loadRanking(ranking){
+function loadRanking(pos){
+    var ranking = rankingsArr[pos];
+    console.log(ranking.teams[0]);
     ranker.updateData(ranking.teams);
     ranker.run();
     var dateString = ranking.year + ' Week ' + ranking.week;
 
-    $('.dateLabel').text(dateString);
+    $('.dateLabel').find($('.textLabel')).text(dateString);
+    
+    if(pos < rankingsArr.length - 1){
+        $('.right-date-arrow').off('click').on('click', function(){loadRanking(pos+1)});
+        $('.right-date-arrow').css('display', '');
+    }else{
+        $('.right-date-arrow').css('display', 'none');
+    }
+
+    if(pos > 0){
+        $('.left-date-arrow').off('click').on('click', function(){loadRanking(pos-1)});
+        $('.left-date-arrow').css('display', '');
+    }else{
+        $('.left-date-arrow').css('display', 'none');
+    }
+
 }
+
+
+$(document).ready(function(){
+    editor = new CodeEditor('editor-div', 'javascript', null);
+    editor.aceEditor.setReadOnly(true);
+    editor.loadText($('#code-text').val());
+    $('.showCodeButton').on('click', toggleCode); 
+});
+
+
+function toggleCode(){
+    codeShown = typeof(codeShown) == 'undefined' ? false : codeShown;  
+    if(codeShown){
+        $('.showCodeButton').text('Show Code');
+        $('.resultsWrapper').removeClass('results-sided');
+        $('.resultsWrapper').addClass('results-centered');
+        codeShown = false;
+        $('.code-container').addClass('code-container-hidden');
+    }else{
+        $('.showCodeButton').text('Hide Code');
+        $('.resultsWrapper').removeClass('results-centered');
+        $('.resultsWrapper').addClass('results-sided');
+        codeShown = true;
+        $('.code-container').removeClass('code-container-hidden');
+    }
+};
+
 
 function buildTeamTile(rank, team){
 
@@ -57,29 +101,3 @@ function buildTeamTile(rank, team){
 
     return teamTile;
 }
-
-
-$(document).ready(function(){
-    editor = new CodeEditor('editor-div', 'javascript', null);
-    editor.aceEditor.setReadOnly(true);
-    editor.loadText($('#code-text').val());
-    $('.showCodeButton').on('click', toggleCode);
-});
-
-function toggleCode(){
-    codeShown = typeof(codeShown) == 'undefined' ? false : codeShown;  
-    if(codeShown){
-        $('.showCodeButton').text('Show Code');
-        $('.resultsWrapper').removeClass('results-sided');
-        $('.resultsWrapper').addClass('results-centered');
-        codeShown = false;
-        $('.code-container').addClass('code-container-hidden');
-    }else{
-        $('.showCodeButton').text('Hide Code');
-        $('.resultsWrapper').removeClass('results-centered');
-        $('.resultsWrapper').addClass('results-sided');
-        codeShown = true;
-        $('.code-container').removeClass('code-container-hidden');
-    }
-};
-
