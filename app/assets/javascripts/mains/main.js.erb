@@ -70,17 +70,26 @@ $(document).ready(function(){
 });
 
 function attachShareButton(){
+
+
     $('#shareButton').on('click', function(){
         if($('#save_form_id').val() == ''){
-            /* Give a popup explanation */
+            /* TODO: Give a popup explanation */
             return;
         }
         console.log($('#save_form_id').val());
-        s = new Sharer(dm, editor.getText(), $('#save_form_id').val(), '/shares/create', weeksMap);
+        var newTab = window.open('about:blank', '_')
+        s = new Sharer(dm, editor.getText(), $('#save_form_id').val(), '/shares/create', weeksMap, storeNewWindowFunction(newTab));
         /* Generate map. Submit loaded algorithm id & map */
     });
 
-    /*
+    function storeNewWindowFunction(newTab){
+        return function openNewWindow(data){
+            newTab.location.replace(window.location.protocol + '//' + window.location.host + data);
+        }
+    }
+
+   /* 
     $('#shareButton').on('click', function(){
         if(dm.getRawData() == undefined) return;
         var time = dm.getSelectedString();
@@ -100,8 +109,10 @@ function attachShareButton(){
         window.addEventListener('message', openTabFunction, false);
 
         document.querySelector('.resultsPanel').contentWindow.postMessage({share: true, week: time.week, season: time.year, newCode: editor.getText(), rawData: dm.getRawData()}, '*');//window.location.protocol + '//' + window.location.host);
-    });
-    */
+        //attr_accessor   :user, 
+        });
+        */
+    
 }
 
 

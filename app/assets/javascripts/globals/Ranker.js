@@ -10,7 +10,7 @@ function Ranker(div, rawData, rankingCode, representFunc, dataProcessFunction){
         this.evalError = null;
 
 	this.shouldProcess = true;
-	if (typeof dataProcessFunction === 'undefined'){
+	if (!dataProcessFunction){//typeof dataProcessFunction === 'undefined'){
 		this.shouldProcess = false;
 	}else{
 		this.processData = dataProcessFunction;

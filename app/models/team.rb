@@ -8,7 +8,6 @@ class Team < ActiveRecord::Base
 	@@AQ_CONFS = [821,25354,823,827,24312,905,911];
 
 
-
 	def self.cleanRow(hash)
 		replacementHash = Hash.new
 		hash.each do |key, value|
@@ -32,6 +31,24 @@ class Team < ActiveRecord::Base
 		end
 		return numRows
 	end
+
+        def self.getNameTuples(team_code_array)
+            unless Rails.cache.exist?(:names_map)
+                names_map = Hash.new
+                Team.all.each do |team|
+                    names_map[team.team_code] = team.name
+                end
+                Rails.cache.write(:names_map, names_map)
+            end
+            names_map = Rails.cache.read(:names_map)
+            team_code_array.map! { |code|  
+                tp = TeamPreview.new
+                tp.name = names_map[code] 
+                tp.team_code = code
+                tp
+            }
+            return team_code_array
+        end
 
 	def self.getData(year, week)
                 if Rails.cache.exist?(year.to_s + '-' + week.to_s)
@@ -110,3 +127,10 @@ end
 class TeamPackage
 	attr_accessor :name, :schedule, :win_pct, :games, :wins, :aq, :fbs, :conference, :team_code
 end
+
+class TeamPreview
+        attr_accessor :name, :team_code
+
+
+end
+

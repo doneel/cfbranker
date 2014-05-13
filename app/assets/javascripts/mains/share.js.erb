@@ -1,0 +1,85 @@
+$(document).ready(function(){
+    ranker = new Ranker(document.querySelector('.rankings'), null, main, buildTeamTile, null);
+    var rankingsArr = JSON.parse($('#rankingsArray').val());
+    loadRanking(rankingsArr[rankingsArr.length-1]);
+});
+
+function main(teams){
+    return teams;
+}
+
+function loadRanking(ranking){
+    ranker.updateData(ranking.teams);
+    ranker.run();
+    var dateString = ranking.year + ' Week ' + ranking.week;
+
+    $('.dateLabel').text(dateString);
+}
+
+function buildTeamTile(rank, team){
+
+    var teamTile = document.createElement('div');
+    teamTile.className = 'teamTile';
+    var context = this;
+    teamTile.onclick = function(){
+        console.log(team);
+    };
+
+    var numberingDiv = document.createElement('div');
+    numberingDiv.className = 'numberingDiv';
+    teamTile.appendChild(numberingDiv);
+
+    var rankNumber = document.createElement('p');
+    rankNumber.className = 'rankNumber';
+    rankNumber.innerHTML = rank + 1;
+    numberingDiv.appendChild(rankNumber);
+
+    var teamSide = document.createElement('div');
+    teamSide.className = 'teamSide';
+    teamTile.appendChild(teamSide);
+
+    
+    var teamLogoContainer = document.createElement('div');
+    teamLogoContainer.className = ' teamLogo';
+
+    var teamLogo =  document.createElement('div');
+    teamLogo.className += ' team-logo';
+    teamLogo.className += ' team' + team.team_code;
+
+    teamLogoContainer.appendChild(teamLogo);
+
+    teamSide.appendChild(teamLogoContainer);
+
+    var teamName = document.createElement('p');
+    teamName.className = 'teamName';
+    teamName.innerHTML = team.name;
+    teamSide.appendChild(teamName);
+
+    return teamTile;
+}
+
+
+$(document).ready(function(){
+    editor = new CodeEditor('editor-div', 'javascript', null);
+    editor.aceEditor.setReadOnly(true);
+    editor.loadText($('#code-text').val());
+    $('.showCodeButton').on('click', toggleCode);
+});
+
+function toggleCode(){
+    codeShown = typeof(codeShown) == 'undefined' ? false : codeShown;  
+    if(codeShown){
+        $('.showCodeButton').text('Show Code');
+        $('.resultsWrapper').removeClass('results-sided');
+        $('.resultsWrapper').addClass('results-centered');
+        codeShown = false;
+        $('.code-container').addClass('code-container-hidden');
+    }else{
+        $('.showCodeButton').text('Hide Code');
+        $('.resultsWrapper').removeClass('results-centered');
+        $('.resultsWrapper').addClass('results-sided');
+        codeShown = true;
+        $('.code-container').removeClass('code-container-hidden');
+    }
+};
+

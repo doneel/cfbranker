@@ -1,0 +1,25 @@
+<%= javascript_include_tag 'separate-share-main' %>
+
+<%= hidden_field_tag "rankingsArray", @share_rankings, {:id => 'rankingsArray' }%>
+<%= hidden_field_tag "code-text", @code, {:id => 'code-text' }%>
+
+<div class="code-container code-container-hidden">
+    <div id="editor-div">
+    </div>
+</div>
+
+<div class="shares-rankings-wrapper">
+    <div class="resultsWrapper results-centered">
+        <div class="resultsWeekLabel dateLabel">
+            2008 Week Bowls
+        </div>
+
+        <div class=" showCodeButton resultsWeekLabel">
+            Show Code
+        </div>
+
+        <div class="rankings">
+        </div>
+
+    </div>
+</div>

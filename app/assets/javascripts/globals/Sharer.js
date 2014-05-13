@@ -1,9 +1,11 @@
-function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap){
+function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap, successFunction){
+
 	var context = this;
         
+        this.successFunction = successFunction;
         this.algorithmId = algorithmId;
-
-	this.dm = dataManager;
+	
+        this.dm = dataManager;
 	this.dmPrevFunc = dm.getDataReturnFunction();
 	console.log(runCode);
 	this.rankingFunction = eval('(' + runCode + ')');
@@ -65,10 +67,10 @@ function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap){
 }
 
 Sharer.prototype.submit = function(){
+        var context = this;
 	$.post(this.submitUrl, {map: this.rankMap, algorithm_code: this.run})
 		.done(function(data){
-			console.log('submit worked correctly yayyy!');
-			console.log(data);
+                        context.successFunction(data);
 		})
 		.fail(function(err){
 			console.log('error: ', err);
