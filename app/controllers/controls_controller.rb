@@ -9,42 +9,50 @@ class ControlsController < ApplicationController
         before_filter :validate_year
         skip_before_action :validate_year, only: [:uploadteams, :updatecsvs, :uploadzip]
 
+        protect_from_forgery :except => [:uploadzip]
+
         def uploadzip
-            check_for_year
-            puts "hello"
-            lister = Proc.new {|file| puts file}
-            Zip::ZipFile.foreach(params[:file].path, &lister)
+                check_for_year
+                puts "hello"
+                lister = Proc.new {|file| puts file}
+                Zip::ZipFile.foreach(params[:file].path, &lister)
 
-            Zip::ZipFile.open(params[:file].path) do |zipfile|
-                team_file = zipfile.find_entry("team.csv")
-                game_file = zipfile.find_entry("game.csv")
-                performance_file = zipfile.find_entry("team-game-statistics.csv")
-                conference_file = zipfile.find_entry("conference.csv")
+                Zip::ZipFile.open(params[:file].path) do |zipfile|
+                    team_file = zipfile.find_entry("team.csv")
+                    game_file = zipfile.find_entry("game.csv")
+                    performance_file = zipfile.find_entry("team-game-statistics.csv")
+                    conference_file = zipfile.find_entry("conference.csv")
 
-                if team_file == nil || game_file == nil || performance_file == nil || conference_file == nil
-                    flash[:notice] = "Failed to open all files in #{zipfile.name}"
-		    redirect_to '/controls/updatecsvs'
+                    if team_file == nil || game_file == nil || performance_file == nil || conference_file == nil
+                        flash[:notice] = "Failed to open all files in #{zipfile.name}"
+                        render :text => "failure!" #'/controls/updatecsvs'
+                    end
+
+                    
+                    team_filename = zipfile.name + '_' + team_file.to_s
+                    team_file.extract(team_filename)
+                    num = Team.import(File.new(team_filename), params[:year])
+
+                    game_filename = zipfile.name + '_' + game_file.to_s
+                    game_file.extract(game_filename)
+                    num = Game.import(File.new(game_filename), params[:year])
+
+                    performance_filename = zipfile.name + '_' + performance_file.to_s
+                    performance_file.extract(performance_filename)
+                    num = Performance.import(File.new(performance_filename), params[:year])
+
+                    conference_filename = zipfile.name + '_' + conference_file.to_s
+                    conference_file.extract(conference_filename)
+                    num = Conference.import(File.new(conference_filename), params[:year])
+                    flash[:notice] = "Succesfully extracted #{zipfile.name}"
+                    #redirect_to '/controls/updatecsvs'
+                end
+                respond_to do |format|
+                    format.html {render :text => "html, ok"}
+                    format.json {render :text => "json, ok"}
+                    format.js {render :text => "js, ok"}
                 end
 
-                
-                team_filename = zipfile.name + '_' + team_file.to_s
-                team_file.extract(team_filename)
-                num = Team.import(File.new(team_filename), params[:year])
-
-                game_filename = zipfile.name + '_' + game_file.to_s
-                game_file.extract(game_filename)
-                num = Game.import(File.new(game_filename), params[:year])
-
-                performance_filename = zipfile.name + '_' + performance_file.to_s
-                performance_file.extract(performance_filename)
-                num = Performance.import(File.new(performance_filename), params[:year])
-
-                conference_filename = zipfile.name + '_' + conference_file.to_s
-                conference_file.extract(conference_filename)
-                num = Conference.import(File.new(conference_filename), params[:year])
-                flash[:notice] = "Succesfully extracted #{zipfile.name}"
-		redirect_to '/controls/updatecsvs'
-            end
         end
 
 

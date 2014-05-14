@@ -1,14 +1,47 @@
 <% if flash[:notice] %>
 	<div class="notice"><%= flash[:notice] %></div>
-<% end %>
+    <% end %>
+
+    <script>
+$(document).ready(function(){
+    $('#zip-upload').on('click',function() {  
+            console.log('submitting');
+        var valuesToSubmit = new FormData($('#zip-form')[0]);//.serialize();
+        $.ajax({
+            type: 'POST',
+            url: $('#zip-form').attr('action'), //sumbits it to the given url of the form
+            data: valuesToSubmit,
+            cache: false,
+            contentType: false,
+            processData: false
+            //dataType: "JSON" // you want a difference between normal and ajax-calls, and json is standard
+            }).success(function(json){
+                alert('Success!');
+                console.log(json);
+            //act on result.
+        });
+        return false; // prevents normal behaviour
+        });
+
+    $('form[data-remote')
+        .on('ajax:success', function(e, data, status, xhr){
+            alert(data);
+        })
+        .on('ajax:error', function(e, data, status, xhr){
+            alert(e);
+            alert(data);
+            });
+});
+</script>
 
 <p>Zipped Folder</p>
-<%= form_tag  controls_uploadzip_path, multipart: true do %>
+<%= form_tag  controls_uploadzip_path, id: 'zip-form',  multipart: true,remote: true do %>
 	<%= file_field_tag	:file %>
 		Year:
-	<%= text_field_tag	:year %>
-	<%= submit_tag :update %>
+                <%= text_field_tag	:year %>
+	<% submit_tag :update %>
 <% end %>
+                <button style="width: 30px; height: 30px" id="zip-upload">ZIP</button>
 
 <p>Teams</p>
 <%= form_tag  controls_uploadteams_path, multipart: true do %>
@@ -45,6 +78,6 @@
 <% end %>
 
 <p>Update Cache</p>
-<%= form_tag  controls_cacheall_path do %>
+<%= form_tag  controls_cacheall_path, remote: true do %>
 	<%= submit_tag :Recache%>
 <% end %>
