@@ -24,7 +24,7 @@ function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap, succe
 	dm.setDataReturnFunction(function(newData, dateObj){
                 var year = dateObj['year'];
                 var week = dateObj['week'];
-                //console.log('receiving', year, week);
+                //console.log('receiving', year, week, newData.length);
 
                 /* This will remap it all */
 		var runnableData = context.dm.updateData(newData, dateObj['year'], dateObj['week']);
@@ -69,7 +69,7 @@ function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap, succe
 		context.frame.contentWindow.document.write('<script>' + runScript.text + '</script>');
 		context.frame.contentWindow.document.close();
 
-		console.log('JUST ADDED THE SCRIPT');
+		//console.log('JUST ADDED THE SCRIPT');
 
 		context.runAll();
 	});
@@ -79,7 +79,7 @@ function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap, succe
 
 Sharer.prototype.submit = function(){
         var context = this;
-        console.log(this.rankMap);
+        //console.log(this.rankMap);
 	$.post(this.submitUrl, {map: this.rankMap, algorithm_code: this.run})
 		.done(function(data){
                         context.successFunction(data);
@@ -94,7 +94,7 @@ var runWrapperForFrame = function(){
 }
 
 Sharer.prototype.runAll = function(){
-        console.log('beggingin runAll');
+        //console.log('beggingin runAll');
         var requestBuffer = [];
 	for(var year in this.map){
 		if(this.map.hasOwnProperty(year)){
@@ -117,7 +117,7 @@ Sharer.prototype.runAll = function(){
         for(var i = 0; i < requestBuffer.length; i++){
             var req = requestBuffer[i];
 	    if(i == requestBuffer.length - 1) this.allMade = true;
-            console.log('Requesting', req.year, req.week);
+//            console.log('Requesting', req.year, req.week);
             this.dm.requestData(req.year, req.week, req.dateObj);
         }
 };
