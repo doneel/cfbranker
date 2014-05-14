@@ -7,9 +7,9 @@ function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap, succe
 	
         this.dm = dataManager;
 	this.dmPrevFunc = dm.getDataReturnFunction();
-	console.log(runCode);
+	//console.log(runCode);
 	this.rankingFunction = eval('(' + runCode + ')');
-	console.log('rankingFunction: ', this.rankingFunction);
+	//console.log('rankingFunction: ', this.rankingFunction);
 
 	this.allMade = false;
 	this.requestsMade = 0;
@@ -23,19 +23,19 @@ function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap, succe
 
 	dm.setDataReturnFunction(function(newData, dateObj){
                 var year = dateObj['year'];
-                var week = dateObj['week'][0];
+                var week = dateObj['week'];
+                //console.log('receiving', year, week);
 
                 /* This will remap it all */
 		var runnableData = context.dm.updateData(newData, dateObj['year'], dateObj['week']);
-
-                console.log(newData[0].schedule.length);
+                //console.log(runnableData);
 
 		if(context.rankMap[dateObj['year']] === undefined){
 			context.rankMap[dateObj['year']] = {};
 		}
 
 		context.rankMap[dateObj['year']][dateObj['week']] = context.frame.contentWindow.runOnWeek(dateObj['year'], dateObj['week'], runnableData, context.rankingFunction);
-                console.log('Wrote in: ', week);
+                //console.log('Wrote in: ', week);
 		context.requestsFilled += 1;
 		if(context.allMade && context.requestsFilled === context.requestsMade){
                         context.dm.setDataReturnFunction(context.dmPrevFunc);
@@ -79,6 +79,7 @@ function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap, succe
 
 Sharer.prototype.submit = function(){
         var context = this;
+        console.log(this.rankMap);
 	$.post(this.submitUrl, {map: this.rankMap, algorithm_code: this.run})
 		.done(function(data){
                         context.successFunction(data);
@@ -98,12 +99,11 @@ Sharer.prototype.runAll = function(){
 	for(var year in this.map){
 		if(this.map.hasOwnProperty(year)){
                     for(var i = 0; i < this.map[year].length; i++){
-                        var week = this.map[year][i];
+                        var week = this.map[year][i][1];
 //			for(var week = 1; week <= this.map[year]; week++){
                         var dateObj = {};
                         dateObj['year']= year;
                         dateObj['week']= week;
-                        console.log('Requestiong: ' + week);
                         this.requestsMade += 1;
                         requestBuffer.push({year: year, week: week, dateObj: dateObj});
 		    }
@@ -117,6 +117,7 @@ Sharer.prototype.runAll = function(){
         for(var i = 0; i < requestBuffer.length; i++){
             var req = requestBuffer[i];
 	    if(i == requestBuffer.length - 1) this.allMade = true;
+            console.log('Requesting', req.year, req.week);
             this.dm.requestData(req.year, req.week, req.dateObj);
         }
 };

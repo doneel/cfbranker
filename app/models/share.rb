@@ -14,7 +14,7 @@ class Share < ActiveRecord::Base
                         sr = ShareRanking.new
                         sr.share_id = self.id
                         sr.year = year
-                        sr.week = week.partition(',').last
+                        sr.week = week
                         data = data.map{|x| x.to_i}
                         sr.teams = data
                         sr.save

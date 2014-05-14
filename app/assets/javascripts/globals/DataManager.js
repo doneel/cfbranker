@@ -148,15 +148,16 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
         var cacheAndTrimYear = function(rawData, extraData){
                 /* could already exist in cache but just overwrite it. */
                 context.updateData(rawData, extraData.year, extraData.lastWeek);
-                console.log('cache', context.dataCache);
+                //console.log('cache', context.dataCache);
                 giveTrimmed(rawData, extraData);
         }
         var context = this;
         var giveTrimmed = function(rawData, extraData){
             data = $.extend(true, [], rawData)
-            var trimmed = context.trimmingFunction(data, week);
-            console.log('trimming');
-            console.log(trimmed);
+            console.log('before trimming: ', data[0]);
+            console.log('extraData', extraData);
+            var trimmed = context.trimmingFunction(data, extraData.week);
+            console.log('Giving data:', extraData.year, extraData.week, trimmed[0]);
             context.afterGetCallback(trimmed, extraData);
         }
 	if(this.dataCache[season] && this.dataCache[season][week]){
@@ -165,10 +166,10 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
                 var lastWeek = this.map[season][this.map[season].length-1][1];
                 /* Never requested anything */
 		if(!this.dataCache[season]){
-                        console.log('requesting new year');
+                        //console.log('requesting new year');
 			this.dataCache[season] = [];
                         var lastWeek = this.map[season][this.map[season].length-1][1];
-                        console.log('last week: ', lastWeek);
+                        //console.log('last week: ', lastWeek);
                         extraData.lastWeek = lastWeek;
                         var doubleArr = [season, lastWeek];
 		        this.getDataFunc([season, lastWeek], cacheAndTrimYear/*this.afterGetCallback*/, extraData);
@@ -176,10 +177,10 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
                 else{
                     /* Have the season's data, just trim down */
                     giveTrimmed(this.dataCache[season][lastWeek], extraData);
-
 		}
 	}
 };
+
 
 DataManager.prototype.updateData = function(newData, year, week){
 	this.rawData = newData;
@@ -188,6 +189,6 @@ DataManager.prototype.updateData = function(newData, year, week){
 
 	this.dataCache[year][week] = newData;
 
-
+        console.log('processed data', this.processedData);
 	return this.processedData;
 };
