@@ -1,13 +1,9 @@
 $(document).ready(function(){
     state = {};
     state.signed_in = JSON.parse($('#signed-in').val());
-    console.log($('#save-array').val())
     savesArr = JSON.parse($('#save-array').val());
     weeksMap = JSON.parse($('#weeks-map').val());
 
-    console.log(state.signed_in)
-    console.log(savesArr[0])
-    console.log(weeksMap);
 
 
 
@@ -77,10 +73,10 @@ function attachShareButton(){
             /* TODO: Give a popup explanation */
             return;
         }
-        console.log($('#save_form_id').val());
         var newTab = window.open('about:blank', '_')
         s = new Sharer(dm, editor.getText(), $('#save_form_id').val(), '/shares/create', weeksMap, storeNewWindowFunction(newTab));
         /* Generate map. Submit loaded algorithm id & map */
+        dataPauser.off();
     });
 
     function storeNewWindowFunction(newTab){
