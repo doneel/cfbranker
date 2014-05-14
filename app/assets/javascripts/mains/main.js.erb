@@ -1,16 +1,13 @@
 $(document).ready(function(){
     state = {};
+    state.loaded_main = true;
     state.signed_in = JSON.parse($('#signed-in').val());
     savesArr = JSON.parse($('#save-array').val());
     weeksMap = JSON.parse($('#weeks-map').val());
 
-
-
-
-
-	initializeSaveForm();
-        initializeSaveAsForm();
-	editor = new CodeEditor('codeEditorContainer', 'javascript', saveCode);
+    initializeSaveForm();
+    initializeSaveAsForm();
+    editor = new CodeEditor('codeEditorContainer', 'javascript', saveCode);
 
     expandingDiv = new ExpandingDiv(document.querySelector('.saveBar'), '0%', '100%', function(){
         editor.resize();

@@ -12,7 +12,6 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require_directory ./globals
 //= require ace.js
 //= require theme-monokai.js
