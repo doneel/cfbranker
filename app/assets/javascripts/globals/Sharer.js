@@ -15,18 +15,30 @@ function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap, succe
 	this.requestsMade = 0;
 	this.requestsFilled = 0;
 
-	this.dmPrevFunc = dm.setDataReturnFunction(function(newData, dateObj){
+        /* Set the return function to be a function that accepts and then runs the data. Store the previous one.
+         */
+
+
+
+
+	dm.setDataReturnFunction(function(newData, dateObj){
                 var year = dateObj['year'];
                 var week = dateObj['week'][0];
+
+                /* This will remap it all */
 		var runnableData = context.dm.updateData(newData, dateObj['year'], dateObj['week']);
+
+                console.log(newData[0].schedule.length);
 
 		if(context.rankMap[dateObj['year']] === undefined){
 			context.rankMap[dateObj['year']] = {};
 		}
+
 		context.rankMap[dateObj['year']][dateObj['week']] = context.frame.contentWindow.runOnWeek(dateObj['year'], dateObj['week'], runnableData, context.rankingFunction);
                 console.log('Wrote in: ', week);
 		context.requestsFilled += 1;
 		if(context.allMade && context.requestsFilled === context.requestsMade){
+                        context.dm.setDataReturnFunction(context.dmPrevFunc);
 			context.submit();
 		}
                 else{
@@ -47,7 +59,6 @@ function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap, succe
 	this.frame.id = 'sFrame';
         this.frame.style.display = 'none';
 	/* TODO: Add sandbox property */
-
 
 	$(this.frame).load(function(){
 
