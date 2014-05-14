@@ -98,7 +98,7 @@ DataManager.prototype.resetWeeks = function(year){
         $(newOpt).val(optsArray[i][1]);
         this.weekBox.appendChild(newOpt);
     }
-    $(this.weekBox).val(optsArray[optsArray.length - 1][1]);
+    $(this.weekBox).val(optsArray[0/*optsArray.length - 1*/][1]);
     
 }
 
@@ -130,11 +130,33 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
 	}
         extraData.week = week;
         extraData.year = season;
-        
+       
+        /* Plan
+         * When requesting a new year, we need to cache the full year data
+         *  in the last week slot.
+         *  We later assume there is data there cause the array exists but it doesn't.
+         */
+
+        /*
+         * function cacheAndTrimYear
+         * When requesting data for a whole year, cache that data first,
+         *  then trim it.
+         * LastWeek represents the week this data actually responds to - 
+         *      the last week of the year.
+         *  targetWeek is the week we want to trim to.
+         */
+        var cacheAndTrimYear = function(rawData, extraData){
+                /* could already exist in cache but just overwrite it. */
+                context.updateData(rawData, extraData.year, extraData.lastWeek);
+                console.log('cache', context.dataCache);
+                giveTrimmed(rawData, extraData);
+        }
         var context = this;
         var giveTrimmed = function(rawData, extraData){
             data = $.extend(true, [], rawData)
             var trimmed = context.trimmingFunction(data, week);
+            console.log('trimming');
+            console.log(trimmed);
             context.afterGetCallback(trimmed, extraData);
         }
 	if(this.dataCache[season] && this.dataCache[season][week]){
@@ -143,9 +165,13 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
                 var lastWeek = this.map[season][this.map[season].length-1][1];
                 /* Never requested anything */
 		if(!this.dataCache[season]){
+                        console.log('requesting new year');
 			this.dataCache[season] = [];
-                        var doubleArr = [season, this.map[season][this.map[season].length-1][1]];
-		        this.getDataFunc([season, this.map[season][this.map[season].length-1][1]], this.afterGetCallback, extraData);
+                        var lastWeek = this.map[season][this.map[season].length-1][1];
+                        console.log('last week: ', lastWeek);
+                        extraData.lastWeek = lastWeek;
+                        var doubleArr = [season, lastWeek];
+		        this.getDataFunc([season, lastWeek], cacheAndTrimYear/*this.afterGetCallback*/, extraData);
 		}
                 else{
                     /* Have the season's data, just trim down */
