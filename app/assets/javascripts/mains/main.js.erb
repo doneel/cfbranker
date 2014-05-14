@@ -70,7 +70,7 @@ function attachShareButton(){
             /* TODO: Give a popup explanation */
             return;
         }
-        var newTab = window.open('about:blank', '_')
+        var newTab = window.open(window.location.protocol + '//' + window.location.host + '/shares/loading')
         s = new Sharer(dm, editor.getText(), $('#save_form_id').val(), '/shares/create', weeksMap, storeNewWindowFunction(newTab));
         /* Generate map. Submit loaded algorithm id & map */
         dataPauser.off();

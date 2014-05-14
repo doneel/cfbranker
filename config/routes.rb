@@ -18,6 +18,7 @@ RankV2::Application.routes.draw do
   get '/ranks/codeFrame', to: 'ranks#ranksFrame'
   get '/ranks/shareCalcFrame', to: 'ranks#shareCalcFrame'
   post '/shares/create', to: 'shares#create'
+  get '/shares/loading', to: 'shares#loading'
   get '/shares/:encodedID' => 'shares#view'
   # The priority is based upon order of creation: first created -> highest priority.
   # The priority is based upon order of creation: first created -> highest priority.

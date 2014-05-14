@@ -46,4 +46,7 @@ shown_ranking = share.share_rankings.last
             @rankings = shown_ranking.teams
 =end
         end
+
+        def loading
+        end
 end
