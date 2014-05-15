@@ -85,7 +85,7 @@ SavesManager.prototype.appendNewButton = function(){
 	newDiv.onclick = function(){context.createNewSave();}
 
 	var newSaveName = document.createElement('p');
-	newSaveName.innerHTML = 'New Save';
+	newSaveName.innerHTML = 'New Algorithm';
 	newSaveName.className = 'newSaveName';
 
 	var newSaveIcon = document.createElement('i');

@@ -57,18 +57,21 @@ DataManager.prototype.addOptions = function(){
 		this.weekBox.removeChild(this.weekBox.lastChild);
 	}
 
-	var largest = 0;
-	for(var opt in this.map){
-		if(this.map.hasOwnProperty(opt)){
-			var newOpt = document.createElement('option');
-			newOpt.innerHTML = opt;
-			$(newOpt).val(opt);
-			this.yearBox.appendChild(newOpt);
-			if(opt > largest){
-			    largest = opt;
-			}
-		}
-	}
+        var optionsArr = Object.keys(map);
+        optionsArray.sort();
+	
+        var largest = 0;
+        for(var i = 0; i < optionsArr.length; i++){
+            var opt = optionsArr[i];
+            var newOpt = document.createElement('option');
+            newOpt.innerHTML = opt;
+            $(newOpt).val(opt);
+            this.yearBox.appendChild(newOpt);
+            if(opt > largest){
+                largest = opt;
+            }
+        }
+
 	$(this.yearBox).val(largest);
         this.resetWeeks(largest);
 
