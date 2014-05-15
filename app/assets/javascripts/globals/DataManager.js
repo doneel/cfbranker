@@ -57,13 +57,8 @@ DataManager.prototype.addOptions = function(){
 		this.weekBox.removeChild(this.weekBox.lastChild);
 	}
 
-<<<<<<< HEAD
         var optionsArr = Object.keys(this.map);
         optionsArr.sort();
-=======
-        var optionsArr = Object.keys(map);
-        optionsArray.sort();
->>>>>>> 9afb1d07c157e1fcadd5ff044088ec7cc86347ff
 	
         var largest = 0;
         for(var i = 0; i < optionsArr.length; i++){

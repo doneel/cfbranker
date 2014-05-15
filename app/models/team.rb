@@ -52,9 +52,11 @@ class Team < ActiveRecord::Base
 
 	def self.getData(year, week)
                 if Rails.cache.exist?(year.to_s + '-' + week.to_s)
+                    logger.debug "Cache hit #{year} #{week}"
                     return Rails.cache.read(year.to_s + '-' + week.to_s)
                 end
-		
+                
+                logger.info "Cache miss #{year} #{week}"
                 allTeams = Array.new
 		Team.where(:year => year).each do |team|
 			allTeams.push team.package(year, week.to_i)
