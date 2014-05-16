@@ -21,32 +21,6 @@ function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap, succe
 
 
 
-	dm.setDataReturnFunction(function(newData, dateObj){
-                var year = dateObj['year'];
-                var week = dateObj['week'];
-                //console.log('receiving', year, week, newData.length);
-
-                /* This will remap it all */
-		var runnableData = context.dm.updateData(newData, dateObj['year'], dateObj['week']);
-                //console.log(runnableData);
-
-		if(context.rankMap[dateObj['year']] === undefined){
-			context.rankMap[dateObj['year']] = {};
-		}
-
-		context.rankMap[dateObj['year']][dateObj['week']] = context.frame.contentWindow.runOnWeek(dateObj['year'], dateObj['week'], runnableData, context.rankingFunction);
-                //console.log('Wrote in: ', week);
-		context.requestsFilled += 1;
-		if(context.allMade && context.requestsFilled === context.requestsMade){
-                        context.dm.setDataReturnFunction(context.dmPrevFunc);
-			context.submit();
-		}
-                else{
-                    console.log('All requests made: ', context.allMade, ' Filled: ' +  context.requestsMade  + '/' + context.requestsFilled );
-                }
-	});
-
-
 
 	this.run = runCode;
 	this.submitUrl = submitUrl;
@@ -71,7 +45,7 @@ function Sharer(dataManager, runCode, algorithmId, submitUrl, allWeeksMap, succe
 
 		//console.log('JUST ADDED THE SCRIPT');
 
-		context.runAll();
+		context.getAllData();
 	});
 	$('body').append(this.frame);
 
@@ -93,7 +67,58 @@ var runWrapperForFrame = function(){
 
 }
 
+Sharer.prototype.getAllData = function(){
+    var context = this;
+    var waitForAllYears = function(newData, dateObj){
+        context.yearRequestsFilled += 1;
+        if(context.yearRequestsFilled == Object.keys(context.map).length){
+            context.runAll();
+        }
+    }
+    dm.setDataReturnFunction(waitForAllYears);
+
+    this.yearRequestsFilled = 0; 
+    var years = Object.keys(this.map);
+    for(var i = 0; i < years.length; i++){
+        var year = years[i];
+        var last = this.map[year][this.map[year].length - 1][1];
+        var dateObj = {
+            'year': year,
+            'week': last
+        };
+        this.dm.requestData(year, last, dateObj);
+    }
+}
+
 Sharer.prototype.runAll = function(){
+    
+    var context = this;
+    dm.setDataReturnFunction(function(newData, dateObj){
+            var year = dateObj['year'];
+            var week = dateObj['week'];
+            //console.log('receiving', year, week, newData.length);
+
+            /* This will remap it all */
+            var runnableData = context.dm.updateData(newData, dateObj['year'], dateObj['week']);
+            //console.log(runnableData);
+
+            if(context.rankMap[dateObj['year']] === undefined){
+                    context.rankMap[dateObj['year']] = {};
+            }
+
+            context.rankMap[dateObj['year']][dateObj['week']] = context.frame.contentWindow.runOnWeek(dateObj['year'], dateObj['week'], runnableData, context.rankingFunction);
+            //console.log('Wrote in: ', week);
+            context.requestsFilled += 1;
+            if(context.allMade && context.requestsFilled === context.requestsMade){
+                    context.dm.setDataReturnFunction(context.dmPrevFunc);
+                    context.submit();
+            }
+            else{
+                console.log('All requests made: ', context.allMade, ' Filled: ' +  context.requestsMade  + '/' + context.requestsFilled );
+            }
+	});
+
+
         //console.log('beggingin runAll');
         var requestBuffer = [];
 	for(var year in this.map){
