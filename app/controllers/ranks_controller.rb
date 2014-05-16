@@ -33,7 +33,7 @@ class RanksController < ApplicationController
 #		render	:json => @teamJSON
 #		return
 	   
-            render :json => Team.getData(params[:year], params[:week])
+            render json: Team.getData(params[:year], params[:week])
             return
 	end
 
