@@ -81,5 +81,7 @@ RankV2::Application.configure do
 
 
   config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
+  
+  config.action_controller.page_cache_directory = Rails.root.to_s + "/public/cache/"
 
 end

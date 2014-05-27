@@ -43,7 +43,7 @@ class ControlsController < ApplicationController
                 conference_file.extract(conference_filename)
                 num = Conference.import(File.new(conference_filename), params[:year])
                 flash[:notice] = "Succesfully extracted #{zipfile.name}"
-		redirect_to '/controls/updatecsvs'
+		redirect_to '/ranks/clearCache'
             end
         end
 
@@ -81,7 +81,7 @@ class ControlsController < ApplicationController
                     Team.getData(year,week[1])
                 end
             end
-            redirect_to '/controls/updatecsvs'
+            redirect_to '/ranks/dataCache'
         end
 
 	def updatecsvs

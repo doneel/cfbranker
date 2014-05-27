@@ -1,6 +1,6 @@
 class RanksController < ApplicationController
 	respond_to	:html, :json
-
+        caches_page     :dataCache
 	def write
 		@signed_in = false
 		@saveArray = Array.new
@@ -24,6 +24,7 @@ class RanksController < ApplicationController
 		@new_algorithm = Algorithm.new
 
                 @weeksMap = Season.getWeeksMap.to_json
+                @dataMap = Season.getAllData.to_json
 
 	end
 
@@ -36,6 +37,18 @@ class RanksController < ApplicationController
             render json: Team.getData(params[:year], params[:week])
             return
 	end
+
+        def dataCache
+            logger.info "Cache miss dataCache page"
+            @weeksMap = Season.getWeeksMap.to_json
+            @dataMap = Season.getAllData.to_json
+	    render :layout => false
+        end
+
+        def clearCache
+            expire_page :action => 'dataCache'
+            redirect_to '/controls/updatecsvs'
+        end
 
 	def ranksFrame
 		render :layout => false

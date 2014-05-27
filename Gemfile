@@ -42,6 +42,8 @@ gem 'unicorn'
 
 gem 'zip'
 
+gem 'actionpack-page_caching'
+
 #gem 'jquery-turbolinks'
 
 
