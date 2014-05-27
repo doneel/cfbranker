@@ -132,7 +132,5 @@ end
 
 class TeamPreview
         attr_accessor :name, :team_code
-
-
 end
 

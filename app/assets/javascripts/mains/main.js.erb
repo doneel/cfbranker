@@ -3,7 +3,6 @@ $(document).ready(function(){
     state.loaded_main = true;
     state.signed_in = JSON.parse($('#signed-in').val());
     savesArr = JSON.parse($('#save-array').val());
-    weeksMap = JSON.parse($('#weeks-map').val());
 
     initializeSaveForm();
     initializeSaveAsForm();
@@ -26,13 +25,27 @@ $(document).ready(function(){
     })();
 
     cw = document.querySelector('.resultsPanel').contentWindow;
-    dm = new DataManager(document.querySelector('#yearBox'), document.querySelector('#weekBox'), 
-            weeksMap, 
-            getData, 
-            updateData, 
-            remap,
-            extractSubWeek, 
-            updateSelectricBoxes);
+
+    var iframeLoaded = false;
+    
+    $('#data-cache-page').load(function(){
+        weeksMap = JSON.parse($('#data-cache-page').contents().find('#weeks-map').val());
+        dm = new DataManager(document.querySelector('#yearBox'),
+                document.querySelector('#weekBox'), 
+                weeksMap, 
+                getData, 
+                updateData, 
+                remap,
+                extractSubWeek, 
+                updateSelectricBoxes,
+                $('#data-cache-page').contents().find('#data-map')
+            );
+        if(iframeLoaded){
+            dm.requestData();
+        }else{
+            iframeLoaded = true;
+        }
+    });
 
     hD = new MessageButton(document.getElementById('helpIcon'), document.getElementById('helpDialog'), document.getElementById('helpBackground'), 'active');
     iD = new MessageButton(document.getElementById('infoIcon'), document.getElementById('infoDialog'), document.getElementById('infoBackground'), 'active');
@@ -50,14 +63,17 @@ $(document).ready(function(){
     }
     $('#helpIcon').css('display','block');
    // select the target node
-
-
-
-
-   dataPauser.on();
-   $('iframe.resultsPanel').load(function(){
-        dm.requestData();
-   });
+    
+    dataPauser.on();
+    $('iframe.resultsPanel')[0].src='/ranks/codeFrame';
+    $('iframe.resultsPanel').load(function(){
+    //        console.log('loading');
+        if(iframeLoaded){
+            dm.requestData();
+        }else{
+            iframeLoaded = true;
+        }
+    });
 
    attachShareButton();
 
@@ -66,8 +82,6 @@ $(document).ready(function(){
 });
 
 function attachShareButton(){
-
-
     $('#shareButton').on('click', function(){
         if($('#save_form_id').val() == ''){
             /* TODO: Give a popup explanation */
@@ -141,6 +155,8 @@ function updateData(newData, extraData){
 }
 
 function runAlgorithm(){
+    if(typeof dm  == 'undefined') return;
+    console.log(dm);
     if(dm.getRawData() == undefined || dm.getRawData().length == 0) return;
     document.querySelector('.resultsPanel').contentWindow.postMessage({newCode: editor.getText(), rawData: dm.getRawData()}, '*');//window.location.protocol + '//' + window.location.host);
 }

@@ -95,7 +95,7 @@
         </div>
     </div>
     <div class="rightSide">
-        <iframe sandbox='allow-scripts allow-popups allow-same-origin' src="/ranks/codeFrame" class="resultsPanel">
+        <iframe sandbox='allow-scripts allow-popups allow-same-origin'  class="resultsPanel">
         </iframe>
     </div>
 </div>
@@ -118,5 +118,7 @@
 
 <%= hidden_field_tag "signed-in", @signed_in, {:id => 'signed-in' }%>
 <%= hidden_field_tag "save-array", @saveArray, {:id => 'save-array' }%>
-<%= hidden_field_tag "weeks-map", @weeksMap, {:id => 'weeks-map' }%>
 
+
+<iframe sandbox='allow-same-origin' class="hidden" id="data-cache-page" src="/dataCache">
+</iframe>

@@ -9,6 +9,21 @@ class Season < ActiveRecord::Base
 	    return teams
 	end
 
+        def self.getAllData
+            if Rails.cache.exist?(:allData)
+                logger.debug "Cache hit all data"
+                return Rails.cache.read(:allData)
+            end
+            allData = Hash.new
+            Season.all.each do |season|
+                allData[season.year] = Team.getData(season.year, season.maxWeek)
+            end
+            Rails.cache.write(:allData, allData)
+            return allData
+        end
+
+
+
         def self.getWeeksMap
             if Rails.cache.exist?(:weeksMap)
                 puts 'cached map'

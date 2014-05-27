@@ -1,4 +1,4 @@
-function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallback, processDataFunc, trimFunc, changeCallBack){
+function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallback, processDataFunc, trimFunc, changeCallBack, dataMapDiv){
 	this.yearBox = yearBox;
 	this.weekBox = weekBox;
 	this.map = selectBoxMap;
@@ -7,6 +7,7 @@ function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallba
 	this.processDataFunc = processDataFunc;
         this.changeCallBack = changeCallBack;
         this.trimmingFunction = trimFunc
+        this.dataMapDiv = dataMapDiv;
 
 	this.dataCache = {};
 
@@ -26,6 +27,16 @@ function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallba
 	});
         
 	this.addOptions();
+        this.loadData();
+}
+
+DataManager.prototype.loadData = function(){
+    this.allDataMap = JSON.parse($(this.dataMapDiv).val());
+    for(var year in this.allDataMap){
+        var lastWeek = this.map[year][this.map[year].length - 1][1];
+        console.log('lastWeek', lastWeek);
+        this.updateData(this.allDataMap[year], year, lastWeek);
+    }
 }
 
 DataManager.prototype.getRawData = function(){
@@ -113,6 +124,7 @@ DataManager.prototype.fixSelects = function(){
 };
 
 DataManager.prototype.requestData = function(yearNum, weekNum, exData){
+        console.log('Requesting:', yearNum, weekNum);
 
 	var season;
 	if (typeof yearNum === 'undefined'){
@@ -166,7 +178,7 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
                 var lastWeek = this.map[season][this.map[season].length-1][1];
                 /* Never requested anything */
 		if(!this.dataCache[season]){
-                        //console.log('requesting new year');
+                        console.log('requesting new year, data cache doesnt have', season);
 			//this.dataCache[season] = [];
                         var lastWeek = this.map[season][this.map[season].length-1][1];
                         //console.log('last week: ', lastWeek);
@@ -181,9 +193,31 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
 	}
 };
 
+function compressSchedule(schedule){
+    var smaller = [];
+    for(var i = 0; i < schedule.length; i++){
+        smaller[i] = compressObject(schedule[i]);
+    }
+    return smaller;
+}
+
+function compressObject(team){
+        var keys = Object.keys(team);
+        var vals = [];
+        for(var i = 0; i < keys.length; i++){
+            if(keys[i] == 'schedule'){
+                vals.push(compressSchedule(team[keys[i]]));
+            }else{
+                vals.push(team[keys[i]]);
+            }
+        }
+        return vals;
+}
+
 
 DataManager.prototype.updateData = function(newData, year, week){
 	this.rawData = newData;
+        
 	this.processedData = this.processDataFunc($.extend(true, [], this.rawData));
 
         console.log('caching ', year, week, newData);        
