@@ -23,8 +23,8 @@ class RanksController < ApplicationController
 		@algorithm = Algorithm.new
 		@new_algorithm = Algorithm.new
 
-                @weeksMap = Season.getWeeksMap.to_json
-                @dataMap = Season.getAllData.to_json
+                #@weeksMap = Season.getWeeksMap.to_json
+                #@dataMap = Season.getAllData.to_json
 
 	end
 
