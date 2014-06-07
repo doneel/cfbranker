@@ -13,9 +13,6 @@ $(document).ready(function(){
         $('.workPane').resize();
     });
 
-    $(function(){
-        $('select').selectric();
-    });
 
     initPausers();
     sm = new SavesManager(document.querySelector('.saveBar'), preLoad, loadSave, saveAs, true, savesArr);
@@ -26,7 +23,8 @@ $(document).ready(function(){
 
     cw = document.querySelector('.resultsPanel').contentWindow;
 
-    var iframeLoaded = false;
+    state.firstYearLoaded = false;
+    state.allDataLoaded = false;
     
     $('#data-cache-page').load(function(){
         weeksMap = JSON.parse($('#data-cache-page').contents().find('#weeks-map').val());
@@ -40,11 +38,8 @@ $(document).ready(function(){
                 updateSelectricBoxes,
                 $('#data-cache-page').contents().find('#data-map')
             );
-        if(iframeLoaded){
-            dm.requestData();
-        }else{
-            iframeLoaded = true;
-        }
+        requestDataIfAllLoaded();
+        console.log($('#data-cache-page'));
     });
 
     hD = new MessageButton(document.getElementById('helpIcon'), document.getElementById('helpDialog'), document.getElementById('helpBackground'), 'active');
@@ -67,12 +62,8 @@ $(document).ready(function(){
     dataPauser.on();
     $('iframe.resultsPanel')[0].src='/ranks/codeFrame';
     $('iframe.resultsPanel').load(function(){
-    //        console.log('loading');
-        if(iframeLoaded){
-            dm.requestData();
-        }else{
-            iframeLoaded = true;
-        }
+        //        console.log('loading');
+        requestDataIfAllLoaded();
     });
 
    attachShareButton();
@@ -80,6 +71,17 @@ $(document).ready(function(){
    errorHelper = new ErrorHelper(editor.aceEditor);
    window.addEventListener('message', function(error){errorHelper.noteError(error)}, false);
 });
+
+function requestDataIfAllLoaded(){
+        if(state.firstYearLoaded){
+            dm.requestData();
+        }else{
+            state.firstYearLoaded= true;
+            $(function(){
+                $('select').selectric();
+            });
+        }
+}
 
 function attachShareButton(){
     $('#shareButton').on('click', function(){

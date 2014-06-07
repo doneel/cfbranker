@@ -34,7 +34,6 @@ DataManager.prototype.loadData = function(){
     this.allDataMap = JSON.parse($(this.dataMapDiv).val());
     for(var year in this.allDataMap){
         var lastWeek = this.map[year][this.map[year].length - 1][1];
-        console.log('lastWeek', lastWeek);
         this.updateData(this.allDataMap[year], year, lastWeek);
     }
 }
@@ -124,7 +123,7 @@ DataManager.prototype.fixSelects = function(){
 };
 
 DataManager.prototype.requestData = function(yearNum, weekNum, exData){
-        console.log('Requesting:', yearNum, weekNum);
+        //console.log('Requesting:', yearNum, weekNum);
 
 	var season;
 	if (typeof yearNum === 'undefined'){
@@ -178,7 +177,7 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
                 var lastWeek = this.map[season][this.map[season].length-1][1];
                 /* Never requested anything */
 		if(!this.dataCache[season]){
-                        console.log('requesting new year, data cache doesnt have', season);
+                        //console.log('requesting new year, data cache doesnt have', season);
 			//this.dataCache[season] = [];
                         var lastWeek = this.map[season][this.map[season].length-1][1];
                         //console.log('last week: ', lastWeek);
@@ -220,7 +219,7 @@ DataManager.prototype.updateData = function(newData, year, week){
         
 	this.processedData = this.processDataFunc($.extend(true, [], this.rawData));
 
-        console.log('caching ', year, week, newData);        
+        //console.log('caching ', year, week, newData);        
 	if(! this.dataCache[year]){
             this.dataCache[year] = [];
         }
