@@ -38,11 +38,17 @@ $(document).ready(function(){
                 updateSelectricBoxes,
                 $('#data-cache-page').contents().find('#data-map')
             );
+        dm.waitForAllData(dataPauser);
         requestDataIfAllLoaded();
-        console.log($('#data-cache-page'));
+        //document.querySelector('#data-cache-page').src = '/dataCache');
+    });
+    
+    $('#all-data-cache-page').load(function(){
+        console.log('loaded ALL data');
+        loadAllData();
     });
 
-    hD = new MessageButton(document.getElementById('helpIcon'), document.getElementById('helpDialog'), document.getElementById('helpBackground'), 'active');
+   hD = new MessageButton(document.getElementById('helpIcon'), document.getElementById('helpDialog'), document.getElementById('helpBackground'), 'active');
     iD = new MessageButton(document.getElementById('infoIcon'), document.getElementById('infoDialog'), document.getElementById('infoBackground'), 'active');
     //shareDialog = new MessageButton(document.getElementById('shareButton'), document.getElementById('shareDialog'), document.getElementById('shareBackground'), 'active');
 
@@ -72,9 +78,16 @@ $(document).ready(function(){
    window.addEventListener('message', function(error){errorHelper.noteError(error)}, false);
 });
 
+function loadAllData(){
+    dm.dataMapDiv = $('#all-data-cache-page').contents().find('#data-map');
+    dm.loadData();
+    dm.loadedAllData();
+}
+
 function requestDataIfAllLoaded(){
         if(state.firstYearLoaded){
             dm.requestData();
+            $('#all-data-cache-page')[0].src = '/dataCache';            
         }else{
             state.firstYearLoaded= true;
             $(function(){

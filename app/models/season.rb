@@ -22,6 +22,17 @@ class Season < ActiveRecord::Base
             return allData
         end
 
+        def self.getLatestSeason
+            if Rails.cache.exist?(:latest_year)
+                return Rails.cache.read(:latest_year)
+            end
+            season = Season.order(:year).last
+            allData = Hash.new
+            allData[season.year] = Team.getData(season.year, season.maxWeek)
+#            Rails.cache.write(:latest_year, allData)
+            return allData
+        end
+
 
 
         def self.getWeeksMap

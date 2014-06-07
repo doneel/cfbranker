@@ -9,6 +9,10 @@ function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallba
         this.trimmingFunction = trimFunc
         this.dataMapDiv = dataMapDiv;
 
+        this.expectAllData = false;
+        this.haveAllData = false;
+
+
 	this.dataCache = {};
 
 	var context = this;
@@ -30,8 +34,30 @@ function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallba
         this.loadData();
 }
 
+DataManager.prototype.waitForAllData = function(dataPauser){
+    this.expectAllData = true;
+    this.allLoadedFunction = null;
+    if(typeof dataPauser != 'undefined'){
+        this.allDataWaitPauser = dataPauser;
+    }else{
+        this.allDataWaitPauser = null;
+    }
+    console.log(this.allDataWaitPauser);
+}
+
+DataManager.prototype.loadedAllData = function(){
+    this.haveAllData = true;
+    if(this.allLoadedFunction){
+        this.allLoadedFunction();
+        if(this.allDataWaitPauser){
+            this.allDataWaitPauser.off();
+        }
+    }
+}
+
 DataManager.prototype.loadData = function(){
     this.allDataMap = JSON.parse($(this.dataMapDiv).val());
+    console.log(this.allDataMap);
     for(var year in this.allDataMap){
         var lastWeek = this.map[year][this.map[year].length - 1][1];
         this.updateData(this.allDataMap[year], year, lastWeek);
@@ -177,6 +203,13 @@ DataManager.prototype.requestData = function(yearNum, weekNum, exData){
                 var lastWeek = this.map[season][this.map[season].length-1][1];
                 /* Never requested anything */
 		if(!this.dataCache[season]){
+                    if(this.expectAllData){
+                        if(this.allDataWaitPauser) this.allDataWaitPauser.on();
+                        this.allLoadedFunction = function(){
+                            this.requestData(yearNum, weekNum, exData);
+                        }
+                        return;
+                    }
                         //console.log('requesting new year, data cache doesnt have', season);
 			//this.dataCache[season] = [];
                         var lastWeek = this.map[season][this.map[season].length-1][1];

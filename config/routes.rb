@@ -16,6 +16,7 @@ RankV2::Application.routes.draw do
   get '/create', to: 'ranks#write'
   get '/req_data', to: 'ranks#getData'
   get '/dataCache', to: 'ranks#dataCache'
+  get '/firstYearCache', to: 'ranks#firstYearCache'
   get '/ranks/clearCache', to: 'ranks#clearCache'
   get '/ranks/codeFrame', to: 'ranks#ranksFrame'
   get '/ranks/shareCalcFrame', to: 'ranks#shareCalcFrame'

@@ -1,6 +1,6 @@
 class RanksController < ApplicationController
 	respond_to	:html, :json
-        caches_page     :dataCache
+        caches_page     :dataCache, :firstYearCache
 	def write
 		@signed_in = false
 		@saveArray = Array.new
@@ -45,8 +45,16 @@ class RanksController < ApplicationController
 	    render :layout => false
         end
 
+        def firstYearCache
+            @weeksMap = Season.getWeeksMap.to_json
+            @dataMap = Season.getLatestSeason.to_json
+            render :layout => false
+        end
+
+
         def clearCache
             expire_page :action => 'dataCache'
+            expire_page :action => 'firstYearCache'
             redirect_to '/controls/updatecsvs'
         end
 
