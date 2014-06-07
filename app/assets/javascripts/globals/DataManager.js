@@ -18,12 +18,11 @@ function DataManager(yearBox, weekBox, selectBoxMap, reqDataFunc, afterReqCallba
 	var context = this;
 	$(this.yearBox).change(function(){
                 context.resetWeeks($(this).val());
-                context.requestData();
                 context.changeCallBack();
+                context.requestData();
 	});
 	$(this.weekBox).change(function(){
 		context.requestData();
-                context.changeCallBack();
 	});
 
 	$(yearBox).on('mouseover', function(event){
@@ -110,7 +109,7 @@ DataManager.prototype.addOptions = function(){
 
 	$(this.yearBox).val(largest);
         this.resetWeeks(largest);
-
+        this.changeCallBack();
 /*        
 
 	for(var i = 1; i < this.map[largest]; i++){
@@ -138,7 +137,6 @@ DataManager.prototype.resetWeeks = function(year){
         this.weekBox.appendChild(newOpt);
     }
     $(this.weekBox).val(optsArray[optsArray.length - 1][1]);
-    
 }
 
 

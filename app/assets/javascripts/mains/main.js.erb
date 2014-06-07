@@ -13,8 +13,11 @@ $(document).ready(function(){
         $('.workPane').resize();
     });
 
+    $(function(){
+        $('select').selectric();
+    });
 
-    initPausers();
+initPausers();
     sm = new SavesManager(document.querySelector('.saveBar'), preLoad, loadSave, saveAs, true, savesArr);
 
     (function(){
@@ -88,11 +91,9 @@ function requestDataIfAllLoaded(){
         if(state.firstYearLoaded){
             dm.requestData();
             $('#all-data-cache-page')[0].src = '/dataCache';            
+            //updateSelectricBoxes();
         }else{
             state.firstYearLoaded= true;
-            $(function(){
-                $('select').selectric();
-            });
         }
 }
 
