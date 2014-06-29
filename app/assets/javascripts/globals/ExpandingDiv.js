@@ -4,12 +4,13 @@ function ExpandingDiv(div, minWidth, minHeight, callback, data){
 	this.minWidth = minWidth;
 	this.minHeight = minHeight;
 
+	this.maxWidth = $(div).css('width');
 	/*
-	this.maxWidth = div.width;
 	this.maxHeight = div.height;
 	*/
 
 	this.isExpanded = true;
+        this.currentlyAnimating = false;
 
 	this.callbackGiven = false;
 	if (!(typeof callback === 'undefined')){
@@ -30,7 +31,7 @@ function ExpandingDiv(div, minWidth, minHeight, callback, data){
 ExpandingDiv.triggerMargin = 1;
 
 /* Milliseconds to spend growing/shrinking */
-ExpandingDiv.animationTime = 500;
+ExpandingDiv.animationTime = 100;
 
 ExpandingDiv.prototype.callCallback = function(){
 	if(this.callbackGiven){
@@ -40,6 +41,19 @@ ExpandingDiv.prototype.callCallback = function(){
 		this.callback();
 	}
 };
+
+ExpandingDiv.prototype.expand = function(){
+    context = this;
+    console.log(ExpandingDiv.animationTime);
+    this.currentlyAnimating = true;
+    $(this.div).animate({width: this.maxWidth}, ExpandingDiv.animationTime, function(){context.currentlyAnimating = false});
+}
+
+ExpandingDiv.prototype.contract = function(){
+    context = this;
+    this.currentlyAnimating = true;
+    $(this.div).animate({width: this.minWidth}, ExpandingDiv.animationTime, function(){context.currentlyAnimating = false});
+}
 
 ExpandingDiv.prototype.bindTrigger = function(){
 	var context = this;
@@ -51,16 +65,21 @@ ExpandingDiv.prototype.bindTrigger = function(){
 		if(event.screenY === 0){
 			return false;
 		}
+
+                if(context.currentlyAnimating){
+                    return false;
+                }
+
 		var rect = context.div.getBoundingClientRect();
 		if(context.isExpanded){
 			if(event.clientX - (rect.right) > ExpandingDiv.triggerMargin ){
-				$(context.div).width(context.minWidth);
+                                context.contract();
 				context.isExpanded = false;
 				context.callCallback();
 			}
 		}else{
 			if(event.clientX - (rect.right + rect.width) < ExpandingDiv.triggerMargin ){
-				$(context.div).width('');
+                                context.expand();
 				context.isExpanded = true;
 				context.callCallback();
 			}
