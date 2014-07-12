@@ -6,7 +6,7 @@
 .selectricOpen { z-index: 9999; }
 .selectricHideSelect { position: relative; overflow: hidden; }
 .selectricHideSelect select { position: absolute; left: -100%; }
-.selectric { border: 1px solid black; background: rgba(10, 10, 10, .5); position: relative; border-radius: 0px; height: 100%; }
+.selectric { border: 1px solid black; background: rgba(10, 10, 10, .5); position: relative; border-radius: 0px; height: 29px; }
 .selectricOpen .selectric { border-color: #444; background: rgba(10, 10, 10, .5); z-index: 9999; }
 .selectric .label { display: block; white-space: nowrap; overflow: hidden; margin: 0 30px 0 0; padding-left: 8px; padding-top: 4px; font-weight: bold; font-size: 14px; line-height: 1.5; color: #444; font-family: Trebuchet MS; }
 .selectric .button { position: absolute; right: 0; top: 0; height: 30px; width: 30px; color: #BBB; text-align: center; font: normal 18px/30px sans-serif; }
