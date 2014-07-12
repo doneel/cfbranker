@@ -43,16 +43,17 @@ ExpandingDiv.prototype.callCallback = function(){
 };
 
 ExpandingDiv.prototype.expand = function(){
-    context = this;
+    thisContext = this;
     console.log(ExpandingDiv.animationTime);
     this.currentlyAnimating = true;
-    $(this.div).animate({width: this.maxWidth}, ExpandingDiv.animationTime, function(){context.currentlyAnimating = false});
+    $(this.div).animate({width: this.maxWidth}, ExpandingDiv.animationTime, function(){thisContext.currentlyAnimating = false});
 }
 
 ExpandingDiv.prototype.contract = function(){
-    context = this;
+    console.log('Contracting!', this);
+    thisContext = this;
     this.currentlyAnimating = true;
-    $(this.div).animate({width: this.minWidth}, ExpandingDiv.animationTime, function(){context.currentlyAnimating = false});
+    $(this.div).animate({width: this.minWidth}, ExpandingDiv.animationTime, function(){ thisContext.currentlyAnimating = false; console.log('finished contracting', thisContext.currentlyAnimating, thisContext);});
 }
 
 ExpandingDiv.prototype.bindTrigger = function(){
@@ -66,6 +67,8 @@ ExpandingDiv.prototype.bindTrigger = function(){
 			return false;
 		}
 
+                console.log(context.currentlyAnimating, context);
+    
                 if(context.currentlyAnimating){
                     return false;
                 }
