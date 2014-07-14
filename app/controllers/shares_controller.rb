@@ -1,5 +1,5 @@
 class SharesController < ApplicationController
-
+        caches_page     :loading
 	def create
 		if user_signed_in?
 			puts 'testing and suff'
