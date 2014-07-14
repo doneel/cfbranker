@@ -55,6 +55,7 @@ SavesManager.prototype.createNewSave = function(){
 
 	var newName = document.createElement('input');
 	newName.className = 'saveEntryNewName';
+        newName.setAttribute('maxlength', 20);
 
 	var context = this;
 	newName.onkeydown = function(event){
@@ -85,7 +86,7 @@ SavesManager.prototype.appendNewButton = function(){
 	newDiv.onclick = function(){context.createNewSave();}
 
 	var newSaveName = document.createElement('p');
-	newSaveName.innerHTML = 'New Algorithm';
+	newSaveName.innerHTML = 'Save As';
 	newSaveName.className = 'newSaveName';
 
 	var newSaveIcon = document.createElement('i');
